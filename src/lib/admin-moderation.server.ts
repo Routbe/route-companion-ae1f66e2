@@ -30,6 +30,10 @@ export type ModeratedUser = {
   handleGrant: string | null;
   /** Gratis/alias-identiteit: rout.be/u/<alias>. */
   subdomainAlias: string | null;
+  /** Handle van het losstaande gratis aliasprofiel (`public.alias_profiles`). */
+  aliasHandle: string | null;
+  /** Staat het aliasprofiel publiek aan? */
+  aliasEnabled: boolean;
   aliasStatus: string | null;
   forwardingEmail: string | null;
   blocks: { id?: string; label?: string; value?: string; kind?: string }[];
@@ -67,6 +71,8 @@ function mapProfile(row: ProfileRow, email: string | null): ModeratedUser {
     moderationReason: (row["moderation_reason"] as string | null) ?? null,
     handleGrant: (row["handle_grant"] as string | null) ?? null,
     subdomainAlias: (row["subdomain_alias"] as string | null) ?? null,
+    aliasHandle: (row["__alias_handle"] as string | null) ?? null,
+    aliasEnabled: row["__alias_enabled"] !== false,
     aliasStatus: (row["alias_status"] as string | null) ?? null,
     forwardingEmail: (row["forwarding_email"] as string | null) ?? null,
     blocks: Array.isArray(row["blocks"]) ? (row["blocks"] as ModeratedUser["blocks"]) : [],
@@ -83,6 +89,31 @@ function mapProfile(row: ProfileRow, email: string | null): ModeratedUser {
   };
 }
 
+
+/** Aliashandles van de zichtbare pagina in één query (tolerant: tabel kan ontbreken). */
+async function readAliasHandles(
+  userIds: string[],
+): Promise<Map<string, { handle: string; enabled: boolean }>> {
+  const map = new Map<string, { handle: string; enabled: boolean }>();
+  if (userIds.length === 0) return map;
+  try {
+    const { sql } = await import("@/lib/neon");
+    const rows = (await sql`
+      select user_id, handle, enabled
+        from public.alias_profiles
+       where user_id = any(${userIds}::uuid[])
+    `) as Record<string, unknown>[];
+    for (const row of rows) {
+      map.set(String(row["user_id"]), {
+        handle: String(row["handle"] ?? ""),
+        enabled: row["enabled"] !== false,
+      });
+    }
+  } catch {
+    // Migratie 38 nog niet uitgevoerd — dan tonen we simpelweg geen alias.
+  }
+  return map;
+}
 
 async function emailFor(userId: string): Promise<string | null> {
   const { dbAdmin } = await import("@/lib/db/admin.server");
@@ -180,9 +211,25 @@ export async function listUsersPage(opts: {
     ["last_country", "last_city"],
   ).then((r) => ({ data: r.data, count: (r as { count?: number | null }).count ?? null }));
 
+  // Elke gebruiker heeft twee identiteiten: het geverifieerde rootprofiel en
+  // het gratis aliasprofiel. Beide handles worden in één extra query opgehaald.
+  const ids = (data ?? []).map((row) => String((row as ProfileRow)["id"]));
+  const aliasByUser = await readAliasHandles(ids);
+
   const rows: ModeratedUser[] = [];
   for (const row of data ?? []) {
-    rows.push(mapProfile(row as ProfileRow, await emailFor(String((row as ProfileRow)["id"]))));
+    const id = String((row as ProfileRow)["id"]);
+    const alias = aliasByUser.get(id);
+    rows.push(
+      mapProfile(
+        {
+          ...(row as ProfileRow),
+          __alias_handle: alias?.handle ?? null,
+          __alias_enabled: alias?.enabled ?? true,
+        },
+        await emailFor(id),
+      ),
+    );
   }
   return { rows, total: count ?? rows.length, page, perPage };
 
@@ -358,6 +405,63 @@ export async function changeHandle(opts: {
   });
 
   return { ok: true as const, handle, vip: Boolean(grant), alias, reason };
+}
+
+/**
+ * Wijzigt de handle van het gratis aliasprofiel (`rout.be/u/<handle>`).
+ * Los van de geverifieerde roothandle: eigen uniciteits- en formaatcheck.
+ */
+export async function changeAliasHandle(opts: {
+  userId: string;
+  handle: string;
+  adminId: string;
+  reason?: string | null;
+}) {
+  const { sql } = await import("@/lib/neon");
+  const { normalizeHandleForStorage } = await import("./handle-rules");
+  const { strictHandleIssue } = await import("./handle-validation");
+  const { isReservedHandle } = await import("./profile");
+
+  const handle = normalizeHandleForStorage(opts.handle);
+  if (!handle) return { ok: false as const, reason: "Alias cannot be empty." };
+  const issue = strictHandleIssue(handle, { alias: true });
+  if (issue) return { ok: false as const, reason: issue };
+  if (isReservedHandle(handle)) return { ok: false as const, reason: "Reserved system word." };
+
+  const rootTaken = (await sql`
+    select id from public.profiles
+     where lower(username) = ${handle} and id <> ${opts.userId} limit 1
+  `) as Record<string, unknown>[];
+  if (rootTaken.length) return { ok: false as const, reason: "Already taken by a root profile." };
+
+  try {
+    const aliasTaken = (await sql`
+      select user_id from public.alias_profiles
+       where lower(handle) = ${handle} and user_id <> ${opts.userId} limit 1
+    `) as Record<string, unknown>[];
+    if (aliasTaken.length) return { ok: false as const, reason: "Already taken by another alias." };
+
+    await sql`
+      insert into public.alias_profiles (user_id, handle, updated_at)
+      values (${opts.userId}, ${handle}, now())
+      on conflict (user_id) do update set handle = excluded.handle, updated_at = now()
+    `;
+  } catch (error) {
+    return {
+      ok: false as const,
+      reason: error instanceof Error ? error.message : "Could not save the alias.",
+    };
+  }
+
+  await writeAudit({
+    adminId: opts.adminId,
+    action: "alias_handle_changed",
+    targetUserId: opts.userId,
+    targetLabel: `u/${handle}`,
+    notes: opts.reason?.trim() || null,
+  });
+
+  return { ok: true as const, handle };
 }
 
 /** Content cleansing: wipe the bio, reset the avatar or drop individual links. */
