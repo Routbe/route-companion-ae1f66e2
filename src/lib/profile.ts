@@ -5,6 +5,7 @@
 import { handleRuleMessage, type HandleRuleContext } from "./handle-rules";
 import type { PublicSocialLink } from "./social-verify";
 import { verifiedHandleError } from "./verified-handle";
+import { sanitizeHandleInput } from "@/lib/validations/sanitizeHandle";
 
 
 
@@ -1029,10 +1030,7 @@ export const themeOf = (id: string) => PROFILE_THEMES.find((t) => t.id === id) ?
 
 /** Lowercase, url-safe handle. Never throws; returns '' when unusable. */
 export function normalizeHandle(raw: string): string {
-  return raw
-    .trim()
-    .replace(/^@+/, "")
-    .toLowerCase()
+  return sanitizeHandleInput(raw)
     .replace(/[^a-z0-9._-]/g, "-")
     .replace(/-{2,}/g, "-")
     .replace(/^[._-]+|[._-]+$/g, "")

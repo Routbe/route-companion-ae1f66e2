@@ -1,3 +1,5 @@
+import { sanitizeHandleInput } from "@/lib/validations/sanitizeHandle";
+
 /**
  * Shared identity, flexible URL.
  *
@@ -17,8 +19,8 @@ export const DEFAULT_URL_STYLE: UrlStyle = "u_at";
 export const isUrlStyle = (value: unknown): value is UrlStyle =>
   typeof value === "string" && (URL_STYLES as string[]).includes(value);
 
-/** Strips a leading @ and lowercases — the canonical database handle. */
-export const canonicalHandle = (raw: string) => raw.replace(/^@+/, "").toLowerCase();
+/** Strips a leading @, decodeert URL-encoding en lowercased — de canonieke databasehandle. */
+export const canonicalHandle = (raw: string) => sanitizeHandleInput(raw);
 
 /** Path for a handle in the requested display style. */
 export function styledProfilePath(handle: string, style: UrlStyle = DEFAULT_URL_STYLE): string {

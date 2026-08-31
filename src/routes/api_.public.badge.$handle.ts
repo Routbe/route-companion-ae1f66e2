@@ -1,3 +1,4 @@
+import { sanitizeHandleInput } from "@/lib/validations/sanitizeHandle";
 import { createFileRoute } from "@tanstack/react-router";
 
 /**
@@ -30,10 +31,7 @@ export const Route = createFileRoute("/api_/public/badge/$handle")({
   server: {
     handlers: {
       GET: async ({ params }) => {
-        const handle = String(params.handle ?? "")
-          .replace(/\.svg$/i, "")
-          .replace(/^@+/, "")
-          .toLowerCase();
+        const handle = sanitizeHandleInput(String(params.handle ?? "").replace(/\.svg$/i, ""));
 
         if (!/^[a-z0-9._-]{2,40}$/.test(handle)) {
           return new Response("Invalid handle", { status: 400 });

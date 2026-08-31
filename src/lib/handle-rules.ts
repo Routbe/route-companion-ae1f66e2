@@ -1,3 +1,4 @@
+import { sanitizeHandleInput } from "@/lib/validations/sanitizeHandle";
 /**
  * Handle allocation rules shared by the onboarding form, the public API and the
  * admin portal. Client-safe: no server-only imports.
@@ -83,7 +84,7 @@ export const TOO_SHORT_MESSAGE = "Handles moeten minstens 5 tekens lang zijn.";
 export const RESERVED_LENGTH_MESSAGE = SHORT_HANDLE_MESSAGE;
 
 export function normalizeHandleInput(raw: string): string {
-  return raw.trim().replace(/^@/, "").toLowerCase();
+  return sanitizeHandleInput(raw);
 }
 
 /**

@@ -18,6 +18,7 @@ import {
   Lock,
 
   Palette,
+  Pencil,
   Plus,
   Search,
   Settings,
@@ -234,6 +235,10 @@ export function ProfileEditor({ variant = "verified" }: { variant?: ProfileVaria
   const saveProfile = useServerFn(alias ? saveAliasProfile : saveStudioProfile);
   const loadAnalytics = useServerFn(getStudioAnalytics);
   const [tab, setTab] = useState<StudioTab>("links");
+  // Welke accordion open staat op het tabblad "Settings & verified" — de
+  // potlood-knop in de kopbalk stuurt hier rechtstreeks op.
+  const [settingsSection, setSettingsSection] = useState<string | undefined>(undefined);
+  const handleInputRef = useRef<HTMLInputElement | null>(null);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [loadAttempt, setLoadAttempt] = useState(0);
@@ -686,6 +691,22 @@ export function ProfileEditor({ variant = "verified" }: { variant?: ProfileVaria
   }
 
 
+  /**
+   * Snelkoppeling vanuit de kopbalk: spring naar "Settings & verified", open de
+   * identiteitsaccordeon en zet de cursor in het juiste handle-veld
+   * (`verified_handle` of `alias_handle`, afhankelijk van het actieve profiel).
+   */
+  const openHandleEditor = () => {
+    setTab("settings");
+    setSettingsSection("identity_badges");
+    window.setTimeout(() => {
+      const input = handleInputRef.current;
+      if (!input) return;
+      input.scrollIntoView({ behavior: "smooth", block: "center" });
+      input.focus();
+    }, 220);
+  };
+
   const showSaveBar = tab !== "analytics";
 
   return (
@@ -726,6 +747,15 @@ export function ProfileEditor({ variant = "verified" }: { variant?: ProfileVaria
             className="inline-flex h-8 shrink-0 items-center gap-1.5 rounded-lg border border-border px-2.5 text-[11px] font-medium hover:bg-muted"
           >
             <Copy className="h-3.5 w-3.5" aria-hidden /> Kopieer
+          </button>
+          <button
+            type="button"
+            onClick={openHandleEditor}
+            aria-label="Gebruikersnaam bewerken"
+            title="Gebruikersnaam bewerken"
+            className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-border hover:bg-muted"
+          >
+            <Pencil className="h-3.5 w-3.5 text-muted-foreground transition-colors hover:text-foreground" aria-hidden />
           </button>
         </div>
         <a
@@ -1826,7 +1856,13 @@ export function ProfileEditor({ variant = "verified" }: { variant?: ProfileVaria
           )}
 
           {tab === "settings" && (
-            <Accordion type="single" collapsible className="space-y-3">
+            <Accordion
+              type="single"
+              collapsible
+              className="space-y-3"
+              value={settingsSection}
+              onValueChange={(v) => setSettingsSection(v || undefined)}
+            >
               <AccordionItem
                 value="account_billing"
                 className="rounded-2xl border border-border bg-card px-4 sm:px-5"
@@ -1903,13 +1939,13 @@ export function ProfileEditor({ variant = "verified" }: { variant?: ProfileVaria
                   </h2>
                   {alias && (
                     <span className="rounded-full border border-border bg-muted/50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
-                      minimaal 2 cijfers
+                      minimaal 5 tekens · 2 cijfers
                     </span>
                   )}
                 </div>
                 <p id="handle-help" className="mt-1 text-xs text-muted-foreground">
                   {alias
-                    ? "Kies vrij een pseudoniem. Enkel kleine letters, cijfers en . - _ — met minstens 2 cijfers."
+                    ? "Kies vrij een pseudoniem. Enkel kleine letters, cijfers en . - _ — minstens 5 tekens en 2 cijfers."
                     : handleRuleHint(handleCtx)}
                 </p>
                 <div className="mt-3 flex min-w-0 items-center gap-2">
@@ -1918,6 +1954,9 @@ export function ProfileEditor({ variant = "verified" }: { variant?: ProfileVaria
                     {styledProfilePath("", urlStyle)}
                   </span>
                   <Input
+                    ref={handleInputRef}
+                    id={alias ? "alias_handle" : "verified_handle"}
+                    name={alias ? "alias_handle" : "verified_handle"}
                     value={handle}
                     maxLength={30}
                     placeholder="yourname"

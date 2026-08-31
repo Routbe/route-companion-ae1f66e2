@@ -17,6 +17,7 @@ import {
   startDonationCheckout,
 } from "@/lib/donations.functions";
 import type { BadgeNameFormat, BadgeType } from "@/lib/profile-display";
+import { sanitizeHandleInput } from "@/lib/validations/sanitizeHandle";
 
 type Target = Awaited<ReturnType<typeof getDonationTarget>>;
 
@@ -28,7 +29,7 @@ const euro = (cents: number) =>
 export default function Donate() {
   const params = useParams({ strict: false }) as { username?: string };
   const search = useSearch({ strict: false }) as { donation?: string; status?: string };
-  const handle = (params.username ?? "").replace(/^@/, "").toLowerCase();
+  const handle = sanitizeHandleInput(params.username);
 
   const loadTarget = useServerFn(getDonationTarget);
   const loadStatus = useServerFn(getDonationStatus);

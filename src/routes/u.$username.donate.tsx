@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import Donate from "@/pages/Donate";
 import { canonicalLinks, donateJsonLd } from "@/lib/social-meta";
+import { sanitizeHandleInput } from "@/lib/validations/sanitizeHandle";
 
 export const Route = createFileRoute("/u/$username/donate")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -8,7 +9,7 @@ export const Route = createFileRoute("/u/$username/donate")({
     status: typeof search["status"] === "string" ? (search["status"] as string) : undefined,
   }),
   head: ({ params }) => {
-    const handle = (params.username ?? "").replace(/^@/, "");
+    const handle = sanitizeHandleInput(params.username);
     const title = `Steun @${handle} — ROUT`;
     const description = `Geef @${handle} rechtstreekse steun via ROUT: kies een bedrag, laat een bericht achter en betaal veilig met Bancontact, iDEAL, Apple Pay of kaart.`;
     const path = `/u/${handle}/donate`;
