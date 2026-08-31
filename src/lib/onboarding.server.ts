@@ -5,12 +5,13 @@
 
 import { sql } from "@/lib/neon";
 import { RESERVED_SLUGS } from "./reserved-slugs";
+import { sanitizeHandleInput } from "@/lib/validations/sanitizeHandle";
 
 const HANDLE_PATTERN = /^[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?$/;
 const RESERVED = RESERVED_SLUGS;
 
 export function normalizeHandle(raw: string) {
-  return raw.trim().replace(/^@/, "").toLowerCase();
+  return sanitizeHandleInput(raw);
 }
 
 /** Coarse per-handle throttle (memory-local): at most one probe per 300 ms. */

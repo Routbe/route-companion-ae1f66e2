@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import Page from "@/pages/ShortLink";
+import { sanitizeHandleInput } from "@/lib/validations/sanitizeHandle";
 
 /**
  * `rout.be/u/<alias>/<code>` — eigen korte link van een gratis profiel.
@@ -18,7 +19,7 @@ export const Route = createFileRoute("/u/$username/$slug")({
           pausedResponse,
         } = await import("@/lib/short-link-redirect.server");
         const { RateLimitError } = await import("@/lib/rate-limit.server");
-        const alias = params.username.replace(/^@/, "").toLowerCase();
+        const alias = sanitizeHandleInput(params.username);
         try {
           const result = await resolveShortLink(`u/${alias}/${params.slug}`, request);
           if (result?.status === "ok") return redirectResponse(result.targetUrl);

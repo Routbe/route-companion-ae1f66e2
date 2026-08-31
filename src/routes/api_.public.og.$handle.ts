@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { parseDisplayPrefs } from "@/lib/profile-display";
 import { ogSvg } from "@/lib/og-card";
+import { sanitizeHandleInput } from "@/lib/validations/sanitizeHandle";
 
 /**
  * Dynamische OpenGraph-kaart (1200×630) voor profielen zonder eigen
@@ -17,10 +18,7 @@ export const Route = createFileRoute("/api_/public/og/$handle")({
       GET: async ({ params, request }) => {
         const raw = String(params.handle ?? "");
         const wantsSvg = /\.svg$/i.test(raw);
-        const handle = raw
-          .replace(/\.(svg|png)$/i, "")
-          .replace(/^@+/, "")
-          .toLowerCase();
+        const handle = sanitizeHandleInput(raw.replace(/\.(svg|png)$/i, ""));
         if (!/^[a-z0-9._-]{2,40}$/.test(handle)) {
           return new Response("Invalid handle", { status: 400 });
         }

@@ -10,6 +10,7 @@ import {
 } from "@/lib/social-meta";
 import type { Locale } from "@/lib/i18n";
 import { parseDisplayPrefs, bioForLocale } from "@/lib/profile-display";
+import { sanitizeHandleInput } from "@/lib/validations/sanitizeHandle";
 
 type Row = Record<string, unknown> | null;
 
@@ -19,7 +20,7 @@ export const Route = createFileRoute("/u/$username")({
    * real profile card instead of the generic site card.
    */
   loader: async ({ params }) => {
-    const handle = params.username.replace(/^@/, "").toLowerCase();
+    const handle = sanitizeHandleInput(params.username);
     let locale: Locale = "en";
     try {
       locale = (await getRequestLocale()).locale;

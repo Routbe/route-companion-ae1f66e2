@@ -1,6 +1,7 @@
 import { sql } from "@/lib/neon";
 import { isReservedHandle, normalizeHandle } from "@/lib/profile";
 import { normalizeHandleForStorage } from "@/lib/handle-rules";
+import { strictHandleIssue } from "@/lib/handle-validation";
 import { isHandleBlock, normalizeSocialHandle } from "./social-handles";
 
 /**
@@ -149,6 +150,8 @@ export async function writeAliasProfile(userId: string, input: AliasProfileInput
   await ensureAliasTable();
   const handle = normalizeHandleForStorage(input.username);
   if (!handle) throw new Error("handle_invalid");
+  // Serverzijde spiegel van de aliasregel: minstens 5 tekens én 2 cijfers.
+  if (strictHandleIssue(handle, { alias: true })) throw new Error("handle_invalid");
   if (isReservedHandle(handle)) throw new Error("handle_reserved");
 
   const free = await isAliasHandleFree(handle, userId);
