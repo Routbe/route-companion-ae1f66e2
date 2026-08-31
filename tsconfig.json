@@ -16,9 +16,14 @@
     "verbatimModuleSyntax": false,
     "noEmit": true,
     // Incrementele cache: de eerste check bouwt .tsbuildinfo, elke volgende
-    // check hergebruikt die en blijft daardoor binnen enkele seconden.
+    // check hergebruikt die en blijft daardoor binnen enkele seconden. Het
+    // bestand staat bewust in de projectmap: in node_modules/.cache overleeft
+    // het geen herinstallatie, waardoor elke check weer een volle 20 s+ kostte.
     "incremental": true,
-    "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo/app.tsbuildinfo",
+    "tsBuildInfoFile": ".tsbuildinfo",
+    // Een wijziging in één bestand hoeft niet het hele transitieve bereik te
+    // hercontroleren; dit houdt herhaalde checks in de seconden.
+    "assumeChangesOnlyAffectDirectDependencies": true,
 
     "skipLibCheck": true,
     // The imported ROUT codebase was authored against looser settings; strict
