@@ -8,13 +8,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/useAuth";
 import { useI18n } from "@/lib/i18n";
-import {
-  checkHandleAvailability,
-  suggestHandlesFromEmailAddress,
-} from "@/lib/bootstrap.functions";
+import { checkHandleAvailability, suggestHandlesFromEmailAddress } from "@/lib/bootstrap.functions";
 import { claimHandle, getMyHandle, getVerifiedHandleOptions } from "@/lib/claim.functions";
 import { Turnstile } from "@/components/Turnstile";
-import { handleLengthMessage } from "@/lib/handle-rules";
+import { digitCount, FREE_HANDLE_MIN_DIGITS, handleLengthMessage } from "@/lib/handle-rules";
 import { hasValidDigitSuffix } from "@/lib/handle-suggestions";
 import { HandleOptionPicker, type HandleOption } from "@/components/HandleOptionPicker";
 import { notifyError, notifySuccess } from "@/lib/notify";
@@ -92,7 +89,9 @@ export default function Claim() {
     });
     try {
       const res = await getVerifiedHandleOptions({});
-      setOptions(res.options.map((o) => ({ handle: o.handle, status: o.status as HandleOption["status"] })));
+      setOptions(
+        res.options.map((o) => ({ handle: o.handle, status: o.status as HandleOption["status"] })),
+      );
     } catch {
       notifyError(t("claim.options.loadFailed"), {
         description: t("claim.options.loadFailedDesc"),
@@ -118,8 +117,11 @@ export default function Claim() {
     let active = true;
     // Google/GitHub give us a real name — prefer it over the e-mail prefix.
     const meta = (user.user_metadata ?? {}) as Record<string, unknown>;
-    const metaName = [meta["full_name"], meta["name"], [meta["given_name"], meta["family_name"]].filter(Boolean).join(" ")]
-      .find((v) => typeof v === "string" && v.trim().length > 1) as string | undefined;
+    const metaName = [
+      meta["full_name"],
+      meta["name"],
+      [meta["given_name"], meta["family_name"]].filter(Boolean).join(" "),
+    ].find((v) => typeof v === "string" && v.trim().length > 1) as string | undefined;
     suggestHandlesFromEmailAddress({ data: { email: metaName?.trim() || user.email } })
       .then((res) => {
         if (!active || res.handles.length === 0) return;
@@ -148,6 +150,10 @@ export default function Claim() {
 
     const lengthIssue = handleLengthMessage(value);
     if (lengthIssue) return setState({ checking: false, ok: false, reason: lengthIssue });
+    // Gratis leden delen de drukke ruimte: minstens 5 tekens én 2 cijfers.
+    if (!verified && digitCount(value) < FREE_HANDLE_MIN_DIGITS) {
+      return setState({ checking: false, ok: false, reason: t("claim.free.digits") });
+    }
     if (!hasValidDigitSuffix(value)) {
       return setState({
         checking: false,
@@ -173,7 +179,6 @@ export default function Claim() {
       }
     }, 300);
   };
-
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -332,7 +337,7 @@ export default function Claim() {
                     ? t("claim.checking")
                     : state.ok === true
                       ? t("claim.available", { handle: preview })
-                      : (state.reason ?? t("claim.hint"))}
+                      : (state.reason ?? t("claim.free.rule"))}
                 </p>
 
                 {emailSuggestions.length > 0 && (
