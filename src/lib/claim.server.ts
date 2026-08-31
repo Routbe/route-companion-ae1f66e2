@@ -74,9 +74,8 @@ export async function getVerifiedHandleOptionsFor(userId: string, minAvailable =
   if (!isVerifiedActive(profile)) {
     return { verified: false as const, options: [] as Array<{ handle: string; status: string }> };
   }
-  const { generateHandleOptions, generateWidenedHandleOptions } = await import(
-    "./handle-suggestions"
-  );
+  const { generateHandleOptions, generateWidenedHandleOptions } =
+    await import("./handle-suggestions");
 
   let limit = 12;
   const MAX_ITERATIONS = 5;
@@ -119,9 +118,8 @@ export async function claimHandleFor(
   if (isVerifiedActive(profile)) {
     // Verified members may only claim a handle that this server would itself
     // generate from their real display name — never trust the client's pick.
-    const { generateHandleOptions, generateWidenedHandleOptions } = await import(
-      "./handle-suggestions"
-    );
+    const { generateHandleOptions, generateWidenedHandleOptions } =
+      await import("./handle-suggestions");
     const allowed = new Set([
       ...generateHandleOptions(profile.display_name ?? "", 12),
       ...generateWidenedHandleOptions(profile.display_name ?? "", 80),
@@ -139,7 +137,22 @@ export async function claimHandleFor(
     const { handleLengthMessage } = await import("./handle-rules");
     const lengthIssue = handleLengthMessage(normalized);
     if (lengthIssue) {
-      return { ok: false as const, handle: normalized, code: "rules" as const, reason: lengthIssue };
+      return {
+        ok: false as const,
+        handle: normalized,
+        code: "rules" as const,
+        reason: lengthIssue,
+      };
+    }
+    const { digitCount, FREE_HANDLE_MIN_DIGITS } = await import("./handle-rules");
+    if (digitCount(normalized) < FREE_HANDLE_MIN_DIGITS) {
+      return {
+        ok: false as const,
+        handle: normalized,
+        code: "digits" as const,
+        reason:
+          "❗ Een gratis handle heeft minstens 5 tekens en minstens 2 cijfers nodig (bijv. jona50).",
+      };
     }
     if (!hasValidDigitSuffix(normalized)) {
       return {

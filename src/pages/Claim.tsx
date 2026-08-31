@@ -8,10 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/useAuth";
 import { useI18n } from "@/lib/i18n";
-import {
-  checkHandleAvailability,
-  suggestHandlesFromEmailAddress,
-} from "@/lib/bootstrap.functions";
+import { checkHandleAvailability, suggestHandlesFromEmailAddress } from "@/lib/bootstrap.functions";
 import { claimHandle, getMyHandle, getVerifiedHandleOptions } from "@/lib/claim.functions";
 import { Turnstile } from "@/components/Turnstile";
 import { digitCount, FREE_HANDLE_MIN_DIGITS, handleLengthMessage } from "@/lib/handle-rules";
@@ -92,7 +89,9 @@ export default function Claim() {
     });
     try {
       const res = await getVerifiedHandleOptions({});
-      setOptions(res.options.map((o) => ({ handle: o.handle, status: o.status as HandleOption["status"] })));
+      setOptions(
+        res.options.map((o) => ({ handle: o.handle, status: o.status as HandleOption["status"] })),
+      );
     } catch {
       notifyError(t("claim.options.loadFailed"), {
         description: t("claim.options.loadFailedDesc"),
@@ -118,8 +117,11 @@ export default function Claim() {
     let active = true;
     // Google/GitHub give us a real name — prefer it over the e-mail prefix.
     const meta = (user.user_metadata ?? {}) as Record<string, unknown>;
-    const metaName = [meta["full_name"], meta["name"], [meta["given_name"], meta["family_name"]].filter(Boolean).join(" ")]
-      .find((v) => typeof v === "string" && v.trim().length > 1) as string | undefined;
+    const metaName = [
+      meta["full_name"],
+      meta["name"],
+      [meta["given_name"], meta["family_name"]].filter(Boolean).join(" "),
+    ].find((v) => typeof v === "string" && v.trim().length > 1) as string | undefined;
     suggestHandlesFromEmailAddress({ data: { email: metaName?.trim() || user.email } })
       .then((res) => {
         if (!active || res.handles.length === 0) return;
@@ -177,7 +179,6 @@ export default function Claim() {
       }
     }, 300);
   };
-
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
