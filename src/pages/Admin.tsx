@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useNavigate } from "@/lib/router-compat";
 import {
+  ChevronDown,
   BadgeCheck,
   Ban,
   Check,
@@ -25,8 +26,8 @@ import { toast } from "sonner";
 import { logQuietly, notifyError } from "@/lib/notify";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { AdminVipPanel } from "@/components/admin/AdminVipPanel";
-import { UserIdentityLines } from "@/components/admin/UserIdentityLines";
 import { VerifyUserDialog } from "@/components/admin/VerifyUserDialog";
+import { UserHandleEditor } from "@/components/admin/UserHandleEditor";
 import { AdminAccessPanel } from "@/components/admin/AdminAccessPanel";
 import { EmailFlowTester } from "@/components/admin/EmailFlowTester";
 import { DeliveryMonitorPanel } from "@/components/admin/DeliveryMonitorPanel";
@@ -34,7 +35,6 @@ import { MemberStatusPanel } from "@/components/admin/MemberStatusPanel";
 import { PromoInvitePanel } from "@/components/admin/PromoInvitePanel";
 import { PricingPanel } from "@/components/admin/PricingPanel";
 import { useTranslation } from "react-i18next";
-
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -55,7 +55,6 @@ import { useAuth } from "@/hooks/useAuth";
 import { euro } from "@/lib/profile";
 import { toCsv, downloadCsv } from "@/lib/csv";
 import { inboundFailureReason } from "@/lib/payments";
-import { SHORT_HANDLE_MESSAGE, needsVipGrant } from "@/lib/handle-rules";
 import {
   BUILTIN_AUDIT_VIEWS,
   EMPTY_AUDIT_FILTERS,
@@ -78,7 +77,6 @@ import {
 import {
   amIAdmin,
   approveVerification,
-  assignHandle,
   banUser,
   bulkGrantVipToUsers,
   bulkModerateUsers,
@@ -98,7 +96,6 @@ import {
   listTransactions,
   listUsers,
   logExportEvent,
-  markPaymentManually,
   matchPaymentReference,
   reprocessInboundPayment,
   resolveIncompletePayment,
@@ -117,8 +114,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-
-
 
 import type { UserSegment } from "@/lib/admin-segments";
 
@@ -187,12 +182,9 @@ function shortDateTime(value: string) {
 function locationBadge(country: string | null, city: string | null) {
   const code = country?.trim().toUpperCase() ?? "";
   if (!/^[A-Z]{2}$/.test(code)) return "🌐 Onbekend";
-  const flag = String.fromCodePoint(
-    ...[...code].map((c) => 0x1f1e6 + c.charCodeAt(0) - 65),
-  );
+  const flag = String.fromCodePoint(...[...code].map((c) => 0x1f1e6 + c.charCodeAt(0) - 65));
   return `${flag} ${city?.trim() || code}`;
 }
-
 
 const TIER_BADGE: Record<string, string> = {
   early_believer: "Early Believer",
@@ -259,7 +251,6 @@ function StatusBadge({ status }: { status: string }) {
     </span>
   );
 }
-
 
 /** Shared "Showing 1-20 of 150" pager used by every paginated tab. */
 function Pager({
@@ -358,7 +349,6 @@ export default function Admin() {
   const loadUsers = useServerFn(listUsers);
   const suspend = useServerFn(suspendProfile);
   const ban = useServerFn(banUser);
-  const setHandle = useServerFn(assignHandle);
   const cleanse = useServerFn(cleanseProfileContent);
   const loadPending = useServerFn(listPendingVerifications);
   const loadIncomplete = useServerFn(listIncompletePayments);
@@ -375,7 +365,6 @@ export default function Admin() {
   const loadAliases = useServerFn(listAliases);
   const aliasControl = useServerFn(controlUserAlias);
   const bulkModerate = useServerFn(bulkModerateUsers);
-  const markPaid = useServerFn(markPaymentManually);
   const syncAliases = useServerFn(runAliasSync);
   const loadInbound = useServerFn(listInboundPayments);
   const exportInboundChunkFn = useServerFn(exportInboundChunk);
@@ -395,8 +384,8 @@ export default function Admin() {
   const [userPage, setUserPage] = useState(1);
   const [userPerPage, setUserPerPage] = useState(20);
   const [usersLoading, setUsersLoading] = useState(false);
-  const [handleDraft, setHandleDraft] = useState<Record<string, string>>({});
-  const [vipDraft, setVipDraft] = useState<Record<string, boolean>>({});
+  // Uitklapbare gebruikerskaarten: standaard compact, details op verzoek.
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [moderating, setModerating] = useState<{
     row: UserRow;
     kind: "suspend" | "ban";
@@ -420,7 +409,9 @@ export default function Admin() {
   const [bankName, setBankName] = useState("");
   const [bankSuggestions, setBankSuggestions] = useState<string[]>([]);
   const [bankMessage, setBankMessage] = useState("");
-  const [referenceMatch, setReferenceMatch] = useState<Awaited<ReturnType<typeof matchPaymentReference>> | null>(null);
+  const [referenceMatch, setReferenceMatch] = useState<Awaited<
+    ReturnType<typeof matchPaymentReference>
+  > | null>(null);
   const [referenceMatching, setReferenceMatching] = useState(false);
 
   // — Transactions & audit ---------------------------------------------
@@ -468,7 +459,6 @@ export default function Admin() {
   const [checklistLoading, setChecklistLoading] = useState(false);
   const [checklistError, setChecklistError] = useState<string | null>(null);
 
-
   // — Network -----------------------------------------------------------
   const [aliases, setAliases] = useState<AliasRow[]>([]);
   const [aliasTotal, setAliasTotal] = useState(0);
@@ -511,8 +501,6 @@ export default function Admin() {
         });
         setUsers(res.rows);
         setUserTotal(res.total);
-        setHandleDraft(Object.fromEntries(res.rows.map((r) => [r.userId, r.username ?? ""])));
-        setVipDraft(Object.fromEntries(res.rows.map((r) => [r.userId, r.handleGrant === "vip"])));
       } catch (error) {
         adminToastError(error, "Could not load users.");
       } finally {
@@ -545,7 +533,6 @@ export default function Admin() {
   useEffect(() => {
     void loadChecklistNow();
   }, [loadChecklistNow]);
-
 
   /**
    * Cursor (keyset) paginated audit log. `cursor = null` means "first page";
@@ -583,7 +570,6 @@ export default function Admin() {
     },
     [auditPerPage, filters, loadAuditCursor],
   );
-
 
   const refreshTx = useCallback(
     async (page = txPage, perPage = txPerPage) => {
@@ -650,7 +636,9 @@ export default function Admin() {
     setExportJob({ status: "running", scanned: 0, total: 0, rows: 0 });
     const startedAt = Date.now();
     const appliedFilters = { dataset: "inbound", scope: "all" };
-    void logExport({ data: { dataset: "inbound_payments", phase: "started", filters: appliedFilters } }).catch(() => {});
+    void logExport({
+      data: { dataset: "inbound_payments", phase: "started", filters: appliedFilters },
+    }).catch(() => {});
     try {
       const collected: Record<string, string>[] = [];
       let columns: string[] = [];
@@ -690,7 +678,12 @@ export default function Admin() {
         expiresAt: expiresAt(),
       });
       void logExport({
-        data: { dataset: "inbound_payments", phase: "completed", filters: appliedFilters, rows: collected.length },
+        data: {
+          dataset: "inbound_payments",
+          phase: "completed",
+          filters: appliedFilters,
+          rows: collected.length,
+        },
       }).catch(() => {});
       toast.success(`Export ready — ${collected.length} row${collected.length === 1 ? "" : "s"}.`, {
         description: `Use the download link to save the file. ${retentionLabel()}`,
@@ -705,7 +698,12 @@ export default function Admin() {
         error: `${info.title} — ${info.description}`,
       });
       void logExport({
-        data: { dataset: "inbound_payments", phase: "failed", filters: appliedFilters, note: info.title },
+        data: {
+          dataset: "inbound_payments",
+          phase: "failed",
+          filters: appliedFilters,
+          note: info.title,
+        },
       }).catch(() => {});
       toast.error(info.title, { description: info.description });
     } finally {
@@ -726,7 +724,6 @@ export default function Admin() {
     }, remaining + 250);
     return () => window.clearTimeout(timer);
   }, [exportJob?.status, exportJob?.expiresAt]);
-
 
   const refreshAliases = useCallback(
     async (page = aliasPage, perPage = aliasPerPage) => {
@@ -823,31 +820,6 @@ export default function Admin() {
       setBusy(null);
       setModerating(null);
       setModerationReason("");
-    }
-  };
-
-  const onSaveHandle = async (row: UserRow) => {
-    const handle = (handleDraft[row.userId] ?? "").trim();
-    if (!handle) return toast.error("Enter a handle first.");
-    setBusy(row.userId);
-    try {
-      const res = await setHandle({
-        data: { userId: row.userId, handle, vipGrant: vipDraft[row.userId] ?? false },
-      });
-      if (!res.ok) {
-        toast.error(res.reason);
-        return;
-      }
-      toast.success(
-        res.vip ? `VIP handle @${res.handle} granted.` : `Handle @${res.handle} updated.`,
-      );
-      void refreshUsers();
-      void refreshAliases();
-      void refreshAudit(null);
-    } catch (error) {
-      adminToastError(error, "Could not change this handle.");
-    } finally {
-      setBusy(null);
     }
   };
 
@@ -1039,7 +1011,9 @@ export default function Admin() {
     setBusy("bulk");
     try {
       const res = await bulkVip({ data: { userIds: selected } });
-      toast.success(`VIP grant: ${res.succeeded} of ${selected.length} accounts updated${res.failed > 0 ? ` · ${res.failed} failed` : ""}.`);
+      toast.success(
+        `VIP grant: ${res.succeeded} of ${selected.length} accounts updated${res.failed > 0 ? ` · ${res.failed} failed` : ""}.`,
+      );
       setSelected([]);
       void refreshUsers();
       void refreshAudit(null);
@@ -1055,7 +1029,9 @@ export default function Admin() {
     setBusy("bulk");
     try {
       const res = await bulkRetryAliasFn({ data: { userIds: selected } });
-      toast.success(`Alias retry: ${res.succeeded} of ${selected.length} accounts synced${res.failed > 0 ? ` · ${res.failed} still failing` : ""}.`);
+      toast.success(
+        `Alias retry: ${res.succeeded} of ${selected.length} accounts synced${res.failed > 0 ? ` · ${res.failed} still failing` : ""}.`,
+      );
       setSelected([]);
       void refreshUsers();
       void refreshAliases();
@@ -1079,28 +1055,6 @@ export default function Admin() {
       .then(setReferenceMatch)
       .catch((error) => logQuietly("admin:reference-match", error))
       .finally(() => setReferenceMatching(false));
-  };
-
-  /** Manual payment override — marks paid, unlocks Early Believer, queues the alias. */
-  const onMarkPaid = async (row: UserRow, paid: boolean) => {
-    setBusy(row.userId);
-    try {
-      const res = await markPaid({ data: { userId: row.userId, paid } });
-      if (!res.ok) throw new Error(res.reason);
-      const sync = res.sync;
-      toast.success(
-        paid
-          ? `Marked paid (manual_admin) · Early Believer active · alias sync: ${sync.done} synced, ${sync.retrying} retrying, ${sync.failed} failed.`
-          : "Early Believer status revoked and alias removal queued.",
-      );
-      void refreshUsers();
-      void refreshAliases();
-      void refreshAudit(null);
-    } catch {
-      toast.error("Could not update the payment status.");
-    } finally {
-      setBusy(null);
-    }
   };
 
   const onSyncNow = async (retryFailed = false, userId?: string) => {
@@ -1199,13 +1153,17 @@ export default function Admin() {
     } catch (error) {
       const info = adminToastError(error, "Could not export the audit log.");
       void logExport({
-        data: { dataset: "audit_log", phase: "failed", filters: auditFilterPayload, note: info.title },
+        data: {
+          dataset: "audit_log",
+          phase: "failed",
+          filters: auditFilterPayload,
+          note: info.title,
+        },
       }).catch(() => {});
     } finally {
       setAuditExporting(false);
     }
   };
-
 
   const exportTxCsv = () => {
     if (tx.length === 0) return toast.info("Nothing to export.");
@@ -1272,7 +1230,6 @@ export default function Admin() {
     );
   }
 
-
   return (
     <AppLayout>
       <div className="mx-auto w-full max-w-6xl space-y-6 px-4 py-8">
@@ -1291,7 +1248,6 @@ export default function Admin() {
             <a href="/admin/gift-cards" className="inline-block text-sm underline">
               Cadeaubon-verzending
             </a>
-
           </div>
         </header>
 
@@ -1300,20 +1256,30 @@ export default function Admin() {
             data-testid="admin-health-kpis"
             className="grid grid-cols-2 gap-3 rounded-2xl border border-border bg-card p-4 sm:grid-cols-5"
           >
-            {([
-              [t("admin.kpi.active_users"), health.activeUsers, "activeUsers"],
-              [t("admin.kpi.pending_verifications"), health.pendingVerifications, "pendingVerifications"],
-              [t("admin.kpi.incomplete_payments"), health.incompletePayments, "incompletePayments"],
-              [t("admin.kpi.pending_sepa"), health.pendingSepaPayments, "pendingSepaPayments"],
-              [t("admin.kpi.failed_alias"), health.failedAliasSyncs, "failedAliasSyncs"],
+            {(
               [
-                t("admin.kpi.improvmx"),
-                health.improvmxConfigured
-                  ? t("admin.kpi.configured")
-                  : t("admin.kpi.not_configured"),
-                null,
-              ],
-            ] as Array<[string, string | number, KpiMetric | null]>).map(([label, value, metric]) => (
+                [t("admin.kpi.active_users"), health.activeUsers, "activeUsers"],
+                [
+                  t("admin.kpi.pending_verifications"),
+                  health.pendingVerifications,
+                  "pendingVerifications",
+                ],
+                [
+                  t("admin.kpi.incomplete_payments"),
+                  health.incompletePayments,
+                  "incompletePayments",
+                ],
+                [t("admin.kpi.pending_sepa"), health.pendingSepaPayments, "pendingSepaPayments"],
+                [t("admin.kpi.failed_alias"), health.failedAliasSyncs, "failedAliasSyncs"],
+                [
+                  t("admin.kpi.improvmx"),
+                  health.improvmxConfigured
+                    ? t("admin.kpi.configured")
+                    : t("admin.kpi.not_configured"),
+                  null,
+                ],
+              ] as Array<[string, string | number, KpiMetric | null]>
+            ).map(([label, value, metric]) => (
               <div key={label} className="space-y-0.5">
                 <p className="flex items-center gap-1 text-[11px] uppercase tracking-wide text-muted-foreground">
                   <Activity className="h-3 w-3" aria-hidden /> {label}
@@ -1354,15 +1320,15 @@ export default function Admin() {
             className="rounded-2xl border border-border bg-card px-4 sm:px-5"
           >
             <AccordionTrigger className="hover:no-underline">
-              <span className="text-base font-medium">📧 Nieuwsbrief &amp; Brevo-synchronisatie</span>
+              <span className="text-base font-medium">
+                📧 Nieuwsbrief &amp; Brevo-synchronisatie
+              </span>
             </AccordionTrigger>
             <AccordionContent className="pb-5">
               <NewsletterSyncPanel />
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-
-
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
           {/* Sub-tabs overflow badly on phones; a native select replaces the row below sm. */}
@@ -1419,7 +1385,6 @@ export default function Admin() {
               {t("admin.tab.deployment")}
             </TabsTrigger>
           </TabsList>
-
 
           {/* ---------------------------------------------------------- */}
           <TabsContent value="users" className="space-y-3">
@@ -1492,9 +1457,7 @@ export default function Admin() {
                   <p className="text-sm text-muted-foreground">{t("admin.users.none")}</p>
                 ) : null}
                 {users.map((row) => {
-                  const handle = handleDraft[row.userId] ?? "";
-                  const vip = vipDraft[row.userId] ?? false;
-                  const short = needsVipGrant(handle);
+                  const isOpen = expanded[row.userId] ?? false;
                   return (
                     <div
                       key={row.userId}
@@ -1520,25 +1483,35 @@ export default function Admin() {
                                 />
                               ) : null}
                             </p>
-                            <UserIdentityLines
-                              verified={row.verified}
+                            <UserHandleEditor
+                              userId={row.userId}
                               username={row.username}
-                              alias={row.subdomainAlias}
+                              aliasHandle={row.aliasHandle}
+                              verified={row.verified}
+                              vipGrant={row.handleGrant === "vip"}
+                              onSaved={() => {
+                                void refreshUsers();
+                                void refreshAliases();
+                                void refreshAudit(null);
+                              }}
                             />
                             <p className="text-xs text-muted-foreground">{row.email ?? "—"}</p>
-                            <p className="font-mono text-[10px] text-muted-foreground">
-                              {row.userId}
-                            </p>
-                            <p className="text-[11px] text-muted-foreground">
-                              {locationBadge(row.lastCountry, row.lastCity)}
-                            </p>
-
-                            <SyncBadge
-                              status={row.aliasSyncStatus}
-                              at={row.aliasSyncedAt}
-                              attempts={row.aliasSyncAttempts}
-                              error={row.aliasSyncError}
-                            />
+                            {isOpen ? (
+                              <>
+                                <p className="font-mono text-[10px] text-muted-foreground">
+                                  {row.userId}
+                                </p>
+                                <p className="text-[11px] text-muted-foreground">
+                                  {locationBadge(row.lastCountry, row.lastCity)}
+                                </p>
+                                <SyncBadge
+                                  status={row.aliasSyncStatus}
+                                  at={row.aliasSyncedAt}
+                                  attempts={row.aliasSyncAttempts}
+                                  error={row.aliasSyncError}
+                                />
+                              </>
+                            ) : null}
                           </div>
                         </div>
                         <div className="flex flex-wrap items-center gap-1.5">
@@ -1561,243 +1534,183 @@ export default function Admin() {
                               <Crown className="h-3 w-3" aria-hidden /> VIP
                             </span>
                           ) : null}
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="h-8 px-2"
+                            aria-expanded={isOpen}
+                            data-testid="toggle-user-row"
+                            onClick={() =>
+                              setExpanded((prev) => ({ ...prev, [row.userId]: !isOpen }))
+                            }
+                          >
+                            {isOpen ? "Inklappen" : "Uitklappen"}
+                            <ChevronDown
+                              className={`ml-1 h-3.5 w-3.5 transition-transform ${isOpen ? "rotate-180" : ""}`}
+                              aria-hidden
+                            />
+                          </Button>
                         </div>
                       </div>
 
-                      <div className="mt-3 grid gap-3 lg:grid-cols-2">
-                        <div className="space-y-1">
-                          <Label htmlFor={`handle-${row.userId}`} className="text-xs">
-                            Handle
-                          </Label>
-                          <div className="flex gap-2">
-                            <Input
-                              id={`handle-${row.userId}`}
-                              value={handle}
-                              onChange={(e) =>
-                                setHandleDraft((p) => ({ ...p, [row.userId]: e.target.value }))
-                              }
-                              placeholder="influencer"
-                              className="h-9"
-                            />
-                            <Button
-                              className="h-9"
-                              disabled={busy === row.userId}
-                              onClick={() =>
-                                askConfirm({
-                                  title: `Override the handle to @${handle.trim().replace(/^@/, "").toLowerCase()}?`,
-                                  description:
-                                    "The previous @rout.be alias is released and the new one is queued for sync.",
-                                  actionLabel: "Change handle",
-                                  run: async () => {
-                                    await onSaveHandle(row);
-                                  },
-                                })
-                              }
-                            >
-                              Save
-                            </Button>
-                          </div>
-                          <p className="break-all font-mono text-[11px] leading-relaxed text-muted-foreground">
-                            <span className="block">
-                              rout.be/@{handle.trim().replace(/^@/, "").toLowerCase() || "…"}
-                            </span>
-                            <span className="block">
-                              {handle.trim().replace(/^@/, "").toLowerCase() || "…"}@rout.be
-                            </span>
-                          </p>
-                          <div className="flex items-center gap-2 pt-1">
-                            <Switch
-                              id={`vip-${row.userId}`}
-                              checked={vip}
-                              onCheckedChange={(v) =>
-                                setVipDraft((p) => ({ ...p, [row.userId]: v }))
-                              }
-                            />
-                            <Label htmlFor={`vip-${row.userId}`} className="text-xs">
-                              VIP grant — allow a 3–4 character handle
-                            </Label>
-                          </div>
-                          {short && !vip ? (
-                            <p className="text-[11px] text-amber-700 dark:text-amber-300">
-                              {SHORT_HANDLE_MESSAGE}
-                            </p>
-                          ) : null}
-                        </div>
-
-                        <div className="space-y-2">
-                          <p className="text-xs font-medium text-muted-foreground">
-                            Standard actions
-                          </p>
-                          <div className="flex flex-wrap gap-1.5">
-                            {row.verified ? null : (
-                              <VerifyUserDialog
-                                userId={row.userId}
-                                displayName={row.displayName}
-                                onDone={() => void refreshUsers()}
-                              />
-                            )}
-                            <Button
-                              size="sm"
-                              variant="secondary"
-                              className="h-8"
-                              disabled={busy === row.userId}
-                              onClick={() =>
-                                askConfirm({
-                                  title: "Clear this bio?",
-                                  description:
-                                    "The bio and tagline disappear from the public profile. This cannot be undone.",
-                                  actionLabel: "Clear bio",
-                                  run: () => onCleanse(row, { clearTagline: true }),
-                                })
-                              }
-                            >
-                              <Eraser className="mr-1.5 h-3.5 w-3.5" aria-hidden /> Clear bio
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="secondary"
-                              className="h-8"
-                              disabled={busy === row.userId}
-                              onClick={() =>
-                                askConfirm({
-                                  title: "Reset this avatar?",
-                                  description:
-                                    "The profile picture is removed and replaced by the default placeholder.",
-                                  actionLabel: "Reset avatar",
-                                  run: () => onCleanse(row, { resetAvatar: true }),
-                                })
-                              }
-                            >
-                              <RotateCcw className="mr-1.5 h-3.5 w-3.5" aria-hidden /> Reset avatar
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant={row.isPaid ? "outline" : "default"}
-                              className="h-8"
-                              data-testid="mark-paid"
-                              disabled={busy === row.userId}
-                              onClick={() =>
-                                askConfirm({
-                                  title: row.isPaid
-                                    ? "Revoke Early Believer status?"
-                                    : "Mark as paid and activate Early Believer?",
-                                  description: row.isPaid
-                                    ? "The verified badge is removed and their @rout.be e-mail address is deleted."
-                                    : "Marks the membership as paid for life, grants the Early Believer badge and the verified checkmark, records it as a manual admin activation and creates their @rout.be e-mail address.",
-                                  actionLabel: row.isPaid ? "Revoke status" : "Mark as Paid",
-                                  destructive: row.isPaid,
-                                  run: () => onMarkPaid(row, !row.isPaid),
-                                })
-                              }
-                            >
-                              <BadgeCheck className="mr-1.5 h-3.5 w-3.5" aria-hidden />
-                              {row.isPaid ? "Revoke paid" : "Mark as Paid & Activate"}
-                            </Button>
-                            {row.aliasSyncStatus === "failed" ? (
-                              <Button
-                                size="sm"
-                                variant="secondary"
-                                className="h-8"
-                                data-testid="retry-alias"
-                                disabled={busy === row.userId || !improvmxReady}
-                                onClick={() => void onSyncNow(false, row.userId)}
-                              >
-                                <RefreshCw className="mr-1.5 h-3.5 w-3.5" aria-hidden /> Retry alias
-                                sync
-                              </Button>
-                            ) : null}
-                          </div>
-
-                          {row.tagline ? (
-                            <p className="line-clamp-2 text-[11px] text-muted-foreground">
-                              Bio: {row.tagline}
-                            </p>
-                          ) : null}
-                          {row.blocks.length > 0 ? (
-                            <ul className="space-y-1">
-                              {row.blocks.slice(0, 6).map((b, index) => (
-                                <li
-                                  key={`${row.userId}-${index}`}
-                                  className="flex items-center justify-between gap-2 text-[11px]"
+                      {isOpen ? (
+                        <>
+                          <div className="mt-3 grid gap-3">
+                            <div className="space-y-2">
+                              <p className="text-xs font-medium text-muted-foreground">
+                                Standard actions
+                              </p>
+                              <div className="flex flex-wrap gap-1.5">
+                                {row.verified ? null : (
+                                  <VerifyUserDialog
+                                    userId={row.userId}
+                                    displayName={row.displayName}
+                                    onDone={() => void refreshUsers()}
+                                  />
+                                )}
+                                <Button
+                                  size="sm"
+                                  variant="secondary"
+                                  className="h-8"
+                                  disabled={busy === row.userId}
+                                  onClick={() =>
+                                    askConfirm({
+                                      title: "Clear this bio?",
+                                      description:
+                                        "The bio and tagline disappear from the public profile. This cannot be undone.",
+                                      actionLabel: "Clear bio",
+                                      run: () => onCleanse(row, { clearTagline: true }),
+                                    })
+                                  }
                                 >
-                                  <span className="truncate text-muted-foreground">
-                                    {b.label ?? b.kind ?? "link"} — {b.value ?? ""}
-                                  </span>
+                                  <Eraser className="mr-1.5 h-3.5 w-3.5" aria-hidden /> Clear bio
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="secondary"
+                                  className="h-8"
+                                  disabled={busy === row.userId}
+                                  onClick={() =>
+                                    askConfirm({
+                                      title: "Reset this avatar?",
+                                      description:
+                                        "The profile picture is removed and replaced by the default placeholder.",
+                                      actionLabel: "Reset avatar",
+                                      run: () => onCleanse(row, { resetAvatar: true }),
+                                    })
+                                  }
+                                >
+                                  <RotateCcw className="mr-1.5 h-3.5 w-3.5" aria-hidden /> Reset
+                                  avatar
+                                </Button>
+                                {row.aliasSyncStatus === "failed" ? (
                                   <Button
                                     size="sm"
-                                    variant="ghost"
-                                    className="h-6 px-2 text-destructive"
-                                    disabled={busy === row.userId}
-                                    onClick={() =>
-                                      askConfirm({
-                                        title: "Remove this link?",
-                                        description: `“${b.label ?? b.kind ?? "link"}” is deleted from the public profile.`,
-                                        actionLabel: "Remove link",
-                                        destructive: true,
-                                        run: () => onCleanse(row, { removeBlockIndexes: [index] }),
-                                      })
-                                    }
+                                    variant="secondary"
+                                    className="h-8"
+                                    data-testid="retry-alias"
+                                    disabled={busy === row.userId || !improvmxReady}
+                                    onClick={() => void onSyncNow(false, row.userId)}
                                   >
-                                    <Trash2 className="h-3 w-3" aria-hidden />
+                                    <RefreshCw className="mr-1.5 h-3.5 w-3.5" aria-hidden /> Retry
+                                    alias sync
                                   </Button>
-                                </li>
-                              ))}
-                            </ul>
-                          ) : null}
-                          {row.moderationReason ? (
-                            <p className="text-[11px] text-destructive">
-                              Reason: {row.moderationReason}
-                            </p>
-                          ) : null}
-                        </div>
-                      </div>
+                                ) : null}
+                              </div>
 
-                      {/* Danger zone: isolated so a stray tap cannot ban anyone. */}
-                      <details
-                        className="mt-3 rounded-xl border border-destructive/40 bg-destructive/5 p-3"
-                        data-testid="danger-zone"
-                      >
-                        <summary className="cursor-pointer text-xs font-semibold text-destructive">
-                          Danger zone
-                        </summary>
-                        <p className="mt-2 text-[11px] text-muted-foreground">
-                          These actions take the profile offline and require a written reason.
-                        </p>
-                        <div className="mt-2 flex flex-wrap gap-1.5">
-                          <Button
-                            size="sm"
-                            variant={row.isSuspended ? "outline" : "destructive"}
-                            className="h-8"
-                            data-testid="suspend-user"
-                            disabled={busy === row.userId}
-                            onClick={() => {
-                              if (row.isSuspended) return onSuspend(row, false);
-                              setModerationReason("");
-                              setBanAck(false);
-                              setModerating({ row, kind: "suspend" });
-                            }}
+                              {row.tagline ? (
+                                <p className="line-clamp-2 text-[11px] text-muted-foreground">
+                                  Bio: {row.tagline}
+                                </p>
+                              ) : null}
+                              {row.blocks.length > 0 ? (
+                                <ul className="space-y-1">
+                                  {row.blocks.slice(0, 6).map((b, index) => (
+                                    <li
+                                      key={`${row.userId}-${index}`}
+                                      className="flex items-center justify-between gap-2 text-[11px]"
+                                    >
+                                      <span className="truncate text-muted-foreground">
+                                        {b.label ?? b.kind ?? "link"} — {b.value ?? ""}
+                                      </span>
+                                      <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        className="h-6 px-2 text-destructive"
+                                        disabled={busy === row.userId}
+                                        onClick={() =>
+                                          askConfirm({
+                                            title: "Remove this link?",
+                                            description: `“${b.label ?? b.kind ?? "link"}” is deleted from the public profile.`,
+                                            actionLabel: "Remove link",
+                                            destructive: true,
+                                            run: () =>
+                                              onCleanse(row, { removeBlockIndexes: [index] }),
+                                          })
+                                        }
+                                      >
+                                        <Trash2 className="h-3 w-3" aria-hidden />
+                                      </Button>
+                                    </li>
+                                  ))}
+                                </ul>
+                              ) : null}
+                              {row.moderationReason ? (
+                                <p className="text-[11px] text-destructive">
+                                  Reason: {row.moderationReason}
+                                </p>
+                              ) : null}
+                            </div>
+                          </div>
+
+                          {/* Danger zone: isolated so a stray tap cannot ban anyone. */}
+                          <details
+                            className="mt-3 rounded-xl border border-destructive/40 bg-destructive/5 p-3"
+                            data-testid="danger-zone"
                           >
-                            <ShieldOff className="mr-1.5 h-3.5 w-3.5" aria-hidden />
-                            {row.isSuspended ? "Reinstate profile" : "Suspend profile"}
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant={row.isBanned ? "outline" : "destructive"}
-                            className="h-8"
-                            data-testid="ban-user"
-                            disabled={busy === row.userId}
-                            onClick={() => {
-                              if (row.isBanned) return onBan(row, false);
-                              setModerationReason("");
-                              setBanAck(false);
-                              setModerating({ row, kind: "ban" });
-                            }}
-                          >
-                            <Ban className="mr-1.5 h-3.5 w-3.5" aria-hidden />
-                            {row.isBanned ? "Lift ban" : "Ban & freeze e-mail alias"}
-                          </Button>
-                        </div>
-                      </details>
+                            <summary className="cursor-pointer text-xs font-semibold text-destructive">
+                              Danger zone
+                            </summary>
+                            <p className="mt-2 text-[11px] text-muted-foreground">
+                              These actions take the profile offline and require a written reason.
+                            </p>
+                            <div className="mt-2 flex flex-wrap gap-1.5">
+                              <Button
+                                size="sm"
+                                variant={row.isSuspended ? "outline" : "destructive"}
+                                className="h-8"
+                                data-testid="suspend-user"
+                                disabled={busy === row.userId}
+                                onClick={() => {
+                                  if (row.isSuspended) return onSuspend(row, false);
+                                  setModerationReason("");
+                                  setBanAck(false);
+                                  setModerating({ row, kind: "suspend" });
+                                }}
+                              >
+                                <ShieldOff className="mr-1.5 h-3.5 w-3.5" aria-hidden />
+                                {row.isSuspended ? "Reinstate profile" : "Suspend profile"}
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant={row.isBanned ? "outline" : "destructive"}
+                                className="h-8"
+                                data-testid="ban-user"
+                                disabled={busy === row.userId}
+                                onClick={() => {
+                                  if (row.isBanned) return onBan(row, false);
+                                  setModerationReason("");
+                                  setBanAck(false);
+                                  setModerating({ row, kind: "ban" });
+                                }}
+                              >
+                                <Ban className="mr-1.5 h-3.5 w-3.5" aria-hidden />
+                                {row.isBanned ? "Lift ban" : "Ban & freeze e-mail alias"}
+                              </Button>
+                            </div>
+                          </details>
+                        </>
+                      ) : null}
                     </div>
                   );
                 })}
@@ -1958,9 +1871,13 @@ export default function Admin() {
             </section>
 
             <section className="space-y-3 rounded-2xl border border-border bg-card p-4 pb-6 sm:p-5">
-              <h2 className="text-lg font-medium">Incomplete Stripe payments ({incomplete.length})</h2>
+              <h2 className="text-lg font-medium">
+                Incomplete Stripe payments ({incomplete.length})
+              </h2>
               {incomplete.length === 0 ? (
-                <p className="text-sm text-muted-foreground">No incomplete payments waiting for resolution.</p>
+                <p className="text-sm text-muted-foreground">
+                  No incomplete payments waiting for resolution.
+                </p>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
@@ -2418,7 +2335,6 @@ export default function Admin() {
                   </Button>
                 </div>
               </div>
-
             </section>
           </TabsContent>
 
@@ -2657,8 +2573,6 @@ export default function Admin() {
             <AdminVipPanel />
           </TabsContent>
 
-
-
           {/* ---------------------------------------------------------- */}
           <TabsContent value="network" className="space-y-3">
             <section className="space-y-3 rounded-2xl border border-border bg-card p-4 pb-6 sm:p-5">
@@ -2870,7 +2784,6 @@ export default function Admin() {
             <DeliveryMonitorPanel />
           </TabsContent>
 
-
           <TabsContent value="deployment" className="space-y-3">
             <EmailFlowTester defaultEmail={user?.email ?? ""} />
 
@@ -2916,8 +2829,7 @@ export default function Admin() {
                   >
                     {checklist.ok
                       ? "All required secrets are configured and the privileged key works."
-                      : (checklist.serviceRoleError ??
-                        "One or more required secrets are missing.")}
+                      : (checklist.serviceRoleError ?? "One or more required secrets are missing.")}
                   </p>
                   <ul className="space-y-2">
                     {checklist.items.map((item) => (
@@ -2951,7 +2863,8 @@ export default function Admin() {
                     ))}
                   </ul>
                   <p className="text-[11px] text-muted-foreground">
-                    Last checked {new Date(checklist.checkedAt).toLocaleString()} · {retentionLabel()}
+                    Last checked {new Date(checklist.checkedAt).toLocaleString()} ·{" "}
+                    {retentionLabel()}
                   </p>
                 </>
               ) : checklistLoading ? (
@@ -2960,7 +2873,6 @@ export default function Admin() {
             </section>
           </TabsContent>
         </Tabs>
-
       </div>
 
       {/* KPI-drilldown: profielen achter een getal ------------------------ */}
@@ -3048,7 +2960,9 @@ export default function Admin() {
                 <dt className="text-muted-foreground">Status</dt>
                 <dd>
                   <StatusBadge
-                    status={inboundDetail.matched ? (inboundDetail.status ?? "matched") : "unmatched"}
+                    status={
+                      inboundDetail.matched ? (inboundDetail.status ?? "matched") : "unmatched"
+                    }
                   />
                 </dd>
               </dl>

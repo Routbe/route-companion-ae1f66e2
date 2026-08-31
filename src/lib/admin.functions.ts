@@ -306,6 +306,25 @@ export const assignHandle = createServerFn({ method: "POST" })
     return changeHandle({ ...data, adminId: context.userId });
   });
 
+/** Handle van het gratis aliasprofiel (`rout.be/u/<handle>`) wijzigen. */
+export const assignAliasHandle = createServerFn({ method: "POST" })
+  .middleware([requireAuth])
+  .inputValidator((data: unknown) =>
+    z
+      .object({
+        userId: z.string().uuid(),
+        handle: z.string().trim().min(1).max(120),
+        reason: z.string().trim().max(500).optional(),
+      })
+      .parse(data),
+  )
+  .handler(async ({ data, context }) => {
+    const { assertAdminRole } = await import("./admin.server");
+    await assertAdminRole(context.userId);
+    const { changeAliasHandle } = await import("./admin-moderation.server");
+    return changeAliasHandle({ ...data, adminId: context.userId });
+  });
+
 /** Remove bio text, individual links or reset the avatar. */
 export const cleanseProfileContent = createServerFn({ method: "POST" })
   .middleware([requireAuth])
