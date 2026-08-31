@@ -31,12 +31,19 @@ export const STORAGE_KEY = "rout_lang";
 /** Same name as the storage key so client and server read one source of truth. */
 export const COOKIE_KEY = "rout_lang";
 
-const RESOURCES = {
-  en: { translation: en },
-  nl: { translation: nl },
-  fr: { translation: fr },
-  de: { translation: de },
-} as const;
+/**
+ * Vertaalbundels blijven bewust los getypeerd: een `as const` over vier JSON-
+ * bestanden van ~75 kB dwingt TypeScript diepe readonly-literaltypes te bouwen
+ * en laat de typecheck van het hele project ontsporen.
+ */
+type TranslationBundle = Record<string, unknown>;
+
+const RESOURCES: Record<Locale, { translation: TranslationBundle }> = {
+  en: { translation: en as TranslationBundle },
+  nl: { translation: nl as TranslationBundle },
+  fr: { translation: fr as TranslationBundle },
+  de: { translation: de as TranslationBundle },
+};
 
 export function isLocale(value: unknown): value is Locale {
   return typeof value === "string" && (LOCALES as string[]).includes(value);
