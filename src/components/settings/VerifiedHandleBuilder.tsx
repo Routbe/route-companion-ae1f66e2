@@ -32,13 +32,7 @@ interface Props {
   disabled?: boolean;
 }
 
-function OptionRow({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
+function OptionRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="space-y-1.5">
       <p className="text-xs text-muted-foreground">{label}</p>
@@ -115,8 +109,7 @@ export function VerifiedHandleBuilder({
   const shortInitials = surnameInitials(name.surnameParts);
   const shortSingle = surnameSingleInitial(name.surnameParts);
 
-  const sample = (fullness: FullnessMode) =>
-    buildHandle(name, { ...config, fullness });
+  const sample = (fullness: FullnessMode) => buildHandle(name, { ...config, fullness });
 
   const ready = traceable && availability.state === "available" && !disabled;
   const decorative = !STORAGE_SAFE_SEPARATORS.has(config.separator);
@@ -129,7 +122,8 @@ export function VerifiedHandleBuilder({
           Voornaam <span className="font-mono">{name.firstName}</span>
           {hasMiddle ? (
             <>
-              {" "}· tussennaam <span className="font-mono">{name.middleNames.join(" ")}</span>
+              {" "}
+              · tussennaam <span className="font-mono">{name.middleNames.join(" ")}</span>
             </>
           ) : null}{" "}
           · achternaam <span className="font-mono">{surnameLong}</span>
@@ -211,7 +205,8 @@ export function VerifiedHandleBuilder({
               onClick={() => set("surnameShortStyle", "initials")}
               disabled={disabled}
             >
-              Alle tussenvoegsels <span className="ml-1 font-mono text-[10px]">{shortInitials}</span>
+              Alle tussenvoegsels{" "}
+              <span className="ml-1 font-mono text-[10px]">{shortInitials}</span>
             </Choice>
             <Choice
               active={config.surnameShortStyle === "single"}
@@ -252,8 +247,12 @@ export function VerifiedHandleBuilder({
         </p>
         {decorative ? (
           <p className="mt-1 break-all text-[11px] text-muted-foreground">
-            Opgeslagen als <span className="font-mono">{hostPrefix}{storage}</span> — sierlijke
-            tekens worden een punt in de echte URL.
+            Opgeslagen als{" "}
+            <span className="font-mono">
+              {hostPrefix}
+              {storage}
+            </span>{" "}
+            — sierlijke tekens worden een punt in de echte URL.
           </p>
         ) : null}
         <p className="mt-2 text-xs">

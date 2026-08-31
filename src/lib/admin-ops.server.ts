@@ -24,12 +24,15 @@ export type AdminShortLink = {
 export async function fetchShortLinks(search: string, limit: number): Promise<AdminShortLink[]> {
   let query = dbAdmin
     .from("tracked_qrs")
-    .select("id, slug, label, target_url, is_active, expires_at, custom_domain, created_at, user_id")
+    .select(
+      "id, slug, label, target_url, is_active, expires_at, custom_domain, created_at, user_id",
+    )
     .order("created_at", { ascending: false })
     .limit(limit);
 
   const term = search.trim();
-  if (term) query = query.or(`slug.ilike.%${term}%,label.ilike.%${term}%,target_url.ilike.%${term}%`);
+  if (term)
+    query = query.or(`slug.ilike.%${term}%,label.ilike.%${term}%,target_url.ilike.%${term}%`);
 
   const { data, error } = await query;
   if (error) throw new Error(error.message);

@@ -57,8 +57,7 @@ const FUNCTIONS: Record<string, { auth: boolean }> = {
 };
 
 export type PolicyDecision =
-  | { ok: true; descriptor: QueryDescriptor }
-  | { ok: false; message: string };
+  { ok: true; descriptor: QueryDescriptor } | { ok: false; message: string };
 
 export async function isAdmin(userId: string | null): Promise<boolean> {
   if (!userId) return false;
@@ -74,7 +73,8 @@ export async function authorizeQuery(
   userId: string | null,
 ): Promise<PolicyDecision> {
   const access = TABLES[descriptor.table];
-  if (!access) return { ok: false, message: `Table ${descriptor.table} is not accessible from the browser` };
+  if (!access)
+    return { ok: false, message: `Table ${descriptor.table} is not accessible from the browser` };
   if (!access.ops.includes(descriptor.action)) {
     return { ok: false, message: `${descriptor.action} on ${descriptor.table} is not allowed` };
   }
@@ -127,7 +127,10 @@ export async function authorizeQuery(
   return { ok: true, descriptor: scoped };
 }
 
-export function authorizeRpc(fn: string, userId: string | null): { ok: true } | { ok: false; message: string } {
+export function authorizeRpc(
+  fn: string,
+  userId: string | null,
+): { ok: true } | { ok: false; message: string } {
   const rule = FUNCTIONS[fn];
   if (!rule) return { ok: false, message: `Function ${fn} is not callable from the browser` };
   if (rule.auth && !userId) return { ok: false, message: "Sign in required" };

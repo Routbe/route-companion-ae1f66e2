@@ -4,11 +4,7 @@ import { CheckCircle2, Landmark, Link2, Link2Off, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import {
-  bunqOAuthStatus,
-  disconnectBunqOAuth,
-  startBunqOAuth,
-} from "@/lib/bunq-oauth.functions";
+import { bunqOAuthStatus, disconnectBunqOAuth, startBunqOAuth } from "@/lib/bunq-oauth.functions";
 
 interface Status {
   configured: boolean;

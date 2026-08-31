@@ -16,7 +16,6 @@ import {
 } from "./notification-templates";
 import type { EmailCategory } from "@/emails/template-ids";
 
-
 function siteOrigin(): string {
   return process.env["PUBLIC_SITE_URL"] ?? "https://rout.be";
 }
@@ -75,7 +74,6 @@ async function resolveRecipient(userId: string): Promise<Recipient> {
   return { email, locale };
 }
 
-
 /**
  * Sends one transactional e-mail through Brevo.
  *
@@ -115,8 +113,7 @@ export async function notifyAdmin(opts: {
   attachments?: { name: string; contentBase64: string }[];
 }): Promise<boolean> {
   try {
-    const to =
-      process.env["CONTACT_ADMIN_EMAIL"] ?? process.env["ADMIN_EMAIL"] ?? "hallo@rout.be";
+    const to = process.env["CONTACT_ADMIN_EMAIL"] ?? process.env["ADMIN_EMAIL"] ?? "hallo@rout.be";
     const { sendMail } = await import("@/emails/send.server");
     const result = await sendMail({
       to,

@@ -71,8 +71,14 @@ export function BrandSuggestionCard({
           <p className="text-[11px] text-muted-foreground truncate">{brand.domain}</p>
         </div>
         <div className="flex items-center gap-1">
-          <span className="w-4 h-4 rounded-full border border-border" style={{ backgroundColor: fg }} />
-          <span className="w-4 h-4 rounded-full border border-border" style={{ backgroundColor: bg }} />
+          <span
+            className="w-4 h-4 rounded-full border border-border"
+            style={{ backgroundColor: fg }}
+          />
+          <span
+            className="w-4 h-4 rounded-full border border-border"
+            style={{ backgroundColor: bg }}
+          />
           <button
             type="button"
             onClick={onDismiss}

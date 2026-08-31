@@ -41,7 +41,9 @@ function mapRow(row: Row): NewsletterSubscriberRow {
     email: String(row["email"]),
     source: String(row["source"] ?? "profile"),
     listId: listId == null ? null : Number(listId),
-    syncedAt: row["brevo_synced_at"] ? new Date(row["brevo_synced_at"] as string).toISOString() : null,
+    syncedAt: row["brevo_synced_at"]
+      ? new Date(row["brevo_synced_at"] as string).toISOString()
+      : null,
     error: row["brevo_error"] ? String(row["brevo_error"]) : null,
     unsubscribedAt: row["unsubscribed_at"]
       ? new Date(row["unsubscribed_at"] as string).toISOString()
@@ -109,15 +111,17 @@ export async function retryNewsletterSync(opts: {
     return { attempted: 0, synced: 0, failed: 0, message: "BREVO_API_KEY ontbreekt." };
   }
 
-  const rows = (opts.allFailed
-    ? await sql`
+  const rows = (
+    opts.allFailed
+      ? await sql`
         select * from public.newsletter_subscribers
          where brevo_error is not null and unsubscribed_at is null
          order by created_at desc limit 200
       `
-    : await sql`
+      : await sql`
         select * from public.newsletter_subscribers where id = ${opts.id ?? null} limit 1
-      `) as Row[];
+      `
+  ) as Row[];
 
   let synced = 0;
   let failed = 0;

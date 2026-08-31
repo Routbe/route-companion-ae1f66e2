@@ -37,9 +37,9 @@
 
 Rout is built to enforce digital data sovereignty. Commercial QR generators often restrict vector exports behind paywalls, harvest user analytics, or inject tracking redirects. Rout operates on a zero-tracking, ad-free, open-source model designed for production environments requiring privacy and resolution purity.
 
-* **Client-Side Vector Engine:** Direct generation of SVG, PDF, and EPS files without server processing or loss of fidelity.
-* **Telemetry Purity:** Zero tracking wrappers, zero analytics injection, and zero IP or location logging.
-* **EU Sovereign Infrastructure:** Hosted strictly on European server nodes with Swiss encrypted storage via Infomaniak.
+- **Client-Side Vector Engine:** Direct generation of SVG, PDF, and EPS files without server processing or loss of fidelity.
+- **Telemetry Purity:** Zero tracking wrappers, zero analytics injection, and zero IP or location logging.
+- **EU Sovereign Infrastructure:** Hosted strictly on European server nodes with Swiss encrypted storage via Infomaniak.
 
 ---
 
@@ -51,11 +51,11 @@ To maintain independence from venture capital and advertising networks, Rout is 
 
 <div align="center">
 
-| Channel | Method | Specifications | Status |
-| :--- | :--- | :--- | :--- |
-| **Sovereign Portal** | Direct SEPA / Wise | 0% transaction fees • Automated reconciliation via unique reference webhook | `Active` |
-| **Direct Checkout** | Bancontact / Card / Apple Pay | Instant processing via Stripe infrastructure | `Active` |
-| **GitHub Sponsors** | Developer Sponsorship | One-time or recurring contributions linked to GitHub profile | `Active` |
+| Channel              | Method                        | Specifications                                                              | Status   |
+| :------------------- | :---------------------------- | :-------------------------------------------------------------------------- | :------- |
+| **Sovereign Portal** | Direct SEPA / Wise            | 0% transaction fees • Automated reconciliation via unique reference webhook | `Active` |
+| **Direct Checkout**  | Bancontact / Card / Apple Pay | Instant processing via Stripe infrastructure                                | `Active` |
+| **GitHub Sponsors**  | Developer Sponsorship         | One-time or recurring contributions linked to GitHub profile                | `Active` |
 
 </div>
 
@@ -69,22 +69,21 @@ To maintain independence from venture capital and advertising networks, Rout is 
 
 The GitHub Discussions tab serves as the primary coordination node for architectural proposals, security reviews, and feature requests.
 
-* **Architecture & Security:** Discussion on Postgres row-level security, WebAuthn/FIDO2 passkey implementation, and TanStack server functions.
-* **Vector & Design Systems:** Proposals for custom corner radiuses, aesthetic patterns, and hand-drawn style templates.
-* **Integrations:** Implementation support for embedding the Rout rendering pipeline into custom client applications.
-* **Showcase:** Production implementations and deployments using Rout infrastructure.
+- **Architecture & Security:** Discussion on Postgres row-level security, WebAuthn/FIDO2 passkey implementation, and TanStack server functions.
+- **Vector & Design Systems:** Proposals for custom corner radiuses, aesthetic patterns, and hand-drawn style templates.
+- **Integrations:** Implementation support for embedding the Rout rendering pipeline into custom client applications.
+- **Showcase:** Production implementations and deployments using Rout infrastructure.
 
 ---
 
 ## Technical Stack
 
-
-├── Framework         React 18 + TypeScript + Tailwind CSS (Obsidian Dark System)
-├── Database          Neon PostgreSQL (Frankfurt) + row-level security
-├── Edge Runtime      Deno Edge Functions (EU West Region)
+├── Framework React 18 + TypeScript + Tailwind CSS (Obsidian Dark System)
+├── Database Neon PostgreSQL (Frankfurt) + row-level security
+├── Edge Runtime Deno Edge Functions (EU West Region)
 ├── Sovereign Storage Infomaniak Swiss Cloud (S3-Compatible)
-├── Authentication    WebAuthn / FIDO2 Passkey Standard
-└── License           MIT Open Source
+├── Authentication WebAuthn / FIDO2 Passkey Standard
+└── License MIT Open Source
 
 ---
 
@@ -115,3 +114,4 @@ Rout Infrastructure • Designed in Obsidian Dark Mode (#0B0B0C) • Built for P
 - `bun run docs:brevo` — regenereert de documentatie.
 - `bun run test` — unit tests o.a. voor de template-lookup in `src/emails/template-ids.ts`.
 - CI draait lint, tests, de audit en een check dat de documentatie up-to-date is (`.github/workflows/ci.yml`).
+```

@@ -42,12 +42,12 @@ export async function fetchWebhookEvents(opts: {
     console.error("webhook events read failed", error);
     return [];
   }
-  return ((data ?? []) as unknown as (Omit<WebhookEventRow, "payload"> & { payload?: unknown })[]).map(
-    (row) => ({
-      ...row,
-      payload: row.payload == null ? null : JSON.stringify(row.payload, null, 2),
-    }),
-  );
+  return (
+    (data ?? []) as unknown as (Omit<WebhookEventRow, "payload"> & { payload?: unknown })[]
+  ).map((row) => ({
+    ...row,
+    payload: row.payload == null ? null : JSON.stringify(row.payload, null, 2),
+  }));
 }
 
 /**

@@ -24,7 +24,6 @@ export interface CreatePromoInput {
   language?: string | null;
 }
 
-
 const ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
 /** Readable, unambiguous 10-character code, e.g. `ROUT-7KQ4PX`. */
@@ -109,7 +108,11 @@ const COPY: Record<EmailLanguage, Copy> = {
   },
 };
 
-function discountLabel(percentOff: number, amountOffCents: number, language: EmailLanguage): string {
+function discountLabel(
+  percentOff: number,
+  amountOffCents: number,
+  language: EmailLanguage,
+): string {
   if (percentOff > 0) return `${percentOff}%`;
   return new Intl.NumberFormat(language === "zh" ? "en" : language, {
     style: "currency",
@@ -145,7 +148,12 @@ export interface CreatePromoResult {
 }
 
 /** Korte SMS-tekst met de ingevulde promocode. */
-function smsText(language: EmailLanguage, code: string, discount: string, expires: string | null): string {
+function smsText(
+  language: EmailLanguage,
+  code: string,
+  discount: string,
+  expires: string | null,
+): string {
   const copy = COPY[language];
   return [copy.intro, `${code} (${discount})`, expires ? copy.validity(expires) : null]
     .filter(Boolean)

@@ -119,9 +119,7 @@ export function FaqBlockSettings({
               value={item.q}
               onChange={(e) =>
                 update({
-                  items: config.items.map((it, j) =>
-                    j === i ? { ...it, q: e.target.value } : it,
-                  ),
+                  items: config.items.map((it, j) => (j === i ? { ...it, q: e.target.value } : it)),
                 })
               }
               aria-label={`Vraag ${i + 1}`}

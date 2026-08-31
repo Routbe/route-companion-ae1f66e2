@@ -21,27 +21,72 @@ export const BREVO_MAP = {
 
   // Auth: Magic Link (NL #93, EN #13 – ZH #20)
   AUTH_MAGIC_LINK: {
-    nl: 93, en: 13, fr: 14, de: 15, es: 16, it: 17, pt: 18, pl: 19, zh: 20, fallback: 21,
+    nl: 93,
+    en: 13,
+    fr: 14,
+    de: 15,
+    es: 16,
+    it: 17,
+    pt: 18,
+    pl: 19,
+    zh: 20,
+    fallback: 21,
   },
 
   // Contact: bevestiging naar de bezoeker (#22 – #31)
   CONTACT_CONFIRMATION: {
-    nl: 22, en: 23, fr: 24, de: 25, es: 26, it: 27, pt: 28, pl: 29, zh: 30, fallback: 31,
+    nl: 22,
+    en: 23,
+    fr: 24,
+    de: 25,
+    es: 26,
+    it: 27,
+    pt: 28,
+    pl: 29,
+    zh: 30,
+    fallback: 31,
   },
 
   // Billing: betaalbevestiging (#32 – #41)
   BILLING_PAYMENT_SUCCESS: {
-    nl: 32, en: 33, fr: 34, de: 35, es: 36, it: 37, pt: 38, pl: 39, zh: 40, fallback: 41,
+    nl: 32,
+    en: 33,
+    fr: 34,
+    de: 35,
+    es: 36,
+    it: 37,
+    pt: 38,
+    pl: 39,
+    zh: 40,
+    fallback: 41,
   },
 
   // Billing: mislukte betaling / dunning (#42 – #51)
   BILLING_PAYMENT_FAILED: {
-    nl: 42, en: 43, fr: 44, de: 45, es: 46, it: 47, pt: 48, pl: 49, zh: 50, fallback: 51,
+    nl: 42,
+    en: 43,
+    fr: 44,
+    de: 45,
+    es: 46,
+    it: 47,
+    pt: 48,
+    pl: 49,
+    zh: 50,
+    fallback: 51,
   },
 
   // Billing: verlenging abonnement (#52 – #61)
   BILLING_SUBSCRIPTION_RENEWAL: {
-    nl: 52, en: 53, fr: 54, de: 55, es: 56, it: 57, pt: 58, pl: 59, zh: 60, fallback: 61,
+    nl: 52,
+    en: 53,
+    fr: 54,
+    de: 55,
+    es: 56,
+    it: 57,
+    pt: 58,
+    pl: 59,
+    zh: 60,
+    fallback: 61,
   },
 
   // Billing: factuur & geslaagde betaling (#62 – #71, enkel NL/EN/FR/DE gebouwd)

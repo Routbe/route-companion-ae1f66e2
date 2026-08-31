@@ -9,7 +9,12 @@ import {
 import type { EmailCategory } from "@/emails/template-ids";
 
 import { generateToken, hashPassword, hashToken, verifyPassword } from "./password.server";
-import { createSession, revokeAllSessions, toSessionUser, type SessionUser } from "./session.server";
+import {
+  createSession,
+  revokeAllSessions,
+  toSessionUser,
+  type SessionUser,
+} from "./session.server";
 
 /**
  * Identity management on Neon: sign-up, sign-in, magic links, password reset
@@ -74,7 +79,8 @@ export async function createUser(input: {
 }): Promise<SessionUser> {
   const email = assertEmail(input.email);
   if (input.password != null) assertPassword(input.password);
-  if (await findUserByEmail(email)) throw new AuthError("email_taken", "This e-mail is already registered.");
+  if (await findUserByEmail(email))
+    throw new AuthError("email_taken", "This e-mail is already registered.");
 
   const passwordHash = input.password ? await hashPassword(input.password) : null;
   const rows = (await sql`
@@ -89,9 +95,13 @@ export async function createUser(input: {
   return created;
 }
 
-export async function signInWithPassword(email: string, password: string, meta: {
-  userAgent?: string | null;
-} = {}) {
+export async function signInWithPassword(
+  email: string,
+  password: string,
+  meta: {
+    userAgent?: string | null;
+  } = {},
+) {
   const row = await findUserByEmail(email);
   // Always run a hash comparison so a missing account and a wrong password cost the same.
   const ok = await verifyPassword(password, (row?.["password_hash"] as string | null) ?? null);
@@ -244,11 +254,12 @@ async function mailAuthAction(
     tags: [`auth-${action}`],
   });
   if (!sent) {
-    console.error(`[auth-mail] ${action} could not be delivered: ${error ?? "unknown Brevo error"}`);
+    console.error(
+      `[auth-mail] ${action} could not be delivered: ${error ?? "unknown Brevo error"}`,
+    );
   }
   return sent;
 }
-
 
 /** Magic-link sign-in. Silently succeeds for unknown addresses (no enumeration). */
 export async function requestMagicLink(rawEmail: string, origin: string) {
@@ -311,13 +322,18 @@ export async function requestEmailCode(rawEmail: string, origin: string) {
 }
 
 /** Consumes a 6-digit code and opens a session for the owning member. */
-export async function verifyEmailCode(rawEmail: string, rawCode: string, meta: {
-  userAgent?: string | null;
-} = {}) {
+export async function verifyEmailCode(
+  rawEmail: string,
+  rawCode: string,
+  meta: {
+    userAgent?: string | null;
+  } = {},
+) {
   const email = assertEmail(rawEmail);
   const code = rawCode.replace(/\D/g, "");
   const row = await findUserByEmail(email);
-  if (!row || code.length !== 6) throw new AuthError("invalid_token", "This code is invalid or has expired.");
+  if (!row || code.length !== 6)
+    throw new AuthError("invalid_token", "This code is invalid or has expired.");
 
   const userId = row["id"] as string;
   const codeHash = await hashToken(`${userId}:${code}`);

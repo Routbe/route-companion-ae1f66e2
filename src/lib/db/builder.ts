@@ -5,7 +5,12 @@
  * app used, so call sites keep reading the same way while every statement is
  * executed as plain SQL against our own Postgres in Frankfurt.
  */
-import { emptyDescriptor, type QueryDescriptor, type QueryResult, type RpcDescriptor } from "./types";
+import {
+  emptyDescriptor,
+  type QueryDescriptor,
+  type QueryResult,
+  type RpcDescriptor,
+} from "./types";
 
 export type Executor = (descriptor: QueryDescriptor) => Promise<QueryResult>;
 export type RpcExecutor = (descriptor: RpcDescriptor) => Promise<QueryResult>;
@@ -43,7 +48,10 @@ class QueryBuilder<T = any> implements PromiseLike<QueryResult<T>> {
     return this.self<any[]>();
   }
 
-  upsert(values: AnyRecord | AnyRecord[], options?: { onConflict?: string; ignoreDuplicates?: boolean }) {
+  upsert(
+    values: AnyRecord | AnyRecord[],
+    options?: { onConflict?: string; ignoreDuplicates?: boolean },
+  ) {
     this.descriptor.action = "upsert";
     this.descriptor.values = values;
     if (options?.onConflict) this.descriptor.onConflict = options.onConflict;
@@ -188,10 +196,9 @@ class RpcBuilder<T = any> implements PromiseLike<QueryResult<T>> {
     onfulfilled?: ((value: QueryResult<T>) => TResult1 | PromiseLike<TResult1>) | null,
     onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null,
   ): PromiseLike<TResult1 | TResult2> {
-    return this.execute(this.descriptor).then(
-      (r) => r as QueryResult<T>,
-      undefined,
-    ).then(onfulfilled ?? undefined, onrejected ?? undefined);
+    return this.execute(this.descriptor)
+      .then((r) => r as QueryResult<T>, undefined)
+      .then(onfulfilled ?? undefined, onrejected ?? undefined);
   }
 }
 

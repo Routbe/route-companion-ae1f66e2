@@ -10,9 +10,8 @@ export const Route = createFileRoute("/auth_/gitlab/callback")({
   server: {
     handlers: {
       GET: async ({ request }) => {
-        const { completeSocialCallback, SocialAuthError } = await import(
-          "@/lib/social-oauth.server"
-        );
+        const { completeSocialCallback, SocialAuthError } =
+          await import("@/lib/social-oauth.server");
 
         const url = new URL(request.url);
         const code = url.searchParams.get("code");

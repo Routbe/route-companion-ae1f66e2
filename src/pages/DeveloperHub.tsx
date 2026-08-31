@@ -60,7 +60,6 @@ interface KeyRow {
 
 const FALLBACK_ORIGIN = "https://rout.be";
 
-
 /**
  * Snippets must quote the host the developer is actually on, but SSR has no
  * `window`. Rendering the fallback first and swapping after hydration keeps the
@@ -443,7 +442,10 @@ function ApiKeys() {
               <p className="text-xs font-semibold text-foreground">
                 Secret keys (<code className="font-mono">rout_sk_…</code>)
               </p>
-              <Badge variant="outline" className="border-destructive/40 text-[10px] text-destructive">
+              <Badge
+                variant="outline"
+                className="border-destructive/40 text-[10px] text-destructive"
+              >
                 server-side only
               </Badge>
             </div>

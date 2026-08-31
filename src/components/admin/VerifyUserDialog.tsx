@@ -109,9 +109,7 @@ export function VerifyUserDialog({
           </div>
 
           {preview ? (
-            <p className="font-mono text-xs text-muted-foreground">
-              Voorstel: rout.be/{preview}
-            </p>
+            <p className="font-mono text-xs text-muted-foreground">Voorstel: rout.be/{preview}</p>
           ) : null}
 
           <DialogFooter>

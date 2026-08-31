@@ -65,7 +65,10 @@ export function PromoInvitePanel() {
    * Maakt (of werkt) de code bij. `withEmail`/`withPhone` bepalen of de server
    * de code ook meteen per e-mail of SMS verstuurt.
    */
-  const save = async (withEmail: boolean, withPhone = false): Promise<{ code: string; texted: boolean } | null> => {
+  const save = async (
+    withEmail: boolean,
+    withPhone = false,
+  ): Promise<{ code: string; texted: boolean } | null> => {
     setBusy(true);
     setConfirmation(null);
     try {

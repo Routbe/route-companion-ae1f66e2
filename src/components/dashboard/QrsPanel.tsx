@@ -181,7 +181,6 @@ export function QrsPanel() {
       if (sort === "alpha") return String(a.title).localeCompare(String(b.title));
       return time(b.created_at) - time(a.created_at);
     });
-
   }, [saved, tracked, tab, query, sort]);
 
   // Bewerk bestemming: de short link / QR blijft ongewijzigd, alleen de

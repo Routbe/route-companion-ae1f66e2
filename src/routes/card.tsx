@@ -8,9 +8,15 @@ export const Route = createFileRoute("/card")({
   head: () => ({
     meta: [
       { title: "Digitaal visitekaartje | ROUT" },
-      { name: "description", content: "Bekijk en bewaar dit digitale visitekaartje direct als contact op je telefoon." },
+      {
+        name: "description",
+        content: "Bekijk en bewaar dit digitale visitekaartje direct als contact op je telefoon.",
+      },
       { property: "og:title", content: "Digitaal visitekaartje | ROUT" },
-      { property: "og:description", content: "Bekijk en bewaar dit digitale visitekaartje direct als contact op je telefoon." },
+      {
+        property: "og:description",
+        content: "Bekijk en bewaar dit digitale visitekaartje direct als contact op je telefoon.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

@@ -142,7 +142,10 @@ export async function createCheckoutSession(opts: {
       body.set("line_items[1][quantity]", "1");
       body.set("line_items[1][price_data][currency]", "eur");
       body.set("line_items[1][price_data][unit_amount]", String(recurringCents));
-      body.set("line_items[1][price_data][product_data][name]", "Keep ROUT Alive one-off contribution");
+      body.set(
+        "line_items[1][price_data][product_data][name]",
+        "Keep ROUT Alive one-off contribution",
+      );
     }
     body.set("payment_intent_data[metadata][payment_id]", opts.paymentId);
     body.set("payment_intent_data[metadata][user_id]", opts.userId);
@@ -253,9 +256,11 @@ export function stripeDescription(
   email?: string | null,
 ): string {
   const who = [username?.trim(), email?.trim()].filter(Boolean);
-  const suffix = who.length ? ` — ROUT User: ${username?.trim() ?? email?.trim()}${
-    username?.trim() && email?.trim() ? ` (${email.trim()})` : ""
-  }` : "";
+  const suffix = who.length
+    ? ` — ROUT User: ${username?.trim() ?? email?.trim()}${
+        username?.trim() && email?.trim() ? ` (${email.trim()})` : ""
+      }`
+    : "";
   return `${TIER_LABELS[tier]}${suffix}`;
 }
 
@@ -292,7 +297,8 @@ export async function reusePaymentIntent(opts: {
     const current = (await (
       await fetch(url, { headers: { Authorization: `Bearer ${key}` } })
     ).json()) as { id?: string; status?: string; client_secret?: string };
-    if (!current.id || !current.status || !REUSABLE_INTENT_STATUSES.has(current.status)) return null;
+    if (!current.id || !current.status || !REUSABLE_INTENT_STATUSES.has(current.status))
+      return null;
 
     const body = new URLSearchParams({
       amount: String(Math.max(50, Math.round(opts.amountCents))),
@@ -321,7 +327,6 @@ export async function reusePaymentIntent(opts: {
     return null;
   }
 }
-
 
 /** Reads a PaymentIntent server-side; the client is never trusted for status. */
 export async function readPaymentIntent(intentId: string): Promise<{
@@ -353,8 +358,7 @@ export async function readPaymentIntent(intentId: string): Promise<{
     errorCode: json.last_payment_error?.code ?? null,
     errorMessage: json.last_payment_error?.message ?? null,
     declineCode: json.last_payment_error?.decline_code ?? null,
-    requiresAction:
-      json.status === "requires_action" || json.status === "requires_confirmation",
+    requiresAction: json.status === "requires_action" || json.status === "requires_confirmation",
   };
 }
 
@@ -496,7 +500,6 @@ export async function paymentIdForIntent(intentId: string): Promise<string | nul
   return (rows[0]?.["id"] as string | undefined) ?? null;
 }
 
-
 /** Marks a payment paid, flips the profile to Early Believer and provisions the alias. */
 export async function activateVerification(paymentId: string, providerRef: string | null) {
   const paymentRows = (await sql`
@@ -585,12 +588,6 @@ export async function activateVerification(paymentId: string, providerRef: strin
       DONATION_PLAN: donationPlan ?? "none",
     },
   });
-
-
-
-
-
-
 
   // Telt mee als "geverifieerde vriend" voor wie dit lid uitnodigde.
   const { markInviteVerified } = await import("./referral.server");

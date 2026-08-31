@@ -19,11 +19,7 @@ export function sanitizeHandleInput(rawInput: string | null | undefined): string
   } catch {
     /* ongeldige escape-reeks: val terug op de ruwe invoer */
   }
-  return decoded
-    .trim()
-    .replace(/\s+/g, "")
-    .replace(/^@+/, "")
-    .toLowerCase();
+  return decoded.trim().replace(/\s+/g, "").replace(/^@+/, "").toLowerCase();
 }
 
 /** Alias met een sprekende naam voor gebruik in publieke profielroutes. */

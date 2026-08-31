@@ -101,7 +101,6 @@ const KNOWN_BRANDS: Record<string, { name: string; fg: string; bg: string; shape
   "microsoft.com": { name: "Microsoft", fg: "#0078D4", bg: "#FFFFFF", shape: "sharp" },
 };
 
-
 /** Extract a bare hostname from anything that smells like a URL. */
 export function extractDomain(raw: string): string | null {
   const trimmed = (raw || "").trim();
@@ -194,7 +193,6 @@ export function detectBrand(raw: string): BrandSuggestion | null {
     shapeKey: "soft",
   };
 }
-
 
 export function isKnownBrand(raw: string): boolean {
   const domain = extractDomain(raw);

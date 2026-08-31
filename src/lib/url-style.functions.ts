@@ -18,6 +18,9 @@ export const saveUrlStyle = createServerFn({ method: "POST" })
       await writeUrlStyle(context.userId, data.style);
       return { ok: true as const };
     } catch (error) {
-      return { ok: false as const, message: error instanceof Error ? error.message : "save_failed" };
+      return {
+        ok: false as const,
+        message: error instanceof Error ? error.message : "save_failed",
+      };
     }
   });

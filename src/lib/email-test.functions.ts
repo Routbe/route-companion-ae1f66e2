@@ -65,10 +65,12 @@ export const SAMPLE_DATA: Record<TestTemplate, Record<string, string>> = {
 export const sendTestEmail = createServerFn({ method: "POST" })
   .middleware([requireAuth])
   .inputValidator((data) =>
-    z.object({
-      template: z.enum(ALL_TEMPLATES),
-      email: z.string().email(),
-    }).parse(data),
+    z
+      .object({
+        template: z.enum(ALL_TEMPLATES),
+        email: z.string().email(),
+      })
+      .parse(data),
   )
   .handler(async ({ data, context }) => {
     const { assertAdminRole } = await import("./admin.server");
@@ -94,9 +96,8 @@ export const sendTestEmail = createServerFn({ method: "POST" })
     // One real send through Brevo, using our own auth-mail renderer — the same
     // path a production magic link takes, so a green result proves key, sender
     // domain and rendering all work.
-    const { authEmailAction, authEmailCopy, renderAuthEmail } = await import(
-      "./auth-email-templates"
-    );
+    const { authEmailAction, authEmailCopy, renderAuthEmail } =
+      await import("./auth-email-templates");
     const { sendMail } = await import("@/emails/send.server");
 
     const sample = SAMPLE_DATA[data.template];
@@ -125,4 +126,3 @@ export const sendTestEmail = createServerFn({ method: "POST" })
       recipient: data.email,
     };
   });
-

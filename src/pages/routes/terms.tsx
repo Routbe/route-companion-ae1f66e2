@@ -7,8 +7,6 @@ import { LegalChips, type LegalChip } from "@/components/LegalChips";
 import { AlertTriangle } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 
-
-
 function numbered(n: string, text: string) {
   return (
     <h2 className="font-serif text-lg font-semibold text-foreground">
@@ -78,8 +76,8 @@ function TermsPage() {
                 </li>
                 <li>
                   <span className={strong}>{t("terms.section.scope.li2.strong")}</span>{" "}
-                  {t("terms.section.scope.li2.a")}{" "}
-                  (<span className="font-mono text-xs">rout.be</span>).{" "}
+                  {t("terms.section.scope.li2.a")} (
+                  <span className="font-mono text-xs">rout.be</span>).{" "}
                   {t("terms.section.scope.li2.b")}
                 </li>
               </ul>
@@ -205,7 +203,8 @@ function TermsPage() {
               <li>{t("terms.section.printWarning.li1")}</li>
               <li>
                 <span className={strong}>{t("terms.section.printWarning.li2.strong")}</span>{" "}
-                {t("terms.section.printWarning.li2.a")} <em>{t("terms.section.printWarning.li2.em")}</em>
+                {t("terms.section.printWarning.li2.a")}{" "}
+                <em>{t("terms.section.printWarning.li2.em")}</em>
                 {t("terms.section.printWarning.li2.b")}
               </li>
               <li>

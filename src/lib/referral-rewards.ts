@@ -31,7 +31,11 @@ export function referralReward(stats: ReferralStats): ReferralReward {
     return { percentOff: 100, label: "Gratis verificatie — De Influencer", influencer: true };
   }
   if (stats.verifiedInvites >= INVITE_TIERS.freeVerified) {
-    return { percentOff: 100, label: "Gratis verificatie — 3 geverifieerde vrienden", influencer: false };
+    return {
+      percentOff: 100,
+      label: "Gratis verificatie — 3 geverifieerde vrienden",
+      influencer: false,
+    };
   }
   if (stats.invited >= INVITE_TIERS.halfPrice) {
     return { percentOff: 50, label: "50% korting — 3 vrienden uitgenodigd", influencer: false };
@@ -40,7 +44,9 @@ export function referralReward(stats: ReferralStats): ReferralReward {
 }
 
 /** Volgende mijlpaal, voor de voortgangsbalk in het dashboard. */
-export function nextMilestone(stats: ReferralStats): { goal: number; remaining: number; label: string } | null {
+export function nextMilestone(
+  stats: ReferralStats,
+): { goal: number; remaining: number; label: string } | null {
   if (stats.invited < INVITE_TIERS.halfPrice) {
     return {
       goal: INVITE_TIERS.halfPrice,

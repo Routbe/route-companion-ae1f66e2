@@ -48,7 +48,10 @@ export function normalizeGiftCode(value: string): string {
 /** Alleen server-side gebruikt, maar hier gehouden zodat het formaat één bron heeft. */
 export function generateGiftCode(random: () => number = Math.random): string {
   const block = () =>
-    Array.from({ length: 4 }, () => GIFT_ALPHABET[Math.floor(random() * GIFT_ALPHABET.length)]).join("");
+    Array.from(
+      { length: 4 },
+      () => GIFT_ALPHABET[Math.floor(random() * GIFT_ALPHABET.length)],
+    ).join("");
   return `GIFT-${block()}-${block()}`;
 }
 

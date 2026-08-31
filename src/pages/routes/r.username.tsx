@@ -10,7 +10,6 @@ import { useI18n } from "@/lib/i18n";
  * forwards them to that member's profile, where the sign-up CTA lives.
  */
 
-
 function ReferralLanding() {
   const { username } = useParams({ from: "/r/$username" });
   const navigate = useNavigate();

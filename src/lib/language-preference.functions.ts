@@ -18,6 +18,9 @@ export const savePreferredLanguage = createServerFn({ method: "POST" })
       await writePreferredLanguage(context.userId, data.locale);
       return { ok: true as const };
     } catch (error) {
-      return { ok: false as const, message: error instanceof Error ? error.message : "save_failed" };
+      return {
+        ok: false as const,
+        message: error instanceof Error ? error.message : "save_failed",
+      };
     }
   });

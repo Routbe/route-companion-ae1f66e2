@@ -41,11 +41,18 @@ export function DataExportCard() {
       <div className="min-w-0">
         <p className="text-sm font-medium">Download mijn data</p>
         <p className="mt-1 text-xs text-muted-foreground">
-          Alles wat we van je bijhouden in één leesbaar JSON-bestand: profiel, links,
-          geverifieerde socials, e-mailaliassen en domeinen.
+          Alles wat we van je bijhouden in één leesbaar JSON-bestand: profiel, links, geverifieerde
+          socials, e-mailaliassen en domeinen.
         </p>
       </div>
-      <Button type="button" variant="outline" size="sm" onClick={download} disabled={busy} className="gap-2">
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        onClick={download}
+        disabled={busy}
+        className="gap-2"
+      >
         {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
         Download mijn data
       </Button>

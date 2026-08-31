@@ -34,8 +34,7 @@ interface MailData {
   ctaUrl: string;
 }
 
-const FONT =
-  "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
+const FONT = "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
 
 const SOCIALS: Array<{ label: string; url: string }> = [
   { label: "rout.be", url: SITE_ORIGIN },
@@ -92,9 +91,7 @@ function buildHtml(d: MailData): string {
   const socials = SOCIALS.map(
     (s) =>
       `<a href="${s.url}" style="font-family:${FONT};font-size:11px;line-height:18px;color:#777777;text-decoration:none;">${s.label}</a>`,
-  ).join(
-    `<span style="font-family:${FONT};font-size:11px;color:#cccccc;padding:0 7px;">·</span>`,
-  );
+  ).join(`<span style="font-family:${FONT};font-size:11px;color:#cccccc;padding:0 7px;">·</span>`);
 
   const cta =
     d.ctaLabel && d.ctaUrl
@@ -287,9 +284,7 @@ export default function EmailTemplatesPage() {
               onChange={(e) => set("body")(e.target.value)}
               className="h-40 w-full rounded-xl border border-border bg-background p-3 text-sm"
             />
-            <p className="text-xs text-muted-foreground">
-              Lege regel = nieuwe alinea.
-            </p>
+            <p className="text-xs text-muted-foreground">Lege regel = nieuwe alinea.</p>
           </div>
         </div>
 

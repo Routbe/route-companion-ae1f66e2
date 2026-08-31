@@ -157,7 +157,10 @@ export function FrameLibrary({
         >
           <NoneGlyph
             size="sm"
-            className={cn("h-3.5 w-3.5", !selectedFrameId && "border-background/40 bg-transparent text-background")}
+            className={cn(
+              "h-3.5 w-3.5",
+              !selectedFrameId && "border-background/40 bg-transparent text-background",
+            )}
           />
           Geen
         </button>

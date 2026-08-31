@@ -3,19 +3,13 @@ import Page from "@/pages/routes/username";
 import { looksLikeBase36Slug } from "@/lib/base36";
 import { getPublicProfileByHandle } from "@/lib/studio-profile.functions";
 import { getRequestLocale } from "@/lib/locale.functions";
-import {
-  canonicalLinks,
-  profileJsonLd,
-  profileSocialMeta,
-  socialMeta,
-} from "@/lib/social-meta";
+import { canonicalLinks, profileJsonLd, profileSocialMeta, socialMeta } from "@/lib/social-meta";
 import { RESERVED_SLUGS } from "@/lib/reserved-slugs";
 import { canonicalHandle } from "@/lib/profile-url";
 import type { Locale } from "@/lib/i18n";
 import { parseDisplayPrefs, bioForLocale } from "@/lib/profile-display";
 
 type Row = Record<string, unknown> | null;
-
 
 /**
  * Root namespace. A 4-teken Base36-code (`rout.be/A89K`) is a short link and
@@ -27,12 +21,8 @@ export const Route = createFileRoute("/$username")({
     handlers: {
       GET: async ({ request, params, next }) => {
         if (!looksLikeBase36Slug(params.username)) return next();
-        const {
-          resolveShortLink,
-          redirectResponse,
-          rateLimitedResponse,
-          pausedResponse,
-        } = await import("@/lib/short-link-redirect.server");
+        const { resolveShortLink, redirectResponse, rateLimitedResponse, pausedResponse } =
+          await import("@/lib/short-link-redirect.server");
         const { RateLimitError } = await import("@/lib/rate-limit.server");
         try {
           const result = await resolveShortLink(params.username, request);
@@ -105,4 +95,3 @@ export const Route = createFileRoute("/$username")({
   },
   component: Page,
 });
-

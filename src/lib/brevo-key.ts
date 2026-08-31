@@ -54,7 +54,6 @@ export function describeBrevoFailure(status: number, body: string): string {
     return `BREVO_API_KEY is ongeldig of ingetrokken (401 van Brevo). Vernieuw de sleutel. ${detail}`;
   if (status === 403)
     return `BREVO_API_KEY mist rechten voor deze actie (403 van Brevo). ${detail}`;
-  if (status === 402)
-    return `Brevo-account heeft onvoldoende krediet (402). ${detail}`;
+  if (status === 402) return `Brevo-account heeft onvoldoende krediet (402). ${detail}`;
   return `Brevo weigerde het bericht (${status}): ${detail}`;
 }

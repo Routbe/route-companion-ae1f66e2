@@ -157,7 +157,6 @@ export async function debitWallet(opts: {
   }
 }
 
-
 /** Heeft de gebruiker genoeg saldo om een relay te activeren/behouden? */
 export async function canFundRelay(userId: string): Promise<boolean> {
   const wallet = await readWallet(userId);
@@ -229,10 +228,7 @@ export async function startWalletTopup(opts: {
   const key = stripeKey();
   if (!key) return { ok: false, reason: "stripe_not_configured" };
 
-  const amount = Math.min(
-    Math.max(Math.round(opts.amountCents), MIN_TOPUP_CENTS),
-    MAX_TOPUP_CENTS,
-  );
+  const amount = Math.min(Math.max(Math.round(opts.amountCents), MIN_TOPUP_CENTS), MAX_TOPUP_CENTS);
   const origin = opts.origin.replace(/\/$/, "");
   const body = new URLSearchParams({
     mode: "payment",

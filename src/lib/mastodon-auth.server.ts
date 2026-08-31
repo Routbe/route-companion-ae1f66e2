@@ -12,7 +12,12 @@
  * inside the encrypted `state` value and is only ever read back here.
  */
 import { newCorrelationId, normalizeCorrelationId } from "./correlation";
-import { MASTODON_SCOPES, fediverseEmail, fediverseHandle, normalizeInstance } from "./mastodon-instance";
+import {
+  MASTODON_SCOPES,
+  fediverseEmail,
+  fediverseHandle,
+  normalizeInstance,
+} from "./mastodon-instance";
 import type { MastodonErrorCode } from "./mastodon-auth.errors";
 
 const APP_NAME = "ROUT";
@@ -98,11 +103,11 @@ function stateSecret(): string {
 }
 
 async function stateKey(): Promise<CryptoKey> {
-  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(stateSecret()) as BufferSource);
-  return crypto.subtle.importKey("raw", digest, { name: "AES-GCM" }, false, [
-    "encrypt",
-    "decrypt",
-  ]);
+  const digest = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(stateSecret()) as BufferSource,
+  );
+  return crypto.subtle.importKey("raw", digest, { name: "AES-GCM" }, false, ["encrypt", "decrypt"]);
 }
 
 function toBase64Url(bytes: Uint8Array): string {
@@ -185,9 +190,10 @@ async function registerApp(instance: string, redirectUri: string): Promise<AppCr
       `${instance} refused the app registration (HTTP ${res.status}). It may not be a Mastodon-compatible server.`,
     );
   }
-  const json = (await res.json().catch(() => null)) as
-    | { client_id?: string; client_secret?: string }
-    | null;
+  const json = (await res.json().catch(() => null)) as {
+    client_id?: string;
+    client_secret?: string;
+  } | null;
   if (!json?.client_id || !json.client_secret) {
     throw new MastodonAuthError(
       "instance_rejected",
@@ -256,9 +262,12 @@ async function verifyCredentials(instance: string, token: string): Promise<Accou
       `${instance} would not confirm your account (HTTP ${res.status}).`,
     );
   }
-  const json = (await res.json().catch(() => null)) as
-    | { username?: string; display_name?: string; avatar?: string; url?: string }
-    | null;
+  const json = (await res.json().catch(() => null)) as {
+    username?: string;
+    display_name?: string;
+    avatar?: string;
+    url?: string;
+  } | null;
   if (!json?.username)
     throw new MastodonAuthError("account_unverified", `${instance} returned an empty profile.`);
   return {
@@ -269,10 +278,7 @@ async function verifyCredentials(instance: string, token: string): Promise<Accou
   };
 }
 
-async function exchangeCode(
-  state: StatePayload,
-  code: string,
-): Promise<string> {
+async function exchangeCode(state: StatePayload, code: string): Promise<string> {
   const res = await timedFetch(`https://${state.instance}/oauth/token`, {
     method: "POST",
     headers: { "content-type": "application/x-www-form-urlencoded", accept: "application/json" },
@@ -285,9 +291,11 @@ async function exchangeCode(
       code,
     }),
   });
-  const json = (await res.json().catch(() => null)) as
-    | { access_token?: string; error_description?: string; error?: string }
-    | null;
+  const json = (await res.json().catch(() => null)) as {
+    access_token?: string;
+    error_description?: string;
+    error?: string;
+  } | null;
   if (!res.ok || !json?.access_token) {
     mastodonLog("warn", "token_exchange_failed", {
       instance: state.instance,
@@ -348,7 +356,9 @@ export async function completeMastodonCallback(input: {
   const state = await openState(input.state);
   // The sealed state carries the id minted in step 1 — prefer it so both legs
   // of the OAuth round-trip appear under one correlation id.
-  const cid = setMastodonCorrelationId(normalizeCorrelationId(state.cid) ?? normalizeCorrelationId(input.cid));
+  const cid = setMastodonCorrelationId(
+    normalizeCorrelationId(state.cid) ?? normalizeCorrelationId(input.cid),
+  );
   mastodonLog("info", "callback_started", { instance: state.instance });
   const token = await exchangeCode(state, input.code);
   const account = await verifyCredentials(state.instance, token);

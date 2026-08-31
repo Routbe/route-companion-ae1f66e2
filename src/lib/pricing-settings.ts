@@ -51,9 +51,6 @@ export function sanitizePricing(input: Partial<PricingSettings> | null): Pricing
       bunq: clamp(input?.feeCents?.bunq, DEFAULT_PRICING.feeCents.bunq),
       sepa: clamp(input?.feeCents?.sepa, DEFAULT_PRICING.feeCents.sepa),
     },
-    minDonationCents: Math.max(
-      1,
-      clamp(input?.minDonationCents, DEFAULT_PRICING.minDonationCents),
-    ),
+    minDonationCents: Math.max(1, clamp(input?.minDonationCents, DEFAULT_PRICING.minDonationCents)),
   };
 }

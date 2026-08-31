@@ -28,7 +28,12 @@ export const PLATFORM_LABEL: Record<SocialPlatform, string> = {
 };
 
 /** Platformen met een open API: verificatie is direct, zonder scraping. */
-export const OPEN_PROTOCOL_PLATFORMS: SocialPlatform[] = ["github", "mastodon", "bluesky", "wsocial"];
+export const OPEN_PROTOCOL_PLATFORMS: SocialPlatform[] = [
+  "github",
+  "mastodon",
+  "bluesky",
+  "wsocial",
+];
 
 export function isSocialPlatform(value: string): value is SocialPlatform {
   return (SOCIAL_PLATFORMS as readonly string[]).includes(value);

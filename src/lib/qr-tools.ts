@@ -257,7 +257,7 @@ const wifiTool: QrTool = {
       body: "A WiFi QR code is a single line of text: WIFI:S:<name>;T:<security>;P:<password>;;. Android has parsed it natively since 10, iOS since 11, and every serious camera app understands it. Scanning does not connect you silently — the phone shows a confirmation sheet with the network name first.",
       points: [
         "T:WPA covers WPA, WPA2 and WPA3 — there is no separate WPA3 tag.",
-        "Special characters (; , : \\ \") are escaped with a backslash, which this tool does for you.",
+        'Special characters (; , : \\ ") are escaped with a backslash, which this tool does for you.',
         "H:true is required for hidden networks, otherwise the phone will not find them.",
       ],
     },
@@ -305,7 +305,14 @@ const vcardTool: QrTool = {
   keywords: ["vcard qr code", "contact qr code", "digital business card qr", "mecard"],
   standard: "vCard 3.0 · RFC 6350 lineage",
   fields: [
-    { name: "firstName", label: "First name", type: "text", placeholder: "Jona", half: true, required: true },
+    {
+      name: "firstName",
+      label: "First name",
+      type: "text",
+      placeholder: "Jona",
+      half: true,
+      required: true,
+    },
     { name: "lastName", label: "Last name", type: "text", placeholder: "Delplanche", half: true },
     { name: "organization", label: "Company", type: "text", placeholder: "ROUT", half: true },
     { name: "title", label: "Role", type: "text", placeholder: "Founder", half: true },

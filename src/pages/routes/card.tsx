@@ -20,8 +20,6 @@ import { toast } from "sonner";
 
 type CardSearch = { d?: string };
 
-
-
 const linkify = (v: string) => (/^[a-z]+:\/\//i.test(v) ? v : `https://${v}`);
 
 function CardPage() {

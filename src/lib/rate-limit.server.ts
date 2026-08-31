@@ -12,9 +12,7 @@ const buckets = new Map<string, Hit>();
 export class RateLimitError extends Error {
   readonly retryAfterSeconds: number;
   constructor(retryAfterSeconds: number) {
-    super(
-      `RATE_LIMITED: too many requests — wait ${retryAfterSeconds}s before trying again.`,
-    );
+    super(`RATE_LIMITED: too many requests — wait ${retryAfterSeconds}s before trying again.`);
     this.name = "RateLimitError";
     this.retryAfterSeconds = retryAfterSeconds;
   }

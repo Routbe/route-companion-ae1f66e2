@@ -87,7 +87,10 @@ export function TotalReachModal({
   async function handleManualSave() {
     const parsed = manualOn ? Math.max(0, Number.parseInt(manualValue || "0", 10) || 0) : null;
     const next = await persist({ manualCount: parsed });
-    if (next) toast.success(parsed === null ? "Automatische telling actief" : "Handmatig totaal opgeslagen");
+    if (next)
+      toast.success(
+        parsed === null ? "Automatische telling actief" : "Handmatig totaal opgeslagen",
+      );
   }
 
   return (
@@ -111,8 +114,7 @@ export function TotalReachModal({
               <div>
                 <p className="text-sm font-medium">Toon totaal bereik op mijn profiel</p>
                 <p className="text-xs text-muted-foreground">
-                  Huidig totaal:{" "}
-                  <strong>{formatReach(settings.totalReachCount)}</strong>
+                  Huidig totaal: <strong>{formatReach(settings.totalReachCount)}</strong>
                 </p>
               </div>
               <Switch
@@ -139,7 +141,9 @@ export function TotalReachModal({
                       <div className="min-w-0">
                         <p className="truncate text-sm font-medium">
                           {PLATFORM_LABEL[account.platform]}{" "}
-                          <span className="text-muted-foreground">@{account.username.replace(/^@/, "")}</span>
+                          <span className="text-muted-foreground">
+                            @{account.username.replace(/^@/, "")}
+                          </span>
                         </p>
                         <p className="text-xs text-muted-foreground">
                           {formatReach(account.followerCount)} volgers ·{" "}
@@ -194,7 +198,12 @@ export function TotalReachModal({
               <p className="text-xs text-muted-foreground">
                 Laatst bijgewerkt: {relativeTimeNl(settings.lastSyncedAt)}
               </p>
-              <Button type="button" variant="outline" onClick={() => void handleSync()} disabled={busy}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => void handleSync()}
+                disabled={busy}
+              >
                 {busy ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden />
                 ) : (

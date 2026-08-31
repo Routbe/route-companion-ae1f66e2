@@ -1,7 +1,6 @@
 import type { SVGProps } from "react";
 import { cn } from "@/lib/utils";
 
-
 /** Monochrome brand marks not covered by lucide-react. */
 
 export function BlueskyIcon(props: SVGProps<SVGSVGElement>) {

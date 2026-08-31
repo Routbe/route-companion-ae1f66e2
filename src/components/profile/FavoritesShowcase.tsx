@@ -21,10 +21,7 @@ export function FavoritesShowcase({ favorites, theme: t }: Props) {
         {favorites.map((fav) => {
           const inner = (
             <>
-              <div
-                className="aspect-[2/3] w-full overflow-hidden"
-                style={{ background: t.border }}
-              >
+              <div className="aspect-[2/3] w-full overflow-hidden" style={{ background: t.border }}>
                 {fav.imageUrl ? (
                   <img
                     src={fav.imageUrl}

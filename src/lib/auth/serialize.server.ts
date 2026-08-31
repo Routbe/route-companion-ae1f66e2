@@ -19,6 +19,7 @@ export function originFromRequest(): string {
   const origin = getRequestHeader("origin");
   if (origin) return origin.replace(/\/$/, "");
   const host = getRequestHeader("host") ?? "rout.be";
-  const proto = getRequestHeader("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
+  const proto =
+    getRequestHeader("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
   return `${proto}://${host}`;
 }

@@ -168,7 +168,6 @@ function RootComponent() {
   }, []);
 
   return (
-
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <I18nProvider>

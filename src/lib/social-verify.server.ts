@@ -175,10 +175,7 @@ function followersFromText(text: string): number | null {
 }
 
 /** Haalt bio-tekst + volgeraantal op voor één sociaal account. */
-export async function fetchSnapshot(
-  platform: SocialPlatform,
-  username: string,
-): Promise<Snapshot> {
+export async function fetchSnapshot(platform: SocialPlatform, username: string): Promise<Snapshot> {
   const handle = username.replace(/^@/, "");
 
   if (platform === "github") {
@@ -204,8 +201,7 @@ export async function fetchSnapshot(
     const fields = (account.fields ?? []).map((f) => `${f.name} ${f.value}`).join(" ");
     return {
       bio: `${account.note ?? ""} ${fields}`,
-      followerCount:
-        typeof account.followers_count === "number" ? account.followers_count : null,
+      followerCount: typeof account.followers_count === "number" ? account.followers_count : null,
     };
   }
 
@@ -215,8 +211,7 @@ export async function fetchSnapshot(
     );
     return {
       bio: profile.description ?? "",
-      followerCount:
-        typeof profile.followersCount === "number" ? profile.followersCount : null,
+      followerCount: typeof profile.followersCount === "number" ? profile.followersCount : null,
     };
   }
 

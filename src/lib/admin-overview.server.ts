@@ -12,7 +12,13 @@ export interface AdminOverview {
   revenueCents: number;
   paymentsCount: number;
   activeDomains: number;
-  webhooks: { id: string; source: string; kind: string | null; status: string; createdAt: string }[];
+  webhooks: {
+    id: string;
+    source: string;
+    kind: string | null;
+    status: string;
+    createdAt: string;
+  }[];
 }
 
 function num(rows: Row[], key = "n"): number {
@@ -29,7 +35,9 @@ export async function fetchAdminOverview(): Promise<AdminOverview> {
         from public.verification_payments
        where status = 'paid'
     ` as Promise<Row[]>,
-    sql`select count(*)::int as n from public.custom_domains where verified_at is not null` as Promise<Row[]>,
+    sql`select count(*)::int as n from public.custom_domains where verified_at is not null` as Promise<
+      Row[]
+    >,
   ]);
 
   let webhooks: AdminOverview["webhooks"] = [];

@@ -89,7 +89,6 @@ export default function GiftCardView() {
                 <Link to="/dashboard">Bon gebruiken</Link>
               </Button>
             ) : null}
-
           </>
         ) : null}
       </div>

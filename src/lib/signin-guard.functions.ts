@@ -12,7 +12,9 @@ type Row = Record<string, unknown>;
 type GuardResult = { locked: boolean; retryAfter: number };
 
 export const signinGuardStatus = createServerFn({ method: "POST" })
-  .inputValidator((data: unknown) => z.object({ identityHash: z.string().min(16).max(128) }).parse(data))
+  .inputValidator((data: unknown) =>
+    z.object({ identityHash: z.string().min(16).max(128) }).parse(data),
+  )
   .handler(async ({ data }): Promise<GuardResult> => {
     const rows = (await sql`
       select locked_until from public.signin_throttle where identity_hash = ${data.identityHash}
@@ -21,7 +23,10 @@ export const signinGuardStatus = createServerFn({ method: "POST" })
     if (!lockedUntil || new Date(lockedUntil).getTime() <= Date.now()) {
       return { locked: false, retryAfter: 0 };
     }
-    const retryAfter = Math.max(1, Math.ceil((new Date(lockedUntil).getTime() - Date.now()) / 1000));
+    const retryAfter = Math.max(
+      1,
+      Math.ceil((new Date(lockedUntil).getTime() - Date.now()) / 1000),
+    );
     return { locked: true, retryAfter };
   });
 
@@ -42,7 +47,8 @@ export const signinGuardRecord = createServerFn({ method: "POST" })
     `) as Row[];
     const row = rows[0];
     const windowStartedAt = row?.["window_started_at"] as string | undefined;
-    const isStale = !row || (windowStartedAt && Date.now() - new Date(windowStartedAt).getTime() > 15 * 60_000);
+    const isStale =
+      !row || (windowStartedAt && Date.now() - new Date(windowStartedAt).getTime() > 15 * 60_000);
 
     if (isStale) {
       await sql`
@@ -55,7 +61,8 @@ export const signinGuardRecord = createServerFn({ method: "POST" })
     }
 
     const newFailures = (Number(row!["failures"]) || 0) + 1;
-    const lockForSeconds = newFailures >= 10 ? 900 : newFailures >= 7 ? 300 : newFailures >= 5 ? 60 : null;
+    const lockForSeconds =
+      newFailures >= 10 ? 900 : newFailures >= 7 ? 300 : newFailures >= 5 ? 60 : null;
 
     await sql`
       update public.signin_throttle

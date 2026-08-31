@@ -104,8 +104,6 @@ export async function writeProfileSettings(userId: string, input: ProfileSetting
     `;
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    throw new Error(
-      /duplicate|unique/i.test(message) ? "That handle is already taken." : message,
-    );
+    throw new Error(/duplicate|unique/i.test(message) ? "That handle is already taken." : message);
   }
 }

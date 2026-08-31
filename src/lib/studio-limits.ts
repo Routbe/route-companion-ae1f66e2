@@ -12,7 +12,6 @@
 import { qrPayloadForSlug } from "@/lib/base36";
 import { QR_MAX_VERSION, qrVersionFor } from "@/lib/qr-version";
 
-
 export type StudioTier = "guest" | "member" | "verified";
 
 export type StudioLimits = {
@@ -137,4 +136,3 @@ export function checkVersion1Canvas(payload: string): CanvasCheck {
 export function checkSlugCanvas(slug: string, origin?: string): CanvasCheck {
   return checkVersion1Canvas(qrPayloadForSlug(slug, origin));
 }
-

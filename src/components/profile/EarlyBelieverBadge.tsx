@@ -4,13 +4,7 @@
  */
 export function FleurDeLisIcon({ className }: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      stroke="none"
-      className={className}
-      aria-hidden
-    >
+    <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" className={className} aria-hidden>
       {/* middelste lelie */}
       <path d="M12 1.2c-1.9 2.6-2.9 4.9-2.9 6.9 0 1.7.9 3.2 1.9 4.2l-1 .6h4l-1-.6c1-1 1.9-2.5 1.9-4.2 0-2-1-4.3-2.9-6.9z" />
       {/* linker lelie */}

@@ -276,9 +276,7 @@ export function ThemePresets({ selectedTheme, onThemeChange }: ThemePresetsProps
               tabIndex={selected ? 0 : -1}
               className={cn(
                 "relative flex h-16 w-full min-w-0 flex-col items-center justify-center gap-1 overflow-visible rounded-xl border-2 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                selected
-                  ? "border-foreground bg-muted/60"
-                  : "border-border hover:bg-secondary",
+                selected ? "border-foreground bg-muted/60" : "border-border hover:bg-secondary",
               )}
             >
               <SelectionIndicator visible={selected} />

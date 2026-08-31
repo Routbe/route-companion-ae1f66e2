@@ -124,7 +124,6 @@ const TILES: {
   },
 ];
 
-
 const PROVIDER_LABELS: Record<string, string> = {
   github: "GitHub",
   google: "Google",
@@ -295,7 +294,10 @@ export default function Auth() {
     if (!sentTo || resendIn > 0 || resending) return;
     setResending(true);
     try {
-      await withAuthTimeout(requestMagicLink({ data: { email: sentTo } }), "requestMagicLink:resend");
+      await withAuthTimeout(
+        requestMagicLink({ data: { email: sentTo } }),
+        "requestMagicLink:resend",
+      );
       setResendIn(RESEND_COOLDOWN_SECONDS);
       toast.success(t("auth.toast.newCode"));
     } catch (err) {
@@ -413,7 +415,9 @@ export default function Auth() {
       window.location.assign(url);
     } catch (e) {
       setMastodonBusy(false);
-      setMastodonError(e instanceof Error && e.message ? e.message : mastodonErrorMessage("unknown"));
+      setMastodonError(
+        e instanceof Error && e.message ? e.message : mastodonErrorMessage("unknown"),
+      );
     }
   };
 
@@ -548,7 +552,6 @@ export default function Auth() {
             ))}
           </div>
 
-
           <Dialog open={mastodonOpen} onOpenChange={(o) => !mastodonBusy && setMastodonOpen(o)}>
             <DialogContent className="sm:max-w-sm">
               <DialogHeader>
@@ -582,7 +585,8 @@ export default function Auth() {
                   <Button type="submit" disabled={mastodonBusy} className="w-full">
                     {mastodonBusy ? (
                       <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" /> {t("auth.fedi.connecting")}
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />{" "}
+                        {t("auth.fedi.connecting")}
                       </>
                     ) : (
                       t("auth.fedi.continue")

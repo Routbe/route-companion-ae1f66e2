@@ -153,7 +153,6 @@ export const EMAIL_CATEGORY_FALLBACK: Record<EmailCategory, number> = {
   node_expiry: 0,
 };
 
-
 /** Env override name suffix per category (BREVO_TEMPLATE_<KEY>[_<LANG>]). */
 function categoryKey(category: EmailCategory): string {
   return category.toUpperCase();
@@ -166,9 +165,7 @@ export function asEmailLanguage(value: unknown): EmailLanguage {
     .slice(0, 5)
     .replace("_", "-");
   const short = raw.split("-")[0] ?? "";
-  return (EMAIL_LANGUAGES as readonly string[]).includes(short)
-    ? (short as EmailLanguage)
-    : "nl";
+  return (EMAIL_LANGUAGES as readonly string[]).includes(short) ? (short as EmailLanguage) : "nl";
 }
 
 function envOverride(name: string): number | null {

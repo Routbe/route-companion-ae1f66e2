@@ -41,11 +41,7 @@ import {
 } from "@/components/ui/dialog";
 import { useAuth } from "@/hooks/useAuth";
 import { db } from "@/lib/db/client";
-import {
-  revokeOtherSessions,
-  signInWithPassword,
-  updateAuthUser,
-} from "@/lib/auth.functions";
+import { revokeOtherSessions, signInWithPassword, updateAuthUser } from "@/lib/auth.functions";
 import { toast } from "sonner";
 import { LOCALES, LOCALE_LABELS, useI18n } from "@/lib/i18n";
 import { useLanguagePreference } from "@/hooks/useLanguagePreference";
@@ -364,7 +360,11 @@ export default function AccountSettings() {
                 className="input-field h-11 rounded-xl"
               />
             </div>
-            <Button onClick={saveProfile} disabled={savingProfile} className="h-11 w-full sm:w-auto">
+            <Button
+              onClick={saveProfile}
+              disabled={savingProfile}
+              className="h-11 w-full sm:w-auto"
+            >
               Save profile
             </Button>
           </section>
@@ -575,7 +575,12 @@ export default function AccountSettings() {
                   Export your QR codes, dynamic links and profile data.
                 </p>
               </div>
-              <Button onClick={exportData} disabled={exporting} variant="outline" className="gap-1.5">
+              <Button
+                onClick={exportData}
+                disabled={exporting}
+                variant="outline"
+                className="gap-1.5"
+              >
                 <Download className="h-4 w-4" /> Export JSON/ZIP
               </Button>
             </div>

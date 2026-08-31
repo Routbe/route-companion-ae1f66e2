@@ -53,7 +53,9 @@ function readStore(): SavedAuditView[] {
     const parsed: unknown = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
     return parsed
-      .filter((v): v is SavedAuditView => Boolean(v) && typeof (v as SavedAuditView).id === "string")
+      .filter(
+        (v): v is SavedAuditView => Boolean(v) && typeof (v as SavedAuditView).id === "string",
+      )
       .map((v) => ({ ...v, filters: { ...EMPTY_AUDIT_FILTERS, ...v.filters } }));
   } catch {
     return [];

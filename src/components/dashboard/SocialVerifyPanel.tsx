@@ -135,9 +135,9 @@ export function SocialVerifyPanel({ handle }: { handle: string }) {
     <section className="space-y-3">
       <h2 className="px-1 text-lg font-medium">Sociale accounts &amp; verificatie</h2>
       <p className="px-1 text-sm text-muted-foreground">
-        Bewijs dat een account van jou is door <strong>{profileUrl}</strong> in de bio te
-        plaatsen. Na verificatie tonen we een groen vinkje en het gecachte volgeraantal op je
-        publieke profiel — zonder externe API-calls bij elk bezoek.
+        Bewijs dat een account van jou is door <strong>{profileUrl}</strong> in de bio te plaatsen.
+        Na verificatie tonen we een groen vinkje en het gecachte volgeraantal op je publieke profiel
+        — zonder externe API-calls bij elk bezoek.
       </p>
 
       <div className="flex flex-wrap items-center gap-2 px-1">
@@ -241,12 +241,14 @@ export function SocialVerifyPanel({ handle }: { handle: string }) {
       <Dialog open={Boolean(modalFor)} onOpenChange={(open) => !open && setModalFor(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Verifieer je {modalFor ? PLATFORM_LABEL[modalFor.platform] : ""}</DialogTitle>
+            <DialogTitle>
+              Verifieer je {modalFor ? PLATFORM_LABEL[modalFor.platform] : ""}
+            </DialogTitle>
             <DialogDescription>
-              Plaats <strong>{profileUrl}</strong> (of <strong>rout.be/u/{handle}</strong>) in de bio
-              van je {modalFor ? PLATFORM_LABEL[modalFor.platform] : ""}-profiel en klik op
-              “Controleren”. Je mag de link daarna laten staan — bij de dagelijkse controle blijft je
-              vinkje zo actief.
+              Plaats <strong>{profileUrl}</strong> (of <strong>rout.be/u/{handle}</strong>) in de
+              bio van je {modalFor ? PLATFORM_LABEL[modalFor.platform] : ""}-profiel en klik op
+              “Controleren”. Je mag de link daarna laten staan — bij de dagelijkse controle blijft
+              je vinkje zo actief.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>

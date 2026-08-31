@@ -21,8 +21,8 @@ function baseUrl(): string {
 export function bunqConfigured(): boolean {
   return Boolean(
     process.env["BUNQ_API_KEY"] &&
-      process.env["BUNQ_PRIVATE_KEY"] &&
-      process.env["BUNQ_PUBLIC_KEY"],
+    process.env["BUNQ_PRIVATE_KEY"] &&
+    process.env["BUNQ_PUBLIC_KEY"],
   );
 }
 
@@ -64,7 +64,6 @@ function signBody(body: string): string {
   sign.update(body, "utf8");
   return sign.sign(privateKeyPem(), "base64");
 }
-
 
 export interface BunqStepLog {
   step: string;
@@ -134,10 +133,12 @@ async function bunqCall<T>(
       });
     } catch (networkError) {
       // Timeout of DNS/socket-fout: exponential backoff, zelfde request-id.
-      lastError =
-        networkError instanceof Error ? networkError : new Error(String(networkError));
+      lastError = networkError instanceof Error ? networkError : new Error(String(networkError));
       lastRunLog.push({ step, method, path, status: 0, ok: false, response: lastError.message });
-      console.warn(`[bunq] ${step} netwerkfout (poging ${attempt}/${MAX_ATTEMPTS}):`, lastError.message);
+      console.warn(
+        `[bunq] ${step} netwerkfout (poging ${attempt}/${MAX_ATTEMPTS}):`,
+        lastError.message,
+      );
       if (attempt < MAX_ATTEMPTS) {
         await wait(400 * 2 ** (attempt - 1));
         continue;
@@ -153,7 +154,14 @@ async function bunqCall<T>(
       /* niet-JSON antwoord: ruwe tekst loggen */
     }
 
-    const entry: BunqStepLog = { step, method, path, status: res.status, ok: res.ok, response: parsed };
+    const entry: BunqStepLog = {
+      step,
+      method,
+      path,
+      status: res.status,
+      ok: res.ok,
+      response: parsed,
+    };
     lastRunLog.push(entry);
     console.log(
       `[bunq] ${step} → ${method} ${path} HTTP ${res.status}\n${JSON.stringify(parsed, null, 2)}`,
@@ -173,7 +181,11 @@ async function bunqCall<T>(
       throw error;
     }
     // bunq verpakt alles in { "Response": [ ... ] }; geef die array direct terug.
-    if (parsed && typeof parsed === "object" && Array.isArray((parsed as { Response?: unknown }).Response)) {
+    if (
+      parsed &&
+      typeof parsed === "object" &&
+      Array.isArray((parsed as { Response?: unknown }).Response)
+    ) {
       return (parsed as { Response: unknown }).Response as T;
     }
     return (parsed as T) ?? ({} as T);
@@ -181,8 +193,6 @@ async function bunqCall<T>(
 
   throw lastError ?? new Error(`bunq ${step} (${method} ${path}) mislukt`);
 }
-
-
 
 interface BunqAccountRaw {
   id: number;
@@ -213,7 +223,6 @@ interface BunqResponseItem {
 
   ServerPublicKey?: { server_public_key: string };
 }
-
 
 /** Stap 0 — installation: registreer onze public key, ontvang installatie-token. */
 async function ensureInstallation(): Promise<string> {
@@ -264,7 +273,6 @@ async function registerDevice(installationToken: string, secret: string): Promis
   );
 }
 
-
 /** Stap 2 — session-server: ruil de API-key om voor een sessietoken + user-id. */
 async function ensureSession(bunqUserRef?: string | null): Promise<{
   token: string;
@@ -297,7 +305,6 @@ async function ensureSession(bunqUserRef?: string | null): Promise<{
   if (global) cachedSession = { token, userId, expiresAt: Date.now() + 23 * 60 * 60 * 1000 };
   return { token, userId };
 }
-
 
 /**
  * Diagnostische activatie-run: installation → device-server → session-server →
@@ -595,7 +602,6 @@ export async function ensureMonetaryAccountForCurrency(
   };
 }
 
-
 export interface BunqMeTabResult {
   shareUrl: string;
   tabId: number;
@@ -606,7 +612,6 @@ export interface BunqMeTabResult {
   /** `true` als de valuta via het hoofd-EUR-account is verwerkt. */
   foreignCurrencyFallback: boolean;
 }
-
 
 /**
  * Stap 4 — maak een bunq.me-tab (betaalverzoek) met bedrag + omschrijving op de
@@ -665,7 +670,6 @@ export async function createBunqMeTab(opts: {
       opts.clientRequestId ? `${opts.clientRequestId}-${currency}`.slice(0, 64) : undefined,
     );
 
-
   let usedCurrency = route.currency;
   let created: BunqResponseItem[];
   try {
@@ -707,7 +711,6 @@ export async function createBunqMeTab(opts: {
     foreignCurrencyFallback: route.foreignCurrencyFallback,
   };
 }
-
 
 /**
  * Diagnostische matrix: maakt per land een bunq.me-verzoek en rapporteert welke
@@ -788,7 +791,6 @@ export async function readBunqMeTabStatus(
       null,
   };
 }
-
 
 /** Compacte health-check voor de admin: leeft de bunq SessionServer-verbinding? */
 export async function checkBunqApiStatus(): Promise<{

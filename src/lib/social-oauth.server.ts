@@ -339,9 +339,12 @@ async function exchangeCode(state: StatePayload, code: string): Promise<TokenSet
       code,
     }),
   });
-  const json = (await res.json().catch(() => null)) as
-    | { access_token?: string; id_token?: string; error?: string; error_description?: string }
-    | null;
+  const json = (await res.json().catch(() => null)) as {
+    access_token?: string;
+    id_token?: string;
+    error?: string;
+    error_description?: string;
+  } | null;
   if (!res.ok || !json?.access_token) {
     console.error(
       `[social-auth] token exchange failed for ${state.provider} [${res.status}]: ${json?.error ?? "no token"}`,
@@ -366,7 +369,10 @@ async function fetchGoogleAccount(token: string): Promise<SocialAccount> {
   const json = (await res.json().catch(() => null)) as Record<string, unknown> | null;
   const email = typeof json?.["email"] === "string" ? (json["email"] as string) : "";
   if (!res.ok || !email) {
-    throw new SocialAuthError("no_email", "Google did not share an e-mail address for this account.");
+    throw new SocialAuthError(
+      "no_email",
+      "Google did not share an e-mail address for this account.",
+    );
   }
   return {
     email,
@@ -394,8 +400,7 @@ async function fetchGitHubAccount(token: string): Promise<SocialAccount> {
   if (!email) {
     const mailRes = await timedFetch("https://api.github.com/user/emails", { headers });
     const list = (await mailRes.json().catch(() => null)) as
-      | { email?: string; primary?: boolean; verified?: boolean }[]
-      | null;
+      { email?: string; primary?: boolean; verified?: boolean }[] | null;
     const primary = list?.find((e) => e.primary && e.email) ?? list?.find((e) => e.email);
     email = primary?.email ?? "";
     verified = primary?.verified === true;
@@ -436,7 +441,8 @@ async function fetchGitLabAccount(token: string): Promise<SocialAccount> {
     email,
     // GitLab only exposes confirmed addresses on /user.
     emailVerified: true,
-    fullName: typeof user["name"] === "string" && user["name"] ? (user["name"] as string) : username,
+    fullName:
+      typeof user["name"] === "string" && user["name"] ? (user["name"] as string) : username,
     avatarUrl: typeof user["avatar_url"] === "string" ? (user["avatar_url"] as string) : null,
     providerId: user["id"] != null ? String(user["id"]) : username,
   };
@@ -577,9 +583,8 @@ export async function completeSocialCallback(input: {
   }
 
   const userId = await mintSession(state.provider, account);
-  const { createSession, buildSessionCookie, SESSION_TTL_DAYS } = await import(
-    "./auth/session.server"
-  );
+  const { createSession, buildSessionCookie, SESSION_TTL_DAYS } =
+    await import("./auth/session.server");
   const session = await createSession(userId, { userAgent: input.userAgent ?? null });
   return {
     cookie: buildSessionCookie(session.token, 60 * 60 * 24 * SESSION_TTL_DAYS),

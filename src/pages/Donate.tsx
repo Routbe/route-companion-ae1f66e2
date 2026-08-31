@@ -130,9 +130,7 @@ export default function Donate() {
       <main className="flex min-h-screen items-center justify-center bg-[#0d0c0b] px-6 text-center">
         <div className="max-w-sm space-y-2">
           <h1 className="text-lg font-medium text-[#f4efe4]">Geen donatiepagina</h1>
-          <p className="text-sm text-[#f4efe4]/60">
-            @{handle} ontvangt (nog) geen steun via ROUT.
-          </p>
+          <p className="text-sm text-[#f4efe4]/60">@{handle} ontvangt (nog) geen steun via ROUT.</p>
         </div>
       </main>
     );
@@ -167,9 +165,7 @@ export default function Donate() {
           <section className="rounded-3xl border border-[#f4efe4]/12 bg-[#161412] p-8 text-center">
             <CheckCircle2 className="mx-auto mb-3 h-10 w-10 text-emerald-400" />
             <h2 className="text-lg font-medium">Bedankt voor je steun</h2>
-            <p className="mt-1 text-sm text-[#f4efe4]/60">
-              Je bijdrage is onderweg naar {title}.
-            </p>
+            <p className="mt-1 text-sm text-[#f4efe4]/60">Je bijdrage is onderweg naar {title}.</p>
           </section>
         ) : (
           <section className="space-y-5 rounded-3xl border border-[#f4efe4]/12 bg-[#161412] p-5 sm:p-6">
@@ -257,7 +253,6 @@ export default function Donate() {
               ROUT faciliteert de directe verbinding met het betaalaccount van {title}. Eventuele
               fooien vallen onder de fiscale verantwoordelijkheid van de ontvanger.
             </p>
-
           </section>
         )}
       </div>

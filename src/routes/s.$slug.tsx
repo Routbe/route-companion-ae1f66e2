@@ -10,12 +10,8 @@ export const Route = createFileRoute("/s/$slug")({
   server: {
     handlers: {
       GET: async ({ request, params, next }) => {
-        const {
-          resolveShortLink,
-          redirectResponse,
-          rateLimitedResponse,
-          pausedResponse,
-        } = await import("@/lib/short-link-redirect.server");
+        const { resolveShortLink, redirectResponse, rateLimitedResponse, pausedResponse } =
+          await import("@/lib/short-link-redirect.server");
         const { RateLimitError } = await import("@/lib/rate-limit.server");
         try {
           const result = await resolveShortLink(params.slug, request);

@@ -50,7 +50,6 @@ export const suggestHandleForName = createServerFn({ method: "POST" })
  * `NODE_ENV`. Admin access is granted exclusively through `user_roles`.
  */
 
-
 /**
  * Registration suggestion: takes the part before the `@` of an e-mail address
  * and returns free handle variants with a 2-digit discriminator

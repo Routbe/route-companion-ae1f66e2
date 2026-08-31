@@ -222,7 +222,10 @@ export default function AdminOps() {
                     onChange={(e) =>
                       setDraft((p) => ({
                         ...p,
-                        [row.id]: { slug: e.target.value, targetUrl: p[row.id]?.targetUrl ?? row.targetUrl },
+                        [row.id]: {
+                          slug: e.target.value,
+                          targetUrl: p[row.id]?.targetUrl ?? row.targetUrl,
+                        },
                       }))
                     }
                     className="h-10 rounded-lg font-mono text-sm"
@@ -289,8 +292,7 @@ export default function AdminOps() {
           {badges.map((b) => (
             <li key={b.id} className="rounded-xl border border-border bg-background p-3">
               <p className="text-sm font-medium">
-                {b.name}{" "}
-                <span className="font-mono text-xs text-muted-foreground">({b.slug})</span>
+                {b.name} <span className="font-mono text-xs text-muted-foreground">({b.slug})</span>
               </p>
               <p className="text-xs text-muted-foreground">{b.description}</p>
               <p className="mt-1 text-xs text-muted-foreground">{b.holders} houders</p>

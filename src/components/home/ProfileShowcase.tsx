@@ -68,12 +68,16 @@ export function ProfileShowcase() {
 
   const qr = useMemo(
     () =>
-      profileQrSvg(url, {
-        ...DEFAULT_PROFILE_QR_STYLE,
-        fgColor: t.text,
-        bgColor: t.card,
-        cornerStyle: "smooth",
-      }, { size: 320 }),
+      profileQrSvg(
+        url,
+        {
+          ...DEFAULT_PROFILE_QR_STYLE,
+          fgColor: t.text,
+          bgColor: t.card,
+          cornerStyle: "smooth",
+        },
+        { size: 320 },
+      ),
     [url, t.text, t.card],
   );
 
@@ -112,7 +116,11 @@ export function ProfileShowcase() {
           onClick={() => setDark((d) => !d)}
           className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-border px-3 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent"
         >
-          {dark ? <Moon className="h-3.5 w-3.5" aria-hidden /> : <Sun className="h-3.5 w-3.5" aria-hidden />}
+          {dark ? (
+            <Moon className="h-3.5 w-3.5" aria-hidden />
+          ) : (
+            <Sun className="h-3.5 w-3.5" aria-hidden />
+          )}
           {dark ? "Donker thema" : "Licht thema"}
         </button>
         <button
@@ -169,7 +177,10 @@ export function ProfileShowcase() {
             </li>
           ))}
         </ul>
-        <p className="mt-3 text-[11px] uppercase tracking-widest md:mt-4" style={{ color: t.muted }}>
+        <p
+          className="mt-3 text-[11px] uppercase tracking-widest md:mt-4"
+          style={{ color: t.muted }}
+        >
           {item.widget}
         </p>
 

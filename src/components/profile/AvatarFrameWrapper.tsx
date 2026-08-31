@@ -24,8 +24,20 @@ function FrameOverlay({ overlay }: { overlay: AvatarFrameOverlay }) {
           <g fill="#c9a84c">
             {[30, 42, 54, 66, 78].map((y, i) => (
               <g key={y}>
-                <ellipse cx={18 - i * 0.4} cy={y} rx="5" ry="2.6" transform={`rotate(-25 18 ${y})`} />
-                <ellipse cx={82 + i * 0.4} cy={y} rx="5" ry="2.6" transform={`rotate(25 82 ${y})`} />
+                <ellipse
+                  cx={18 - i * 0.4}
+                  cy={y}
+                  rx="5"
+                  ry="2.6"
+                  transform={`rotate(-25 18 ${y})`}
+                />
+                <ellipse
+                  cx={82 + i * 0.4}
+                  cy={y}
+                  rx="5"
+                  ry="2.6"
+                  transform={`rotate(25 82 ${y})`}
+                />
               </g>
             ))}
           </g>

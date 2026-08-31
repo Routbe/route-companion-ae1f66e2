@@ -13,7 +13,6 @@ import { cn } from "@/lib/utils";
 type ClaimHistory = Awaited<ReturnType<typeof getMyRootClaims>>[number];
 type MailDiagnostics = { admin: string; user: string } | null;
 
-
 type Tier = "free" | "pro" | "root_lifetime";
 type RootStatus = "none" | "pending_dns" | "active";
 
@@ -124,7 +123,6 @@ export function SubdomainPanel() {
     };
   }, [user, rootStatus, refreshStatus, refreshClaims]);
 
-
   // Stille autosave zodra de schakelaar, het doel of de DID wijzigt.
   useEffect(() => {
     if (!user || !loaded) return;
@@ -134,7 +132,9 @@ export function SubdomainPanel() {
       try {
         await saveSettings({ data: { enabled, target, did: did.trim() || null } });
       } catch (error) {
-        toast.error(error instanceof Error ? error.message : "Kon domeininstellingen niet opslaan.");
+        toast.error(
+          error instanceof Error ? error.message : "Kon domeininstellingen niet opslaan.",
+        );
       }
       setSaving(false);
     }, 800);
@@ -158,8 +158,7 @@ export function SubdomainPanel() {
           userId: user.id,
           handle,
           email: user.email,
-          userName:
-            (user.user_metadata?.["full_name"] as string | undefined)?.trim() || handle,
+          userName: (user.user_metadata?.["full_name"] as string | undefined)?.trim() || handle,
         }),
       });
       const data = (await res.json().catch(() => ({}))) as {
@@ -201,7 +200,6 @@ export function SubdomainPanel() {
     } catch {
       toast.error("Aanvraag mislukt. Probeer het later opnieuw.");
     } finally {
-
       setClaiming(false);
     }
   };
@@ -306,8 +304,7 @@ export function SubdomainPanel() {
                   <div className="space-y-1.5">
                     <p className="text-[11px] text-destructive">
                       Een e-mailmelding kon niet verstuurd worden
-                      {c.errorPayload ? ` — ${c.errorPayload.slice(0, 160)}` : ""}
-                      .
+                      {c.errorPayload ? ` — ${c.errorPayload.slice(0, 160)}` : ""}.
                     </p>
                     <Button
                       type="button"
@@ -319,9 +316,7 @@ export function SubdomainPanel() {
                         setResending(c.id);
                         try {
                           const res = await resendMail({ data: { claimId: c.id } });
-                          toast.success(
-                            `Admin: ${res.admin_email} · Gebruiker: ${res.user_email}`,
-                          );
+                          toast.success(`Admin: ${res.admin_email} · Gebruiker: ${res.user_email}`);
                           await refreshClaims();
                         } catch {
                           toast.error("Opnieuw versturen mislukt.");
@@ -344,7 +339,6 @@ export function SubdomainPanel() {
           })}
         </div>
       )}
-
 
       {rootStatus === "none" && (
         <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-border p-3">

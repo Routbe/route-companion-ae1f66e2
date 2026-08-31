@@ -2,7 +2,13 @@ import { useMemo, useState } from "react";
 import { Check, Code2, Copy, Lock } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 /** "Verified on ROUT"-badge voor de eigen site van de maker (SEO-backlink). */
 export function VerifiedBadgeCard({
@@ -50,9 +56,7 @@ export function VerifiedBadgeCard({
       </DialogTrigger>
       <DialogContent className="max-w-lg">
         <DialogHeader>
-          <DialogTitle>
-            {verified ? "Verified on ROUT-badge" : "Privacy Shield-badge"}
-          </DialogTitle>
+          <DialogTitle>{verified ? "Verified on ROUT-badge" : "Privacy Shield-badge"}</DialogTitle>
         </DialogHeader>
         {!verified && (
           <p className="rounded-lg border border-dashed p-3 text-xs text-muted-foreground">

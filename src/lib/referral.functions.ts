@@ -22,7 +22,9 @@ export const claimReferral = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const { claimReferralForUser } = await import("./referral.server");
     const result = await claimReferralForUser(context.userId, data.referrer);
-    return result.ok ? { ok: true as const } : { ok: false as const, reason: result.reason ?? "failed" };
+    return result.ok
+      ? { ok: true as const }
+      : { ok: false as const, reason: result.reason ?? "failed" };
   });
 
 /** Aantal uitnodigingen, geverifieerde vrienden en de vrijgespeelde beloning. */

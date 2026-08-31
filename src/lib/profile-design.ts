@@ -71,42 +71,78 @@ export const ROUT_PRESETS: {
     label: "Noir",
     themeId: "noir",
     cardStyle: "bordered",
-    design: { wallpaperType: "solid", wallpaperColor: "#0d0d0d", buttonVariant: "outline", buttonRadius: "sharp", fontPairing: "modern" },
+    design: {
+      wallpaperType: "solid",
+      wallpaperColor: "#0d0d0d",
+      buttonVariant: "outline",
+      buttonRadius: "sharp",
+      fontPairing: "modern",
+    },
   },
   {
     id: "paper",
     label: "Paper",
     themeId: "papier",
     cardStyle: "solid",
-    design: { wallpaperType: "solid", wallpaperColor: "#f7f4ef", buttonVariant: "fill", buttonRadius: "rounded", fontPairing: "serif" },
+    design: {
+      wallpaperType: "solid",
+      wallpaperColor: "#f7f4ef",
+      buttonVariant: "fill",
+      buttonRadius: "rounded",
+      fontPairing: "serif",
+    },
   },
   {
     id: "serene",
     label: "Serene Glass",
     themeId: "arctic",
     cardStyle: "glass",
-    design: { wallpaperType: "gradient", wallpaperGradient: "nordic", buttonVariant: "glass", buttonRadius: "pill", fontPairing: "modern" },
+    design: {
+      wallpaperType: "gradient",
+      wallpaperGradient: "nordic",
+      buttonVariant: "glass",
+      buttonRadius: "pill",
+      fontPairing: "modern",
+    },
   },
   {
     id: "emerald",
     label: "Emerald Core",
     themeId: "emerald",
     cardStyle: "neon",
-    design: { wallpaperType: "gradient", wallpaperGradient: "emerald", buttonVariant: "glass", buttonRadius: "rounded", fontPairing: "display" },
+    design: {
+      wallpaperType: "gradient",
+      wallpaperGradient: "emerald",
+      buttonVariant: "glass",
+      buttonRadius: "rounded",
+      fontPairing: "display",
+    },
   },
   {
     id: "cyberpunk",
     label: "Cyberpunk",
     themeId: "cyberpunk",
     cardStyle: "neon",
-    design: { wallpaperType: "gradient", wallpaperGradient: "cyber", buttonVariant: "hard", buttonRadius: "sharp", fontPairing: "mono" },
+    design: {
+      wallpaperType: "gradient",
+      wallpaperGradient: "cyber",
+      buttonVariant: "hard",
+      buttonRadius: "sharp",
+      fontPairing: "mono",
+    },
   },
   {
     id: "velvet",
     label: "Velvet",
     themeId: "mocha",
     cardStyle: "pill",
-    design: { wallpaperType: "gradient", wallpaperGradient: "velvet", buttonVariant: "fill", buttonRadius: "pill", fontPairing: "serif" },
+    design: {
+      wallpaperType: "gradient",
+      wallpaperGradient: "velvet",
+      buttonVariant: "fill",
+      buttonRadius: "pill",
+      fontPairing: "serif",
+    },
   },
 ];
 
@@ -311,7 +347,11 @@ const httpsUrl = (value: unknown): string | null =>
 export function normalizeDesignPrefs(r: Record<string, unknown>): ProfileDesignPrefs {
   return {
     customDesign: Boolean(r["customDesign"]),
-    wallpaperType: pick(r["wallpaperType"], ["theme", "solid", "gradient", "image"] as const, "theme"),
+    wallpaperType: pick(
+      r["wallpaperType"],
+      ["theme", "solid", "gradient", "image"] as const,
+      "theme",
+    ),
     wallpaperColor: hex(r["wallpaperColor"]),
     wallpaperGradient: GRADIENT_PRESETS.some((g) => g.id === r["wallpaperGradient"])
       ? (r["wallpaperGradient"] as string)

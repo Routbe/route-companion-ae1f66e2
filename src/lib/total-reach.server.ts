@@ -73,8 +73,7 @@ export async function readReachSettings(profileId: string): Promise<ReachSetting
   return {
     showTotalReach: row["show_total_reach"] === true,
     totalReachCount: Number(row["total_reach_count"] ?? 0) || 0,
-    manualCount:
-      manualRaw === null || manualRaw === undefined ? null : Number(manualRaw) || 0,
+    manualCount: manualRaw === null || manualRaw === undefined ? null : Number(manualRaw) || 0,
     lastSyncedAt: toIso(row["reach_last_synced_at"]),
     accounts: await readAccounts(profileId),
   };
@@ -97,8 +96,7 @@ export async function saveReachSettings(
     `;
   }
   if (input.manualCount !== undefined) {
-    const manual =
-      input.manualCount === null ? null : Math.max(0, Math.round(input.manualCount));
+    const manual = input.manualCount === null ? null : Math.max(0, Math.round(input.manualCount));
     await sql`
       update public.profiles set total_reach_manual = ${manual} where id = ${profileId}
     `;

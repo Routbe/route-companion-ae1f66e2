@@ -45,7 +45,8 @@ describe("resolveMediaEmbed — Spotify", () => {
 
   it("intl-locale prefix", () => {
     expect(
-      resolveMediaEmbed("https://open.spotify.com/intl-nl/track/4uLU6hMCjMI75M1A2tKUQC")?.externalId,
+      resolveMediaEmbed("https://open.spotify.com/intl-nl/track/4uLU6hMCjMI75M1A2tKUQC")
+        ?.externalId,
     ).toBe("4uLU6hMCjMI75M1A2tKUQC");
   });
 });

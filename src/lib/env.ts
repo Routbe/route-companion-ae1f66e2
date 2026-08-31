@@ -53,7 +53,13 @@ export function checkEnv(): EnvReport {
   for (const key of REQUIRED_ENV) (has(key) ? present : missingRequired).push(key);
   for (const key of OPTIONAL_ENV) (has(key) ? present : missingOptional).push(key);
 
-  return { production, present, missingRequired, missingOptional, ok: missingRequired.length === 0 };
+  return {
+    production,
+    present,
+    missingRequired,
+    missingOptional,
+    ok: missingRequired.length === 0,
+  };
 }
 
 let warned = false;

@@ -1,6 +1,14 @@
 import { useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
-import { AlertTriangle, Check, ClipboardCopy, Copy, ExternalLink, Loader2, ShieldCheck } from "lucide-react";
+import {
+  AlertTriangle,
+  Check,
+  ClipboardCopy,
+  Copy,
+  ExternalLink,
+  Loader2,
+  ShieldCheck,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { notifySuccess } from "@/lib/notify";
 import { SEPA_DETAILS } from "@/lib/profile";
@@ -52,49 +60,54 @@ export function SepaTransferCard({
   const money = formatCurrency(amountCents, "nl", currency);
 
   /** Alle regels van het kopieerbare vak — één bron voor UI én klembord. */
-  const rows: { label: string; value: string; mono?: boolean; copyable?: boolean; testId?: string }[] =
-    [
-      { label: "Begunstigde", value: beneficiary, copyable: true },
-      ...(bank?.routingNumber
-        ? [
-            {
-              label: "Routingnummer",
-              value: bank.routingNumber,
-              mono: true,
-              copyable: true,
-              testId: "bank-routing",
-            },
-          ]
-        : []),
-      ...(bank?.sortCode
-        ? [
-            {
-              label: "Sort code",
-              value: bank.sortCode,
-              mono: true,
-              copyable: true,
-              testId: "bank-sort-code",
-            },
-          ]
-        : []),
-      ...(bank?.accountNumber
-        ? [
-            {
-              label: "Rekeningnummer",
-              value: bank.accountNumber,
-              mono: true,
-              copyable: true,
-              testId: "bank-account-number",
-            },
-          ]
-        : []),
-      ...(iban
-        ? [{ label: "IBAN", value: iban, mono: true, copyable: true, testId: "sepa-iban" }]
-        : []),
-      ...(bic ? [{ label: "BIC / Swift", value: bic, mono: true, copyable: true }] : []),
-      { label: "Bedrag", value: money, mono: true, testId: "sepa-amount" },
-      { label: "Referentie", value: reference, mono: true, copyable: true, testId: "sepa-reference" },
-    ];
+  const rows: {
+    label: string;
+    value: string;
+    mono?: boolean;
+    copyable?: boolean;
+    testId?: string;
+  }[] = [
+    { label: "Begunstigde", value: beneficiary, copyable: true },
+    ...(bank?.routingNumber
+      ? [
+          {
+            label: "Routingnummer",
+            value: bank.routingNumber,
+            mono: true,
+            copyable: true,
+            testId: "bank-routing",
+          },
+        ]
+      : []),
+    ...(bank?.sortCode
+      ? [
+          {
+            label: "Sort code",
+            value: bank.sortCode,
+            mono: true,
+            copyable: true,
+            testId: "bank-sort-code",
+          },
+        ]
+      : []),
+    ...(bank?.accountNumber
+      ? [
+          {
+            label: "Rekeningnummer",
+            value: bank.accountNumber,
+            mono: true,
+            copyable: true,
+            testId: "bank-account-number",
+          },
+        ]
+      : []),
+    ...(iban
+      ? [{ label: "IBAN", value: iban, mono: true, copyable: true, testId: "sepa-iban" }]
+      : []),
+    ...(bic ? [{ label: "BIC / Swift", value: bic, mono: true, copyable: true }] : []),
+    { label: "Bedrag", value: money, mono: true, testId: "sepa-amount" },
+    { label: "Referentie", value: reference, mono: true, copyable: true, testId: "sepa-reference" },
+  ];
 
   const localQr = buildLocalPaymentQr({
     beneficiary,
@@ -110,7 +123,6 @@ export function SepaTransferCard({
     pixCity: bank?.pixCity ?? null,
     upiVpa: bank?.upiVpa ?? null,
   });
-
 
   const copy = (value: string, what: string) => {
     void navigator.clipboard.writeText(value.replace(/\s+/g, " ").trim());
@@ -165,8 +177,6 @@ export function SepaTransferCard({
         }
       />
 
-
-
       {bankState === "loading" && (
         <p className="flex items-center gap-2 rounded-lg border border-border bg-background px-2.5 py-2 text-muted-foreground">
           <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden /> Bankgegevens voor jouw land
@@ -200,7 +210,6 @@ export function SepaTransferCard({
           Brazilië, UPI in India) wanneer die verschijnt.
         </p>
       ) : bankState === "loading" ? null : (
-
         <>
           {status !== "paid" && (
             <p className="rounded-lg border border-border bg-background px-2.5 py-2 text-[11px] leading-relaxed text-muted-foreground">
@@ -214,10 +223,9 @@ export function SepaTransferCard({
 
           {currency === "EUR" ? (
             <p className="rounded-lg border border-border bg-background px-2.5 py-2 text-[11px] leading-relaxed text-muted-foreground">
-              Je betaalt op een Europese SEPA-rekening, volledig conform de Europese
-              SEPA-wetgeving. Elke betaler binnen de SEPA-zone kan dus overschrijven zonder extra
-              kosten of buitenlandtoeslag — in euro, met de gewone binnenlandse tarieven van je
-              bank.
+              Je betaalt op een Europese SEPA-rekening, volledig conform de Europese SEPA-wetgeving.
+              Elke betaler binnen de SEPA-zone kan dus overschrijven zonder extra kosten of
+              buitenlandtoeslag — in euro, met de gewone binnenlandse tarieven van je bank.
             </p>
           ) : (
             <p className="rounded-lg border border-border bg-background px-2.5 py-2 text-[11px] leading-relaxed text-muted-foreground">

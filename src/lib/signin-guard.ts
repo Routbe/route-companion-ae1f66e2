@@ -2,7 +2,6 @@ import { db } from "@/lib/db/client";
 import { withAuthFallback } from "./auth-timeout";
 import { i18n } from "@/lib/i18n";
 
-
 /**
  * Brute-force protection for sign-in.
  *
@@ -41,7 +40,10 @@ export async function checkSigninGuard(email: string): Promise<GuardState> {
   const data = await withAuthFallback(
     (db as unknown as { rpc: (fn: string, args: unknown) => Promise<{ data: unknown }> })
       .rpc("signin_guard_status", { _identity_hash: hash })
-      .then((res) => res.data, () => null),
+      .then(
+        (res) => res.data,
+        () => null,
+      ),
     null,
     "signin_guard_status",
   );
@@ -55,13 +57,15 @@ export async function recordSigninAttempt(email: string, success: boolean): Prom
   const data = await withAuthFallback(
     (db as unknown as { rpc: (fn: string, args: unknown) => Promise<{ data: unknown }> })
       .rpc("signin_guard_record", { _identity_hash: hash, _success: success })
-      .then((res) => res.data, () => null),
+      .then(
+        (res) => res.data,
+        () => null,
+      ),
     null,
     "signin_guard_record",
   );
   return parse(data);
 }
-
 
 /** Human-readable wait time for a lock-out, in the active UI language. */
 export function lockoutMessage(retryAfter: number): string {

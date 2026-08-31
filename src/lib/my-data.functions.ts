@@ -18,6 +18,9 @@ export const deleteMyAccountFn = createServerFn({ method: "POST" })
       await deleteMyAccountData(context.userId);
       return { ok: true as const };
     } catch (error) {
-      return { ok: false as const, message: error instanceof Error ? error.message : "delete_failed" };
+      return {
+        ok: false as const,
+        message: error instanceof Error ? error.message : "delete_failed",
+      };
     }
   });

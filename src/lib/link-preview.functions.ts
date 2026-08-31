@@ -111,9 +111,10 @@ export const fetchLinkPreview = createServerFn({ method: "POST" })
 
       /** Laatste redmiddel: de grootste cover-achtige <img> of preload-afbeelding. */
       const scrapedImage = (): string | null => {
-        const preload = /<link[^>]+rel=["'](?:image_src|preload)["'][^>]*href=["']([^"']+\.(?:jpe?g|png|webp)[^"']*)["']/i.exec(
-          html,
-        );
+        const preload =
+          /<link[^>]+rel=["'](?:image_src|preload)["'][^>]*href=["']([^"']+\.(?:jpe?g|png|webp)[^"']*)["']/i.exec(
+            html,
+          );
         if (preload?.[1]) return preload[1];
         const candidates = [...html.matchAll(/<img[^>]+>/gi)]
           .map((m) => m[0])
@@ -145,7 +146,8 @@ export const fetchLinkPreview = createServerFn({ method: "POST" })
 
       const rawTitle =
         meta(["og:title", "twitter:title"]) ??
-        (/<title[^>]*>([^<]{1,200})<\/title>/i.exec(html)?.[1] ?? null);
+        /<title[^>]*>([^<]{1,200})<\/title>/i.exec(html)?.[1] ??
+        null;
 
       let imageUrl: string | null = null;
       if (rawImage) {

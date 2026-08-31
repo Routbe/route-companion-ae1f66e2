@@ -110,8 +110,7 @@ export function BlueskyWizard() {
     }
   };
 
-  const tierLabel =
-    tier === "root_lifetime" ? "Root-subdomein" : tier === "pro" ? "Pro" : "Gratis";
+  const tierLabel = tier === "root_lifetime" ? "Root-subdomein" : tier === "pro" ? "Pro" : "Gratis";
 
   return (
     <section className="space-y-4 rounded-2xl border border-border bg-card p-4 sm:p-5">
@@ -162,8 +161,9 @@ export function BlueskyWizard() {
 
         <Step n={2} title="Stap 2: Stel je domein in op Bluesky" done={Boolean(did)}>
           <p className="text-xs text-muted-foreground">
-            Ga in de Bluesky app naar <strong>Instellingen → Handle → Ik heb mijn eigen domein</strong>
-            . Kies de optie <strong>Geen DNS-paneel / HTTP-bestand</strong>.
+            Ga in de Bluesky app naar{" "}
+            <strong>Instellingen → Handle → Ik heb mijn eigen domein</strong>. Kies de optie{" "}
+            <strong>Geen DNS-paneel / HTTP-bestand</strong>.
           </p>
           <div className="flex items-start gap-1.5">
             <code className="min-w-0 flex-1 break-all rounded-lg border border-border bg-muted p-2 font-mono text-[11px]">

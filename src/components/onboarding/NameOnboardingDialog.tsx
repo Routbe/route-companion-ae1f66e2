@@ -89,7 +89,6 @@ export function NameOnboardingDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-sm">
-
         <DialogHeader>
           <DialogTitle>What should we call you?</DialogTitle>
           <DialogDescription>

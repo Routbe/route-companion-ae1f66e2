@@ -101,18 +101,22 @@ describe("valuta-specifieke betaal-QR", () => {
   });
 
   it("weigert ongeldige Pix- en UPI-sleutels", () => {
-    expect(buildPixPayload({
-      pixKey: "geen sleutel",
-      beneficiary: "ROUT",
-      amountCents: 100,
-      reference: "R",
-    })).toBeNull();
-    expect(buildUpiPayload({
-      vpa: "rout",
-      beneficiary: "ROUT",
-      amountCents: 100,
-      reference: "R",
-    })).toBeNull();
+    expect(
+      buildPixPayload({
+        pixKey: "geen sleutel",
+        beneficiary: "ROUT",
+        amountCents: 100,
+        reference: "R",
+      }),
+    ).toBeNull();
+    expect(
+      buildUpiPayload({
+        vpa: "rout",
+        beneficiary: "ROUT",
+        amountCents: 100,
+        reference: "R",
+      }),
+    ).toBeNull();
   });
 });
 

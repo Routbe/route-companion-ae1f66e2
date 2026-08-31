@@ -76,7 +76,6 @@ export function PromoBlock({
   );
 }
 
-
 /** Brevo-nieuwsbriefinschrijving, volledig in de pagina. */
 export function NewsletterBlock({
   handle,

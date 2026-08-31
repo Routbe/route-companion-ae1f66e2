@@ -27,9 +27,8 @@ export const Route = createFileRoute("/api_/payment-status")({
           return Response.json({ error: "invalid_payment" }, { status: 400 });
         }
 
-        const { readSession, readCookie, SESSION_COOKIE } = await import(
-          "@/lib/auth/session.server"
-        );
+        const { readSession, readCookie, SESSION_COOKIE } =
+          await import("@/lib/auth/session.server");
         const user = await readSession(
           readCookie(request.headers.get("cookie"), SESSION_COOKIE),
         ).catch(() => null);

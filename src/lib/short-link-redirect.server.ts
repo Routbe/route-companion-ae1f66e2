@@ -17,20 +17,13 @@ import { parseAgent } from "@/lib/user-agent";
 import { enforceRateLimit, RateLimitError } from "@/lib/rate-limit.server";
 
 export type ResolveStatus =
-  | "ok"
-  | "not_found"
-  | "disabled"
-  | "expired"
-  | "suspended"
-  | "paused"
-  | "error";
+  "ok" | "not_found" | "disabled" | "expired" | "suspended" | "paused" | "error";
 
 type ResolveShortLinkRow = { id: string; status: string; target_url: string | null };
 
 export type ResolveResult =
   | { status: "ok"; targetUrl: string; id: string }
   | { status: Exclude<ResolveStatus, "ok">; targetUrl?: undefined; id?: undefined };
-
 
 /** How many resolutions one anonymous caller may make per minute. */
 export const RESOLVE_LIMIT_PER_MINUTE = 120;
@@ -122,7 +115,10 @@ export async function resolveShortLink(
       `select public.log_qr_scan(_tracked_qr_id => $1, _device => $2, _country => $3, _browser => $4, _os => $5)`,
       [row.id, deviceFromAgent(ua), request.headers.get("cf-ipcountry"), agent.browser, agent.os],
     )
-    .then(() => undefined, () => undefined);
+    .then(
+      () => undefined,
+      () => undefined,
+    );
 
   return { status: "ok", targetUrl: row.target_url, id: row.id };
 }
@@ -163,7 +159,6 @@ h1{font-size:1.25rem;font-weight:600;margin:0 0 .5rem}p{font-size:.875rem;color:
     headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" },
   });
 }
-
 
 /** 302 response with caching disabled so an owner can repoint a live code. */
 export function redirectResponse(targetUrl: string): Response {

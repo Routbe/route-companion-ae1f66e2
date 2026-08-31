@@ -2,12 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import Page from "@/pages/routes/u.username";
 import { getPublicProfileByHandle } from "@/lib/studio-profile.functions";
 import { getRequestLocale } from "@/lib/locale.functions";
-import {
-  canonicalLinks,
-  profileJsonLd,
-  profileSocialMeta,
-  socialMeta,
-} from "@/lib/social-meta";
+import { canonicalLinks, profileJsonLd, profileSocialMeta, socialMeta } from "@/lib/social-meta";
 import type { Locale } from "@/lib/i18n";
 import { parseDisplayPrefs, bioForLocale } from "@/lib/profile-display";
 import { sanitizeHandleInput } from "@/lib/validations/sanitizeHandle";

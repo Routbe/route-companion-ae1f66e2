@@ -23,7 +23,6 @@ import { useIsAdmin, clearAdminRoleCache } from "@/hooks/useIsAdmin";
 import { UserAvatar } from "@/components/UserAvatar";
 import { getMyAccount } from "@/lib/account.functions";
 
-
 /**
  * Account context only. Platform tools live in the burger menu so the two
  * surfaces never duplicate each other.
@@ -40,7 +39,6 @@ export function ProfileMenu() {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const { isAdmin } = useIsAdmin();
   const loadAccount = useServerFn(getMyAccount);
-
 
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
@@ -65,9 +63,7 @@ export function ProfileMenu() {
       setEarlyBeliever(Boolean(data.isEarlyBeliever || data.isPaid));
       const meta = (user.user_metadata ?? {}) as Record<string, unknown>;
       const fromProvider = meta["avatar_url"] ?? meta["picture"];
-      setAvatarUrl(
-        data.avatarUrl ?? (typeof fromProvider === "string" ? fromProvider : null),
-      );
+      setAvatarUrl(data.avatarUrl ?? (typeof fromProvider === "string" ? fromProvider : null));
     })();
     return () => {
       cancelled = true;
@@ -107,13 +103,8 @@ export function ProfileMenu() {
   const name = fullName || user.user_metadata?.full_name || user.email?.split("@")[0] || "Account";
   const displayName = String(name).charAt(0).toUpperCase() + String(name).slice(1);
   const handle = username || user.email?.split("@")[0] || "you";
-  const tierLabel = earlyBeliever
-    ? "Early Believer"
-    : verified || tier === "pro"
-      ? "Pro"
-      : "Free";
+  const tierLabel = earlyBeliever ? "Early Believer" : verified || tier === "pro" ? "Pro" : "Free";
   const isPaidTier = tierLabel !== "Free";
-
 
   return (
     <div className="flex items-center gap-3 sm:gap-4">
@@ -143,9 +134,7 @@ export function ProfileMenu() {
               <span
                 className={
                   "shrink-0 rounded px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase " +
-                  (isPaidTier
-                    ? "bg-foreground text-background"
-                    : "bg-muted text-muted-foreground")
+                  (isPaidTier ? "bg-foreground text-background" : "bg-muted text-muted-foreground")
                 }
               >
                 {tierLabel}
@@ -157,7 +146,6 @@ export function ProfileMenu() {
           <DropdownMenuItem onClick={() => nav("/studio")} className="gap-2">
             <Sparkles className="h-4 w-4 shrink-0" aria-hidden /> Profile Hub Studio
           </DropdownMenuItem>
-
 
           <DropdownMenuItem onClick={() => nav("/dashboard")} className="gap-2">
             <LayoutDashboard className="h-4 w-4 shrink-0" aria-hidden /> Dashboard

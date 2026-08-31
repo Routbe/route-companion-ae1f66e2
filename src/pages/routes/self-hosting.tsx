@@ -5,8 +5,6 @@ import { AppLayout } from "@/components/layout/AppLayout";
 import { CodeBlock } from "@/components/CodeBlock";
 import { useI18n } from "@/lib/i18n";
 
-
-
 import { GITHUB_ACCOUNT, GITHUB_REPO_URL } from "@/lib/social-links";
 
 const REPO_CLONE = GITHUB_REPO_URL;
@@ -52,7 +50,7 @@ const STEPS_EN: Step[] = [
     short: "4. Migrations",
     title: "4. Run the database migrations",
     body: "Apply the SQL files in db/ to create the tracked_qrs and qr_scans tables, their row-level-security policies and grants. Uploaded images, PDFs and audio are stored in Postgres itself — no external object storage is required.",
-    code: "psql \"$DATABASE_URL\" -f db/00_compat.sql",
+    code: 'psql "$DATABASE_URL" -f db/00_compat.sql',
   },
   {
     id: "5-dev",
@@ -107,7 +105,7 @@ const STEPS_NL: Step[] = [
     short: "4. Migraties",
     title: "4. Databasemigraties uitvoeren",
     body: "Voer de SQL-bestanden in db/ uit om de tabellen tracked_qrs en qr_scans met hun row-level-security-policies en grants aan te maken. Maak ook een private storage-bucket qr-files voor geüploade afbeeldingen, PDF\u2019s en audio.",
-    code: "psql \"$DATABASE_URL\" -f db/00_compat.sql",
+    code: 'psql "$DATABASE_URL" -f db/00_compat.sql',
   },
   {
     id: "5-dev",

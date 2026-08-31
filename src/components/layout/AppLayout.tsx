@@ -118,7 +118,6 @@ export function AppLayout({
       <Footer />
       <BackToTop />
       <NameOnboardingDialog />
-
     </div>
   );
 }

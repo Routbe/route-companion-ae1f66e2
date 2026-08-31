@@ -25,10 +25,8 @@ export const ALIAS_MIN_LENGTH = 5;
 export const MSG_CHARSET =
   "❗ Deze gebruikersnaam bevat niet-toegestane tekens (gebruik enkel kleine letters, cijfers, . _ -)";
 export const MSG_LENGTH = "❗ Een gebruikersnaam telt tussen 3 en 30 tekens.";
-export const MSG_REPEAT =
-  "❗ Twee opeenvolgende leestekens (.., -- of __) zijn niet toegestaan.";
-export const MSG_EDGES =
-  "❗ Een gebruikersnaam begint en eindigt met een letter of cijfer.";
+export const MSG_REPEAT = "❗ Twee opeenvolgende leestekens (.., -- of __) zijn niet toegestaan.";
+export const MSG_EDGES = "❗ Een gebruikersnaam begint en eindigt met een letter of cijfer.";
 export const MSG_RESERVED =
   "❗ Deze naam is een gereserveerd systeemwoord en kan niet geclaimd worden.";
 export const MSG_ALIAS_DIGITS =
@@ -49,10 +47,7 @@ export const STRICT_HANDLE_PATTERN = /^[a-z0-9._-]+$/;
  * Retourneert een leesbare foutmelding (met rood uitroepteken) of `null` als de
  * handle geldig is. Een lege invoer geeft `null`: dan is er nog niets te melden.
  */
-export function strictHandleIssue(
-  raw: string,
-  options: StrictHandleOptions = {},
-): string | null {
+export function strictHandleIssue(raw: string, options: StrictHandleOptions = {}): string | null {
   const handle = sanitizeHandleInput(raw);
   if (!handle) return null;
 
@@ -63,8 +58,7 @@ export function strictHandleIssue(
   if (isReservedSlug(handle) || EXTRA_RESERVED.has(handle)) return MSG_RESERVED;
   if (
     options.alias &&
-    (handle.length < ALIAS_MIN_LENGTH ||
-      (handle.match(/[0-9]/g) ?? []).length < ALIAS_MIN_DIGITS)
+    (handle.length < ALIAS_MIN_LENGTH || (handle.match(/[0-9]/g) ?? []).length < ALIAS_MIN_DIGITS)
   ) {
     return MSG_ALIAS_DIGITS;
   }

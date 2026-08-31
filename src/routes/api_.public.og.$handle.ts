@@ -61,14 +61,10 @@ export const Route = createFileRoute("/api_/public/og/$handle")({
 
         if (!wantsSvg) {
           try {
-            const { svgToPng, fetchImageAsDataUri } = await import(
-              "@/lib/og-render.server"
-            );
+            const { svgToPng, fetchImageAsDataUri } = await import("@/lib/og-render.server");
             // resvg haalt zelf geen externe afbeeldingen op: de avatar moet
             // als data-URI in de vector zitten voor we rasteriseren.
-            const inlineAvatar = avatarUrl
-              ? await fetchImageAsDataUri(avatarUrl)
-              : null;
+            const inlineAvatar = avatarUrl ? await fetchImageAsDataUri(avatarUrl) : null;
             const png = await svgToPng(
               ogSvg({
                 handle,
@@ -103,7 +99,6 @@ export const Route = createFileRoute("/api_/public/og/$handle")({
           avatarUrl,
           ...(urlLabel ? { urlLabel } : {}),
         });
-
 
         return new Response(svg, {
           headers: {

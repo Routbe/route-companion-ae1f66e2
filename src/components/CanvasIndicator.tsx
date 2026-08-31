@@ -9,13 +9,7 @@ import { checkVersion1Canvas } from "@/lib/studio-limits";
  * langer, dan schaalt de encoder zelf naar een hogere versie — dat melden we
  * neutraal in plaats van als fout. Pas boven Version 10 waarschuwen we.
  */
-export function CanvasIndicator({
-  payload,
-  className,
-}: {
-  payload: string;
-  className?: string;
-}) {
+export function CanvasIndicator({ payload, className }: { payload: string; className?: string }) {
   const check = checkVersion1Canvas(payload);
   const tone = check.isVersion1 ? "ok" : check.fits ? "info" : "warn";
   const Icon = tone === "ok" ? CheckCircle2 : tone === "info" ? Maximize2 : AlertTriangle;
@@ -27,8 +21,7 @@ export function CanvasIndicator({
         tone === "ok" &&
           "border-emerald-500/40 bg-emerald-500/5 text-emerald-700 dark:text-emerald-400",
         tone === "info" && "border-border bg-muted/40 text-muted-foreground",
-        tone === "warn" &&
-          "border-amber-500/40 bg-amber-500/5 text-amber-700 dark:text-amber-400",
+        tone === "warn" && "border-amber-500/40 bg-amber-500/5 text-amber-700 dark:text-amber-400",
         className,
       )}
       role="status"

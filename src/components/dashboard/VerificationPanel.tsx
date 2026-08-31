@@ -34,17 +34,11 @@ import {
 import { StripePaymentCard } from "@/components/dashboard/StripePaymentCard";
 import { startBunqVerification, resumeBunqPayment } from "@/lib/bunq.functions";
 import { useBunqPaymentPolling, type BunqTabRef } from "@/hooks/useBunqPaymentPolling";
-import {
-  usePaymentIntentPolling,
-  type PaymentIntentRef,
-} from "@/hooks/usePaymentIntentPolling";
+import { usePaymentIntentPolling, type PaymentIntentRef } from "@/hooks/usePaymentIntentPolling";
 import { usePaymentStatusPolling } from "@/hooks/usePaymentStatusPolling";
 import { BunqPaymentCard } from "@/components/dashboard/BunqPaymentCard";
 import { SepaTransferCard } from "@/components/dashboard/SepaTransferCard";
-import {
-  getBankTransferDetails,
-  type BankTransferDetails,
-} from "@/lib/bank-transfer.functions";
+import { getBankTransferDetails, type BankTransferDetails } from "@/lib/bank-transfer.functions";
 import { validatePromoCode } from "@/lib/promo.functions";
 import { getReferralStats } from "@/lib/referral.functions";
 import type { ReferralReward } from "@/lib/referral-rewards";
@@ -70,20 +64,16 @@ import { countryName, flagEmoji, sortedCountries } from "@/lib/countries";
 import { currencyForCountry } from "@/lib/bunq-currency";
 import { saveBillingCountry, getBillingCountry } from "@/lib/billing-country.functions";
 
-
 type PaymentMethod = "stripe" | "sepa" | "bunq";
 
 /** Accentkleur van de landenkiezer. */
 const ACCENT = "#2563EB";
-
 
 /** A dropped session surfaces as a 401 from the server function middleware. */
 function isAuthFailure(err: unknown): boolean {
   const text = err instanceof Error ? err.message : String(err);
   return /401|unauthorized|unauthenticated/i.test(text);
 }
-
-
 
 /** Payment states worth telling the user about, mapped to translation keys. */
 const PAYMENT_NOTICES: Record<string, string | undefined> = {
@@ -106,7 +96,6 @@ const BENEFITS = [
   { key: "domain", requires: "payment" as const },
   { key: "price", requires: "payment" as const },
 ];
-
 
 /**
  * Early Believer checkout — one-time €3.99 lifetime verification with an
@@ -156,9 +145,14 @@ export function VerificationPanel() {
     const paymentId = params.get("payment_id");
     const clean = () => {
       const url = new URL(window.location.href);
-      ["payment", "intent", "payment_id", "payment_intent", "payment_intent_client_secret", "redirect_status"].forEach(
-        (k) => url.searchParams.delete(k),
-      );
+      [
+        "payment",
+        "intent",
+        "payment_id",
+        "payment_intent",
+        "payment_intent_client_secret",
+        "redirect_status",
+      ].forEach((k) => url.searchParams.delete(k));
       window.history.replaceState({}, "", url.toString());
     };
     if (!intentId) {
@@ -223,7 +217,6 @@ export function VerificationPanel() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
   // Tarieven komen uit het adminportaal; defaults tot ze geladen zijn.
   const [pricing, setPricing] = useState<PricingSettings>(DEFAULT_PRICING);
   // `null` = still unknown; the card option stays enabled until we know better.
@@ -276,7 +269,9 @@ export function VerificationPanel() {
   const persistCountry = useServerFn(saveBillingCountry);
   const loadSavedCountry = useServerFn(getBillingCountry);
   const [bank, setBank] = useState<BankTransferDetails | null>(null);
-  const [bankState, setBankState] = useState<"loading" | "ok" | "unavailable" | "bunqme">("loading");
+  const [bankState, setBankState] = useState<"loading" | "ok" | "unavailable" | "bunqme">(
+    "loading",
+  );
   /** Dynamische bunq.me-link wanneer er geen lokale rekening bestaat. */
   const [bunqmeUrl, setBunqmeUrl] = useState<string | null>(null);
   /** Valuta van het gekozen land (voor de EUR-omrekeningsmelding). */
@@ -320,8 +315,6 @@ export function VerificationPanel() {
     };
   }, [loadSavedCountry]);
 
-
-
   useEffect(() => {
     let cancelled = false;
     void loadReferralStats()
@@ -335,7 +328,6 @@ export function VerificationPanel() {
       cancelled = true;
     };
   }, [loadReferralStats]);
-
 
   useEffect(() => {
     let cancelled = false;
@@ -367,7 +359,11 @@ export function VerificationPanel() {
   // kaart €13,99 (direct actief). Een promocode gaat daar rechtstreeks van af.
   // bunq rekent als bankroute (SEPA-prijs €3,99): geen kaartkosten.
   const checkoutMethod =
-    method === "sepa" ? ("sepa" as const) : method === "bunq" ? ("bunq" as const) : ("card" as const);
+    method === "sepa"
+      ? ("sepa" as const)
+      : method === "bunq"
+        ? ("bunq" as const)
+        : ("card" as const);
   const baseCents = methodPriceCents(checkoutMethod, pricing);
   const feeCents = methodFeeCents(checkoutMethod, pricing);
   // De server rekent met de laagste van promocode en referral-beloning; de UI
@@ -431,9 +427,6 @@ export function VerificationPanel() {
     };
   }, [country, method, loadBankDetails, transferAmountCents, transferReference]);
 
-
-
-
   const applyPromo = async () => {
     const code = promoInput.trim();
     if (!code) return;
@@ -454,7 +447,6 @@ export function VerificationPanel() {
       setPromoBusy(false);
     }
   };
-
 
   useEffect(() => {
     let cancelled = false;
@@ -509,7 +501,9 @@ export function VerificationPanel() {
         .maybeSingle();
       if (cancelled) return;
       setPayment(
-        data ? { status: String(data.status), at: (data.updated_at ?? data.created_at) as string } : null,
+        data
+          ? { status: String(data.status), at: (data.updated_at ?? data.created_at) as string }
+          : null,
       );
     };
 
@@ -548,7 +542,6 @@ export function VerificationPanel() {
       )
       .subscribe();
 
-
     return () => {
       cancelled = true;
       void db.removeChannel(channel);
@@ -583,8 +576,6 @@ export function VerificationPanel() {
         : { status: livePayment.status as string, at: livePayment.at as string },
     );
   }, [livePayment.status, livePayment.at]);
-
-
 
   /**
    * Kaartroute: embedded Stripe Elements op rout.be zelf. Alleen een
@@ -674,7 +665,6 @@ export function VerificationPanel() {
     }
   };
 
-
   /** SEPA route: the legal name is mandatory here too. */
   const requestSepa = async () => {
     if (!user) {
@@ -696,7 +686,6 @@ export function VerificationPanel() {
         setSepaTotalCents(res.totalCents ?? null);
         setShowSepa(true);
         setNameOpen(false);
-
       } else if ("reason" in res && res.reason === "email_unconfirmed") {
         notifyError(t("pay.err.email"));
       } else {
@@ -836,7 +825,6 @@ export function VerificationPanel() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active]);
 
-
   return (
     <section className="space-y-4 rounded-2xl border border-border bg-card p-5">
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -949,7 +937,6 @@ export function VerificationPanel() {
         })}
       </ul>
 
-
       {!active && (
         <div className="overflow-hidden rounded-xl border border-border">
           {/* Line item */}
@@ -966,9 +953,6 @@ export function VerificationPanel() {
               {euro(baseCents)}
             </span>
           </div>
-
-
-
 
           {/* Donation selector */}
           <fieldset className="border-b border-border p-4">
@@ -1162,7 +1146,11 @@ export function VerificationPanel() {
                                 {c.code}
                               </span>
                               {selected && (
-                                <Check className="h-3.5 w-3.5" style={{ color: ACCENT }} aria-hidden />
+                                <Check
+                                  className="h-3.5 w-3.5"
+                                  style={{ color: ACCENT }}
+                                  aria-hidden
+                                />
                               )}
                             </CommandItem>
                           );
@@ -1184,7 +1172,6 @@ export function VerificationPanel() {
                 </p>
               )}
             </div>
-
 
             {/* Promocode */}
             <div className="space-y-1.5">
@@ -1356,7 +1343,6 @@ export function VerificationPanel() {
               </div>
             )}
 
-
             {/* Mandatory legal-name step — verification is identity-bound. */}
             <Dialog open={nameOpen} onOpenChange={setNameOpen}>
               <DialogContent className="sm:max-w-md">
@@ -1431,7 +1417,6 @@ export function VerificationPanel() {
               </DialogContent>
             </Dialog>
 
-
             {method === "bunq" && showBunq && bunqUrl && (
               <BunqPaymentCard
                 shareUrl={bunqUrl}
@@ -1476,9 +1461,6 @@ export function VerificationPanel() {
                 currency={countryCurrency}
               />
             )}
-
-
-
           </div>
         </div>
       )}

@@ -51,7 +51,6 @@ interface RawScan {
   os: string | null;
 }
 
-
 interface StatsResponse {
   tracked: Tracked;
   scans: Scan[];
@@ -84,7 +83,14 @@ export default function Stats() {
     try {
       // The dashboard token itself is the credential; the lookup runs through a
       // database function so no other link is ever readable.
-      const { data: raw, error: rpcError } = await (db as unknown as { rpc: (fn: string, args: unknown) => Promise<{ data: unknown; error: { message: string } | null }> }).rpc("short_link_stats", {
+      const { data: raw, error: rpcError } = await (
+        db as unknown as {
+          rpc: (
+            fn: string,
+            args: unknown,
+          ) => Promise<{ data: unknown; error: { message: string } | null }>;
+        }
+      ).rpc("short_link_stats", {
         _token: token,
       });
       if (rpcError) throw new Error(rpcError.message);
@@ -187,7 +193,11 @@ export default function Stats() {
     if (!token) return;
     setManaging(true);
     try {
-      const { error } = await (db as unknown as { rpc: (fn: string, args: unknown) => Promise<{ error: { message: string } | null }> }).rpc("manage_short_link", {
+      const { error } = await (
+        db as unknown as {
+          rpc: (fn: string, args: unknown) => Promise<{ error: { message: string } | null }>;
+        }
+      ).rpc("manage_short_link", {
         _token: token,
         _action: body.action as string,
         _target_url: (body.target_url as string | undefined) ?? null,
@@ -298,7 +308,9 @@ export default function Stats() {
                   <p className="text-xs uppercase tracking-wide text-muted-foreground">
                     {t("stats.totalScans")}
                   </p>
-                  <p className="text-5xl font-medium text-foreground mt-1">{formatNumber(data.total, locale)}</p>
+                  <p className="text-5xl font-medium text-foreground mt-1">
+                    {formatNumber(data.total, locale)}
+                  </p>
                   {data.tracked.label && (
                     <p className="text-sm text-muted-foreground mt-2">{data.tracked.label}</p>
                   )}
@@ -320,9 +332,7 @@ export default function Stats() {
                 </div>
                 <div className="text-right">
                   <p className="text-xs text-muted-foreground">{t("stats.created")}</p>
-                  <p className="text-sm">
-                    {formatDate(data.tracked.created_at, locale)}
-                  </p>
+                  <p className="text-sm">{formatDate(data.tracked.created_at, locale)}</p>
                   <Button
                     onClick={downloadCsv}
                     variant="outline"

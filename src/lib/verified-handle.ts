@@ -25,7 +25,9 @@ function fold(value: string): string {
 }
 
 /** Voor- en achternaam uit een volledige wettelijke naam (tussennamen vallen weg). */
-export function nameParts(legalName: string | null | undefined): { first: string; last: string } | null {
+export function nameParts(
+  legalName: string | null | undefined,
+): { first: string; last: string } | null {
   const tokens = (legalName ?? "")
     .split(/\s+/)
     .map((part) => fold(part))

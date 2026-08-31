@@ -8,7 +8,8 @@ import { sql } from "@/lib/neon";
 export type BadgeSlug = "early_believer" | "verified" | "founder" | "supporter" | "bluesky";
 
 /** Where a grant came from — shown in the dashboard activity log. */
-export type BadgeSource = "card" | "sepa" | "subscription" | "refund" | "referral" | "admin" | "system";
+export type BadgeSource =
+  "card" | "sepa" | "subscription" | "refund" | "referral" | "admin" | "system";
 
 type Row = Record<string, unknown>;
 

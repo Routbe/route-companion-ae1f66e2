@@ -149,7 +149,11 @@ function renderFilter(filter: QueryFilter, params: Params, table: string): strin
       return `${col} @> ${params.add(JSON.stringify(filter.value))}::jsonb`;
     case "not": {
       const inner = renderFilter(
-        { op: (filter.negatedOp ?? "eq") as QueryFilter["op"], column: filter.column, value: filter.value },
+        {
+          op: (filter.negatedOp ?? "eq") as QueryFilter["op"],
+          column: filter.column,
+          value: filter.value,
+        },
         params,
         table,
       );
@@ -192,7 +196,10 @@ function shapeRows(descriptor: QueryDescriptor, rows: unknown[]): QueryResult {
     if (rows.length !== 1) {
       return {
         data: null,
-        error: { message: rows.length === 0 ? "No rows found" : "More than one row returned", code: "PGRST116" },
+        error: {
+          message: rows.length === 0 ? "No rows found" : "More than one row returned",
+          code: "PGRST116",
+        },
         count: null,
         status: 406,
       };
@@ -346,7 +353,8 @@ export async function executeRpc(
       const keys = Object.keys(row);
       return keys.length === 1 && keys[0] === descriptor.fn ? row[keys[0]!] : row;
     });
-    if (descriptor.rowMode === "single") return shapeRows({ rowMode: "single" } as QueryDescriptor, unwrapped);
+    if (descriptor.rowMode === "single")
+      return shapeRows({ rowMode: "single" } as QueryDescriptor, unwrapped);
     if (descriptor.rowMode === "maybe") return ok(unwrapped[0] ?? null);
     if (unwrapped.length === 1 && (unwrapped[0] === null || typeof unwrapped[0] !== "object")) {
       return ok(unwrapped[0] ?? null);

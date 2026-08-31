@@ -48,14 +48,10 @@ export function MediaEmbedBlockSettings({
 
       {config.url.trim() && (
         <p
-          className={`text-[11px] font-medium ${
-            embed ? "text-emerald-600" : "text-destructive"
-          }`}
+          className={`text-[11px] font-medium ${embed ? "text-emerald-600" : "text-destructive"}`}
           role="status"
         >
-          {embed
-            ? `🟢 ${embed.label} gedetecteerd`
-            : "⚠️ Geen ondersteund mediaplatform herkend"}
+          {embed ? `🟢 ${embed.label} gedetecteerd` : "⚠️ Geen ondersteund mediaplatform herkend"}
         </p>
       )}
 

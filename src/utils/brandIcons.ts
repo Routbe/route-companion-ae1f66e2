@@ -106,7 +106,12 @@ export const BRAND_ICONS: Record<string, BrandIcon> = {
   mastodon: from(siMastodon),
   fediverse: { ...from(siMastodon), title: "Fediverse" },
   eyou: { title: "eYou.social", path: EYOU_PATH, color: "#0A80FF", viewBox: "0 0 113 106" },
-  "eyou.social": { title: "eYou.social", path: EYOU_PATH, color: "#0A80FF", viewBox: "0 0 113 106" },
+  "eyou.social": {
+    title: "eYou.social",
+    path: EYOU_PATH,
+    color: "#0A80FF",
+    viewBox: "0 0 113 106",
+  },
   wsocial: { title: "W.social", path: WSOCIAL_PATH, color: "#0ea5a4" },
   "w.social": { title: "W.social", path: WSOCIAL_PATH, color: "#0ea5a4" },
   pixelfed: from(siPixelfed),

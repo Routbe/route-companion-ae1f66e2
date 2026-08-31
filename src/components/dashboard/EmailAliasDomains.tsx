@@ -49,7 +49,9 @@ export function EmailAliasDomains() {
   if (loading || !handle) return null;
 
   const toggle = (domain: AppDomain, on: boolean) =>
-    setSelected((prev) => (on ? [...new Set([...prev, domain])] : prev.filter((d) => d !== domain)));
+    setSelected((prev) =>
+      on ? [...new Set([...prev, domain])] : prev.filter((d) => d !== domain),
+    );
 
   const persist = async () => {
     setSaving(true);

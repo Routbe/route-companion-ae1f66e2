@@ -42,7 +42,10 @@ export default function AdminGiftCards() {
     void load();
   }, [load]);
 
-  const advance = async (row: GiftShipmentRow, status: "pending_print" | "packaged" | "shipped") => {
+  const advance = async (
+    row: GiftShipmentRow,
+    status: "pending_print" | "packaged" | "shipped",
+  ) => {
     setBusy(row.id);
     try {
       const result = await update({
@@ -63,8 +66,8 @@ export default function AdminGiftCards() {
       <header className="space-y-1">
         <h1 className="text-xl font-medium text-foreground">Cadeaubonnen — verzending</h1>
         <p className="text-sm text-muted-foreground">
-          Fysieke bonnen worden gratis binnen België verstuurd. Doorloop de stappen:
-          te drukken → ingepakt → verzonden.
+          Fysieke bonnen worden gratis binnen België verstuurd. Doorloop de stappen: te drukken →
+          ingepakt → verzonden.
         </p>
       </header>
 
@@ -76,7 +79,10 @@ export default function AdminGiftCards() {
           </Label>
         </div>
         <Button variant="outline" size="sm" onClick={() => void load()} disabled={loading}>
-          <RefreshCw className={`mr-1.5 h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`} aria-hidden />
+          <RefreshCw
+            className={`mr-1.5 h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`}
+            aria-hidden
+          />
           Vernieuwen
         </Button>
         <Button variant="outline" size="sm" onClick={() => window.print()}>

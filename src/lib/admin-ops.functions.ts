@@ -7,7 +7,10 @@ export const adminListShortLinks = createServerFn({ method: "POST" })
   .middleware([requireAuth])
   .inputValidator((data: unknown) =>
     z
-      .object({ search: z.string().max(120).default(""), limit: z.number().int().min(1).max(200).default(50) })
+      .object({
+        search: z.string().max(120).default(""),
+        limit: z.number().int().min(1).max(200).default(50),
+      })
       .parse(data ?? {}),
   )
   .handler(async ({ data, context }) => {

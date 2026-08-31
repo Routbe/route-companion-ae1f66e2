@@ -49,6 +49,8 @@ export async function fetchContactSubmissions(q: ContactQuery): Promise<ContactS
     console.error("[contact-admin] list failed:", error.message);
     throw new Error(error.message);
   }
-  console.info(`[contact-admin] listed ${data?.length ?? 0} submissions status=${q.status ?? "all"}`);
+  console.info(
+    `[contact-admin] listed ${data?.length ?? 0} submissions status=${q.status ?? "all"}`,
+  );
   return (data ?? []) as ContactSubmissionRow[];
 }

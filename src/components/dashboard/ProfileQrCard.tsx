@@ -35,10 +35,7 @@ export function ProfileQrCard({
   const url = clean ? styledProfileUrl(clean, urlStyle) : "";
   const label = clean ? styledProfileLabel(clean, urlStyle) : "rout.be/[handle]";
 
-  const svg = useMemo(
-    () => (url ? profileQrSvg(url, style, { size: 512 }) : ""),
-    [url, style],
-  );
+  const svg = useMemo(() => (url ? profileQrSvg(url, style, { size: 512 }) : ""), [url, style]);
 
   function patch(next: Partial<ProfileQrStyle>) {
     setStyle((current) => ({ ...current, ...next }));

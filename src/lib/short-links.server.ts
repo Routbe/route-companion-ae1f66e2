@@ -66,7 +66,6 @@ export async function allocateSlugServer(): Promise<string | null> {
   return null;
 }
 
-
 /** Same limits the old Postgres trigger `enforce_short_link_limits` enforced. */
 async function assertQuota(userId: string) {
   const profileRows = (await sql`
@@ -85,7 +84,8 @@ async function assertQuota(userId: string) {
   `) as Row[];
   const recent = (rows[0]?.["recent"] as number) ?? 0;
   const total = (rows[0]?.["total"] as number) ?? 0;
-  if (recent >= perHour) throw new Error("RATE_LIMIT_SHORT_LINKS: too many new short links in the last hour");
+  if (recent >= perHour)
+    throw new Error("RATE_LIMIT_SHORT_LINKS: too many new short links in the last hour");
   if (total >= maxTotal) throw new Error("RATE_LIMIT_SHORT_LINKS: short link quota reached");
 }
 

@@ -66,7 +66,6 @@ async function sendConfirmationEmail(to: string, url: string): Promise<DeliveryR
   });
 }
 
-
 export async function requestForwardingConfirmation(
   userId: string,
   rawEmail: string,
@@ -100,7 +99,11 @@ export async function requestForwardingConfirmation(
        where id = ${userId}
     `;
   } catch (error) {
-    return { ok: false, sent: false, reason: error instanceof Error ? error.message : String(error) };
+    return {
+      ok: false,
+      sent: false,
+      reason: error instanceof Error ? error.message : String(error),
+    };
   }
 
   // Any live alias must stop delivering to the unconfirmed address.

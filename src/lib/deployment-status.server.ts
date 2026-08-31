@@ -123,6 +123,8 @@ export async function getDeploymentStatus(): Promise<DeploymentStatus> {
  */
 export function assertServiceRole() {
   if (!process.env["DATABASE_URL"]) {
-    throw new Error("MISSING_SECRET: DATABASE_URL not configured. Add it under Settings → Secrets.");
+    throw new Error(
+      "MISSING_SECRET: DATABASE_URL not configured. Add it under Settings → Secrets.",
+    );
   }
 }

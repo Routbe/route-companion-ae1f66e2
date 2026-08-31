@@ -24,9 +24,8 @@ export const Route = createFileRoute("/auth_/gitlab")({
         try {
           let linkUserId: string | null = null;
           if (url.searchParams.get("link") === "1") {
-            const { readSession, readCookie, SESSION_COOKIE } = await import(
-              "@/lib/auth/session.server"
-            );
+            const { readSession, readCookie, SESSION_COOKIE } =
+              await import("@/lib/auth/session.server");
             const token = readCookie(request.headers.get("cookie"), SESSION_COOKIE);
             const sessionUser = await readSession(token).catch(() => null);
             linkUserId = sessionUser?.id ?? null;

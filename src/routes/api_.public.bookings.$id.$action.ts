@@ -24,7 +24,8 @@ export const Route = createFileRoute("/api_/public/bookings/$id/$action")({
   server: {
     handlers: {
       GET: async ({ request, params }) => {
-        const action = params.action === "accept" ? "accept" : params.action === "decline" ? "decline" : null;
+        const action =
+          params.action === "accept" ? "accept" : params.action === "decline" ? "decline" : null;
         if (!action) return page("Onbekende actie", "Deze link is niet geldig.", 400);
 
         const token = new URL(request.url).searchParams.get("token") ?? "";
@@ -35,7 +36,11 @@ export const Route = createFileRoute("/api_/public/bookings/$id/$action")({
 
         const result = await resolveBookingRequest(params.id, action);
         return page(
-          result.ok ? (action === "accept" ? "Afspraak aanvaard" : "Aanvraag geweigerd") : "Niets te doen",
+          result.ok
+            ? action === "accept"
+              ? "Afspraak aanvaard"
+              : "Aanvraag geweigerd"
+            : "Niets te doen",
           result.message,
           result.ok ? 200 : 409,
         );

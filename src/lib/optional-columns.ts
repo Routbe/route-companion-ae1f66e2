@@ -42,7 +42,15 @@ export async function selectTolerant<T>(
   if (!first.error || !isMissingColumnError(first.error)) return first;
 
   const reduced = withoutColumns(columns, drop);
-  if (!reduced || reduced === columns.split(",").map((c) => c.trim()).join(", ")) return first;
+  if (
+    !reduced ||
+    reduced ===
+      columns
+        .split(",")
+        .map((c) => c.trim())
+        .join(", ")
+  )
+    return first;
 
   console.warn("[db:optional-columns:missing]", {
     dropped: drop,

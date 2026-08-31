@@ -7,11 +7,7 @@
  * dus altijd een geldige prijs tonen.
  */
 import { sql } from "@/lib/neon";
-import {
-  DEFAULT_PRICING,
-  sanitizePricing,
-  type PricingSettings,
-} from "./pricing-settings";
+import { DEFAULT_PRICING, sanitizePricing, type PricingSettings } from "./pricing-settings";
 
 const CACHE_MS = 60_000;
 let cache: { value: PricingSettings; at: number } | null = null;

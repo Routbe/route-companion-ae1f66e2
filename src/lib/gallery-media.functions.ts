@@ -23,7 +23,10 @@ export const uploadGalleryMedia = createServerFn({ method: "POST" })
 
     const { sql } = await import("@/lib/neon");
     const ext =
-      (data.ext || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 5) || "jpg";
+      (data.ext || "jpg")
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "")
+        .slice(0, 5) || "jpg";
     const path = `${context.userId}/gallery-${Date.now()}-${Math.random()
       .toString(36)
       .slice(2, 8)}.${ext}`;

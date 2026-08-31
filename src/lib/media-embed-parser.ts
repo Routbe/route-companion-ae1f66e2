@@ -6,13 +6,7 @@
  * metadata voor de renderer. Pure functie — geen netwerkcalls.
  */
 
-export type MediaProvider =
-  | "youtube"
-  | "spotify"
-  | "soundcloud"
-  | "applemusic"
-  | "vimeo"
-  | "pdf";
+export type MediaProvider = "youtube" | "spotify" | "soundcloud" | "applemusic" | "vimeo" | "pdf";
 
 export type MediaKind = "video" | "audio" | "document";
 

@@ -27,13 +27,17 @@ interface PasskeyRow {
 }
 
 const fmt = (value: string | null) =>
-  value ? new Date(value).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" }) : "never";
+  value
+    ? new Date(value).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })
+    : "never";
 
 /** Turns any thrown value into a readable "message (code · HTTP 500)" string. */
 function describe(err: unknown, fallback: string): string {
   if (!(err instanceof Error)) return fallback;
   const meta = err as Error & { code?: string; status?: number; name?: string };
-  const detail = [meta.code, meta.status ? `HTTP ${meta.status}` : null].filter(Boolean).join(" · ");
+  const detail = [meta.code, meta.status ? `HTTP ${meta.status}` : null]
+    .filter(Boolean)
+    .join(" · ");
   const base = meta.message || fallback;
   return detail ? `${base} (${detail})` : base;
 }
@@ -62,9 +66,7 @@ export function PasskeysPanel() {
   const [supported, setSupported] = useState(true);
 
   useEffect(() => {
-    setSupported(
-      typeof window !== "undefined" && typeof window.PublicKeyCredential === "function",
-    );
+    setSupported(typeof window !== "undefined" && typeof window.PublicKeyCredential === "function");
   }, []);
 
   const refresh = useCallback(async () => {

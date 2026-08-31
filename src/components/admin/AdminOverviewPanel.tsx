@@ -10,7 +10,13 @@ interface Overview {
   revenueCents: number;
   paymentsCount: number;
   activeDomains: number;
-  webhooks: { id: string; source: string; kind: string | null; status: string; createdAt: string }[];
+  webhooks: {
+    id: string;
+    source: string;
+    kind: string | null;
+    status: string;
+    createdAt: string;
+  }[];
 }
 
 function Metric({ label, value, hint }: { label: string; value: string; hint?: string }) {

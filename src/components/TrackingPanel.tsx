@@ -31,12 +31,7 @@ import {
   type QrKind,
 } from "@/lib/short-links";
 
-import {
-  limitsFor,
-  shortLinkBlockReason,
-  studioTier,
-  type TierInput,
-} from "@/lib/studio-limits";
+import { limitsFor, shortLinkBlockReason, studioTier, type TierInput } from "@/lib/studio-limits";
 import { CanvasIndicator } from "@/components/CanvasIndicator";
 
 export interface TrackedQR {
@@ -119,10 +114,7 @@ export function TrackingPanel({ qrType, targetUrl, tracked, onTrackedChange }: T
           .select("username, verified, is_paid, is_early_believer")
           .eq("id", user.id)
           .maybeSingle(),
-        db
-          .from("tracked_qrs")
-          .select("id", { count: "exact", head: true })
-          .eq("user_id", user.id),
+        db.from("tracked_qrs").select("id", { count: "exact", head: true }).eq("user_id", user.id),
       ]);
       if (!cancelled) {
         setTierInput({
@@ -133,7 +125,6 @@ export function TrackingPanel({ qrType, targetUrl, tracked, onTrackedChange }: T
         });
         setHandle((profile?.username as string | null) ?? null);
         setLinkCount(count ?? 0);
-
       }
       // Every connected domain is listed with its status; only a verified
       // domain with short links switched on can actually be picked.
@@ -153,7 +144,6 @@ export function TrackingPanel({ qrType, targetUrl, tracked, onTrackedChange }: T
       cancelled = true;
     };
   }, [user]);
-
 
   // Label for the built-in domain (rout.be in production, the preview host otherwise).
   const routHost = shortLinkBase(null).replace(/^https?:\/\//, "") || "rout.be";
@@ -175,11 +165,7 @@ export function TrackingPanel({ qrType, targetUrl, tracked, onTrackedChange }: T
   const namespaceVerified = tier === "verified";
   const canUseVanity = limits.canPickVanitySlug && Boolean(handle);
   const vanityPrefix = handle
-    ? customLinkPrefix(
-        handle,
-        namespaceVerified,
-        domainChoice === "default" ? null : domainChoice,
-      )
+    ? customLinkPrefix(handle, namespaceVerified, domainChoice === "default" ? null : domainChoice)
     : null;
   const blockReason = shortLinkBlockReason(tierInput, linkCount, slugInput.trim().length > 0);
   // Voorbeeldpayload voor de canvas-indicator: de echte code als die er is,
@@ -197,7 +183,6 @@ export function TrackingPanel({ qrType, targetUrl, tracked, onTrackedChange }: T
       </div>
     );
   }
-
 
   const handleCreate = async () => {
     const normalized = normalizeUrl(targetUrl);
@@ -221,9 +206,7 @@ export function TrackingPanel({ qrType, targetUrl, tracked, onTrackedChange }: T
       }
       const vanityAllowed = canUseVanity;
       if (wantsVanity && !vanityAllowed) {
-        toast.info(
-          t("track.vanityVerified"),
-        );
+        toast.info(t("track.vanityVerified"));
       }
 
       // Een eigen code wordt hier gevalideerd en onder de eigen namespace
@@ -246,7 +229,6 @@ export function TrackingPanel({ qrType, targetUrl, tracked, onTrackedChange }: T
         slug = await allocateSlug();
       }
 
-
       if (!slug) throw new Error("Could not allocate a short code");
 
       const picked = domains.find((d) => d.domain === domainChoice);
@@ -267,7 +249,9 @@ export function TrackingPanel({ qrType, targetUrl, tracked, onTrackedChange }: T
           custom_domain,
           kind: "qr" satisfies QrKind,
         })
-        .select("id, slug, dashboard_token, target_type, target_url, label, custom_domain, kind, created_at")
+        .select(
+          "id, slug, dashboard_token, target_type, target_url, label, custom_domain, kind, created_at",
+        )
         .single();
 
       if (error || !data) {
@@ -293,7 +277,6 @@ export function TrackingPanel({ qrType, targetUrl, tracked, onTrackedChange }: T
     } catch (e: unknown) {
       console.error(e);
       toast.error(errorMessage(e, t("track.createFailed")));
-
     } finally {
       setLoading(false);
     }
@@ -354,8 +337,6 @@ export function TrackingPanel({ qrType, targetUrl, tracked, onTrackedChange }: T
       toast.error(t("track.copyFailed"));
     }
   };
-
-
 
   if (tracked) {
     const statsPath = `/stats/${tracked.dashboard_token}`;
@@ -452,9 +433,6 @@ export function TrackingPanel({ qrType, targetUrl, tracked, onTrackedChange }: T
           )}
         </div>
 
-
-
-
         <div className="space-y-1">
           <p className="text-xs text-muted-foreground">{t("track.statsPrivate")}</p>
           <div className="flex gap-2">
@@ -471,7 +449,8 @@ export function TrackingPanel({ qrType, targetUrl, tracked, onTrackedChange }: T
             </Button>
           </div>
           <p className="text-[11px] text-muted-foreground">
-            Iedereen met deze link kan je scanstatistieken bekijken. Verlies je hem, dan is hij niet te herstellen.
+            Iedereen met deze link kan je scanstatistieken bekijken. Verlies je hem, dan is hij niet
+            te herstellen.
           </p>
         </div>
 
@@ -491,9 +470,7 @@ export function TrackingPanel({ qrType, targetUrl, tracked, onTrackedChange }: T
         <BarChart3 className="w-4 h-4 text-foreground" />
         <span className="text-sm font-medium">{t("track.trackScans")}</span>
       </div>
-      <p className="text-xs text-muted-foreground">
-        {t("track.trackScansBody")}
-      </p>
+      <p className="text-xs text-muted-foreground">{t("track.trackScansBody")}</p>
       <Input
         placeholder={t("track.labelPlaceholder")}
         value={label}
@@ -591,8 +568,6 @@ export function TrackingPanel({ qrType, targetUrl, tracked, onTrackedChange }: T
           Voeg een link toe of upload een bestand om tracking aan te zetten.
         </p>
       )}
-
-
     </div>
   );
 }

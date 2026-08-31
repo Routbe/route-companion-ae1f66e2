@@ -22,17 +22,49 @@ const safe = async (run: () => Promise<Row[]>): Promise<Row[]> => {
 
 export async function exportMyData(userId: string) {
   const [profile, saved, tracked, badges, links, socials, aliases, domains] = await Promise.all([
-    safe(() => sql`select * from public.profiles where id = ${userId} limit 1` as unknown as Promise<Row[]>),
-    safe(() => sql`select * from public.saved_qrs where user_id = ${userId}` as unknown as Promise<Row[]>),
-    safe(() => sql`select * from public.tracked_qrs where user_id = ${userId}` as unknown as Promise<Row[]>),
-    safe(() => sql`select * from public.user_badges where user_id = ${userId}` as unknown as Promise<Row[]>),
-    safe(() => sql`select * from public.links where user_id = ${userId}` as unknown as Promise<Row[]>),
     safe(
       () =>
-        sql`select * from public.social_links where profile_id = ${userId} order by position asc` as unknown as Promise<Row[]>,
+        sql`select * from public.profiles where id = ${userId} limit 1` as unknown as Promise<
+          Row[]
+        >,
     ),
-    safe(() => sql`select * from public.email_aliases where user_id = ${userId}` as unknown as Promise<Row[]>),
-    safe(() => sql`select * from public.custom_domains where user_id = ${userId}` as unknown as Promise<Row[]>),
+    safe(
+      () =>
+        sql`select * from public.saved_qrs where user_id = ${userId}` as unknown as Promise<Row[]>,
+    ),
+    safe(
+      () =>
+        sql`select * from public.tracked_qrs where user_id = ${userId}` as unknown as Promise<
+          Row[]
+        >,
+    ),
+    safe(
+      () =>
+        sql`select * from public.user_badges where user_id = ${userId}` as unknown as Promise<
+          Row[]
+        >,
+    ),
+    safe(
+      () => sql`select * from public.links where user_id = ${userId}` as unknown as Promise<Row[]>,
+    ),
+    safe(
+      () =>
+        sql`select * from public.social_links where profile_id = ${userId} order by position asc` as unknown as Promise<
+          Row[]
+        >,
+    ),
+    safe(
+      () =>
+        sql`select * from public.email_aliases where user_id = ${userId}` as unknown as Promise<
+          Row[]
+        >,
+    ),
+    safe(
+      () =>
+        sql`select * from public.custom_domains where user_id = ${userId}` as unknown as Promise<
+          Row[]
+        >,
+    ),
   ]);
 
   const row = profile[0] ?? null;

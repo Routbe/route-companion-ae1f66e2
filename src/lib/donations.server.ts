@@ -80,7 +80,11 @@ export async function readDonationTarget(rawHandle: string): Promise<DonationTar
 
 export type StartDonationResult =
   | { ok: true; url: string; donationId: string }
-  | { ok: false; reason: "unknown_creator" | "invalid_amount" | "stripe_not_configured" | "failed"; detail?: string };
+  | {
+      ok: false;
+      reason: "unknown_creator" | "invalid_amount" | "stripe_not_configured" | "failed";
+      detail?: string;
+    };
 
 /** Maakt de donatierij + de Stripe Checkout-sessie. */
 export async function startDonation(opts: {
@@ -114,7 +118,11 @@ export async function startDonation(opts: {
     `) as Row[];
     donationId = String(inserted[0]?.["id"]);
   } catch (error) {
-    return { ok: false, reason: "failed", detail: error instanceof Error ? error.message : "insert_failed" };
+    return {
+      ok: false,
+      reason: "failed",
+      detail: error instanceof Error ? error.message : "insert_failed",
+    };
   }
 
   const origin = opts.origin.replace(/\/$/, "");
@@ -163,7 +171,11 @@ export async function startDonation(opts: {
     }
     return { ok: true, url: json.url, donationId };
   } catch (error) {
-    return { ok: false, reason: "failed", detail: error instanceof Error ? error.message : "stripe_failed" };
+    return {
+      ok: false,
+      reason: "failed",
+      detail: error instanceof Error ? error.message : "stripe_failed",
+    };
   }
 }
 

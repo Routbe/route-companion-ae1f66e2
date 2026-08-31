@@ -132,4 +132,3 @@ export function ProfileHubPicker({ values, onChange }: Props) {
     </div>
   );
 }
-

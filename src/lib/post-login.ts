@@ -45,7 +45,8 @@ export async function resolvePostLoginPath(explicitRedirect?: string | null): Pr
 
   const handle = await readHandleWithRetry();
   if (handle) {
-    const destination = explicitRedirect && explicitRedirect !== "/claim" ? explicitRedirect : "/dashboard/routes";
+    const destination =
+      explicitRedirect && explicitRedirect !== "/claim" ? explicitRedirect : "/dashboard/routes";
     console.info(`[post-login:destination] ${destination}`);
     return destination;
   }

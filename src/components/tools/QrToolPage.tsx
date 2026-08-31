@@ -96,8 +96,7 @@ export function QrToolPage({ tool }: { tool: QrTool }) {
     window.setTimeout(() => setCopied(false), 1600);
   };
 
-  const set = (name: string, value: string) =>
-    setValues((prev) => ({ ...prev, [name]: value }));
+  const set = (name: string, value: string) => setValues((prev) => ({ ...prev, [name]: value }));
 
   return (
     <AppLayout crumbs={[{ label: "Tools" }, { label: tool.name }]}>
@@ -197,7 +196,10 @@ export function QrToolPage({ tool }: { tool: QrTool }) {
                         key={point}
                         className="flex gap-2 text-sm leading-relaxed text-muted-foreground"
                       >
-                        <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rounded-full bg-foreground/40" />
+                        <span
+                          aria-hidden
+                          className="mt-2 h-1 w-1 shrink-0 rounded-full bg-foreground/40"
+                        />
                         {point}
                       </li>
                     ))}

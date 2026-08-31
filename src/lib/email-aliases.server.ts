@@ -74,10 +74,13 @@ async function syncAlias(
 async function removeAlias(domain: AppDomain, handle: string): Promise<void> {
   const key = improvmxKey();
   if (!key) return;
-  await fetch(`https://api.improvmx.com/v3/domains/${domain}/aliases/${encodeURIComponent(handle)}`, {
-    method: "DELETE",
-    headers: { Authorization: `Basic ${btoa(`api:${key}`)}` },
-  }).catch(() => undefined);
+  await fetch(
+    `https://api.improvmx.com/v3/domains/${domain}/aliases/${encodeURIComponent(handle)}`,
+    {
+      method: "DELETE",
+      headers: { Authorization: `Basic ${btoa(`api:${key}`)}` },
+    },
+  ).catch(() => undefined);
 }
 
 async function readProfile(userId: string) {
@@ -127,17 +130,18 @@ export async function readAliasState(userId: string): Promise<AliasState> {
 
 export type SaveResult =
   | { ok: true; state: AliasState }
-  | { ok: false; reason: "no_handle" | "not_entitled" | "no_forward" | "unconfirmed_forward" | "failed"; detail?: string };
+  | {
+      ok: false;
+      reason: "no_handle" | "not_entitled" | "no_forward" | "unconfirmed_forward" | "failed";
+      detail?: string;
+    };
 
 /**
  * Reconciles the member's alias selection: creates rows for newly picked
  * domains, drops the ones they unchecked, and repoints every remaining alias
  * at the confirmed forwarding inbox.
  */
-export async function saveAliasDomains(
-  userId: string,
-  selected: AppDomain[],
-): Promise<SaveResult> {
+export async function saveAliasDomains(userId: string, selected: AppDomain[]): Promise<SaveResult> {
   const profile = await readProfile(userId);
   if (!profile.handle) return { ok: false, reason: "no_handle" };
   if (!profile.eligible) return { ok: false, reason: "not_entitled" };
@@ -158,7 +162,11 @@ export async function saveAliasDomains(
          where user_id = ${userId} and domain = any(${dropped as unknown as string[]})
       `;
     } catch (error) {
-      return { ok: false, reason: "failed", detail: error instanceof Error ? error.message : String(error) };
+      return {
+        ok: false,
+        reason: "failed",
+        detail: error instanceof Error ? error.message : String(error),
+      };
     }
     await Promise.all(dropped.map((domain) => removeAlias(domain, handle)));
   }
@@ -179,7 +187,11 @@ export async function saveAliasDomains(
           updated_at = now()
       `;
     } catch (error) {
-      return { ok: false, reason: "failed", detail: error instanceof Error ? error.message : String(error) };
+      return {
+        ok: false,
+        reason: "failed",
+        detail: error instanceof Error ? error.message : String(error),
+      };
     }
   }
 

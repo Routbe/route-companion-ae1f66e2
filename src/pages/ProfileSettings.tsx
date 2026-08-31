@@ -89,7 +89,6 @@ function Field({
   return (
     <div className="space-y-1.5">
       <label htmlFor={htmlFor} className="block text-xs font-medium uppercase tracking-wide">
-
         {label}
       </label>
       {children}
@@ -122,7 +121,9 @@ export default function ProfileSettings() {
   const nameOptions = useMemo(() => verifiedHandleSuggestions(legalName), [legalName]);
 
   /** Live beschikbaarheid per voorgestelde handle (max 12 tegelijk). */
-  const [optionStatus, setOptionStatus] = useState<Record<string, "checking" | "free" | "taken">>({});
+  const [optionStatus, setOptionStatus] = useState<Record<string, "checking" | "free" | "taken">>(
+    {},
+  );
   useEffect(() => {
     if (nameOptions.length === 0) return;
     let alive = true;
@@ -149,7 +150,6 @@ export default function ProfileSettings() {
     };
   }, [nameOptions]);
 
-
   useEffect(() => {
     if (!user) return;
     let alive = true;
@@ -157,8 +157,7 @@ export default function ProfileSettings() {
       const [{ data: profile }, { data: demo }, { data: res }] = await Promise.all([
         selectTolerant(
           "username, display_name, tagline, bio, avatar_url, verified, verified_legal_name",
-          (cols) =>
-            db.from("profiles").select(cols).eq("id", user.id).maybeSingle() as never,
+          (cols) => db.from("profiles").select(cols).eq("id", user.id).maybeSingle() as never,
         ) as unknown as Promise<{
           data: {
             username?: string | null;
@@ -188,7 +187,8 @@ export default function ProfileSettings() {
       setInitial(next);
       setVerified(Boolean(profile?.verified));
       setLegalName(
-        ((profile as { verified_legal_name?: string | null } | null)?.verified_legal_name ?? null) ||
+        ((profile as { verified_legal_name?: string | null } | null)?.verified_legal_name ??
+          null) ||
           null,
       );
       setShowcase((demo ?? []) as ShowcaseRow[]);
@@ -217,9 +217,7 @@ export default function ProfileSettings() {
     [form, initial],
   );
 
-
-  const set = (key: keyof ProfileForm, value: string) =>
-    setForm((f) => ({ ...f, [key]: value }));
+  const set = (key: keyof ProfileForm, value: string) => setForm((f) => ({ ...f, [key]: value }));
 
   async function save() {
     if (!user || handleError || strictIssue) return;
@@ -255,7 +253,6 @@ export default function ProfileSettings() {
       </AppLayout>
     );
   }
-
 
   const publicPath = form.username
     ? styledProfilePath(normalizeHandle(form.username), urlStyle)
@@ -299,8 +296,7 @@ export default function ProfileSettings() {
                 </div>
                 {availability.state === "checking" && (
                   <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                    <Loader2 className="h-3 w-3 animate-spin" aria-hidden />{" "}
-                    {t("handle.checking")}
+                    <Loader2 className="h-3 w-3 animate-spin" aria-hidden /> {t("handle.checking")}
                   </p>
                 )}
                 {availability.state === "available" && (
@@ -311,9 +307,7 @@ export default function ProfileSettings() {
                 {availability.state === "taken" && (
                   <p className="flex items-center gap-1.5 text-xs font-medium text-destructive">
                     <X className="h-3 w-3" aria-hidden />{" "}
-                    {availability.reason === "reserved"
-                      ? t("handle.reserved")
-                      : t("handle.taken")}
+                    {availability.reason === "reserved" ? t("handle.reserved") : t("handle.taken")}
                   </p>
                 )}
                 {strictIssue && <HandleErrorBanner message={strictIssue} className="mt-2" />}
@@ -457,7 +451,9 @@ export default function ProfileSettings() {
               <p className="text-xs text-muted-foreground">
                 Je <strong>weergavenaam</strong> mag je volledige naam zijn. Bezoekers die op je
                 blauwe vinkje klikken zien altijd je echte naam. Zowel{" "}
-                <span className="font-mono">rout.be/{normalizeHandle(form.username) || "handle"}</span>{" "}
+                <span className="font-mono">
+                  rout.be/{normalizeHandle(form.username) || "handle"}
+                </span>{" "}
                 als{" "}
                 <span className="font-mono">
                   rout.be/u/{normalizeHandle(form.username) || "handle"}
@@ -470,9 +466,6 @@ export default function ProfileSettings() {
               </p>
             </div>
           </Panel>
-
-
-
 
           <Panel title="Example profiles" hint="Demo data — how a filled profile list looks.">
             <ul className="divide-y divide-border border border-border">

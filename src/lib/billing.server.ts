@@ -94,7 +94,10 @@ export async function buildInvoicePdf(
   const invoiceNumber = await invoiceNumberFor(createdAt);
 
   const lines = [
-    { label: `ROUT verificatie — ${String(payment["tier"] ?? "verification")}`, amountCents: baseCents },
+    {
+      label: `ROUT verificatie — ${String(payment["tier"] ?? "verification")}`,
+      amountCents: baseCents,
+    },
   ];
   if (donationCents > 0) lines.push({ label: "Vrijwillige bijdrage", amountCents: donationCents });
 

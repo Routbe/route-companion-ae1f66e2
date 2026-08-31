@@ -31,7 +31,13 @@ export default function GiftCards() {
   const [recipientName, setRecipientName] = useState("");
   const [message, setMessage] = useState("");
   const [physical, setPhysical] = useState(false);
-  const [ship, setShip] = useState({ name: "", line1: "", postalCode: "", city: "", country: "BE" });
+  const [ship, setShip] = useState({
+    name: "",
+    line1: "",
+    postalCode: "",
+    city: "",
+    country: "BE",
+  });
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -73,7 +79,8 @@ export default function GiftCards() {
         const messages: Record<string, string> = {
           shipping_country_unsupported: "Gratis fysieke levering geldt alleen binnen België.",
           shipping_address_incomplete: "Vul straat, postcode en gemeente in voor fysieke levering.",
-          stripe_not_configured: "Betalen is tijdelijk niet beschikbaar. Probeer het later opnieuw.",
+          stripe_not_configured:
+            "Betalen is tijdelijk niet beschikbaar. Probeer het later opnieuw.",
         };
         toast.error(messages[result.reason] ?? "Aankoop mislukt. Probeer het opnieuw.");
         return;
@@ -213,7 +220,11 @@ export default function GiftCards() {
                   </p>
                   <p className="text-sm text-muted-foreground">Gratis binnen België.</p>
                 </div>
-                <Switch checked={physical} onCheckedChange={setPhysical} aria-label="Fysieke levering" />
+                <Switch
+                  checked={physical}
+                  onCheckedChange={setPhysical}
+                  aria-label="Fysieke levering"
+                />
               </div>
               {physical ? (
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">

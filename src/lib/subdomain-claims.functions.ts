@@ -17,7 +17,10 @@ export const adminListRootClaims = createServerFn({ method: "GET" })
     const { assertAdminRole } = await import("./admin.server");
     await assertAdminRole(context.userId);
     const { fetchRootClaims } = await import("./subdomain-claims.server");
-    return fetchRootClaims({ status: data.status, ...(data.search ? { search: data.search } : {}) });
+    return fetchRootClaims({
+      status: data.status,
+      ...(data.search ? { search: data.search } : {}),
+    });
   });
 
 /** Handmatige promotie van `pending_dns` naar `active`. */

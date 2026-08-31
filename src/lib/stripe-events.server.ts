@@ -203,7 +203,6 @@ export async function applyStripeEvent(event: StripeEvent): Promise<string> {
   const paymentId = paymentIdOf(event);
   if (!paymentId) return "ignored (no payment reference)";
 
-
   const {
     activateVerification,
     markPaymentStatus,
@@ -253,12 +252,8 @@ export async function applyStripeEvent(event: StripeEvent): Promise<string> {
     // Zonder deze takken bleef een geslaagde redirect-betaling onbevestigd —
     // geen activering, geen bevestigingsmail.
     case "payment_intent.succeeded": {
-      return await activateIfPayerMatches(
-        stringOf(object, "id"),
-        "activated (payment_intent)",
-      );
+      return await activateIfPayerMatches(stringOf(object, "id"), "activated (payment_intent)");
     }
-
 
     case "payment_intent.processing": {
       await markPaymentStatus(paymentId, "processing", stringOf(object, "id"));
@@ -271,10 +266,14 @@ export async function applyStripeEvent(event: StripeEvent): Promise<string> {
     }
 
     case "payment_intent.payment_failed": {
-      const declineCode = stringOf(object, "last_payment_error[decline_code]") ??
-        (object?.["last_payment_error"] as StripeObject | undefined)?.["decline_code"] as string | undefined;
-      const message = stringOf(object, "last_payment_error[message]") ??
-        (object?.["last_payment_error"] as StripeObject | undefined)?.["message"] as string | undefined;
+      const declineCode =
+        stringOf(object, "last_payment_error[decline_code]") ??
+        ((object?.["last_payment_error"] as StripeObject | undefined)?.["decline_code"] as
+          string | undefined);
+      const message =
+        stringOf(object, "last_payment_error[message]") ??
+        ((object?.["last_payment_error"] as StripeObject | undefined)?.["message"] as
+          string | undefined);
       const reason = [declineCode, message].filter(Boolean).join(" — ") || "payment_failed";
       await markPaymentStatus(paymentId, "incomplete", stringOf(object, "id"), reason);
       return `payment incomplete (${reason})`;

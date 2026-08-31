@@ -30,13 +30,7 @@ export function throttle(key: string, windowMs = 300) {
  * English fallback copy for API consumers and older callers.
  */
 export type HandleAvailabilityCode =
-  | "empty"
-  | "too_short"
-  | "too_long"
-  | "charset"
-  | "reserved"
-  | "rules"
-  | "taken";
+  "empty" | "too_short" | "too_long" | "charset" | "reserved" | "rules" | "taken";
 
 export type HandleAvailability = {
   ok: boolean;
@@ -73,8 +67,6 @@ export async function isHandleFree(normalized: string): Promise<HandleAvailabili
   if (lengthIssue) {
     return { ok: false, normalized, code: "rules", reason: lengthIssue };
   }
-
-
 
   // Public availability probe: never depend on an auth session, and never
   // block sign-up if the query is slow or fails.

@@ -23,16 +23,20 @@ export const Route = createFileRoute("/api_/bunq/check-status")({
         const accountId = Number(url.searchParams.get("account_id"));
         const paymentId = url.searchParams.get("payment_id") ?? "";
 
-        if (!Number.isFinite(tabId) || tabId <= 0 || !Number.isFinite(accountId) || accountId <= 0) {
+        if (
+          !Number.isFinite(tabId) ||
+          tabId <= 0 ||
+          !Number.isFinite(accountId) ||
+          accountId <= 0
+        ) {
           return Response.json({ error: "invalid_tab" }, { status: 400 });
         }
         if (!/^[0-9a-f-]{36}$/i.test(paymentId)) {
           return Response.json({ error: "invalid_payment" }, { status: 400 });
         }
 
-        const { readSession, readCookie, SESSION_COOKIE } = await import(
-          "@/lib/auth/session.server"
-        );
+        const { readSession, readCookie, SESSION_COOKIE } =
+          await import("@/lib/auth/session.server");
         const user = await readSession(
           readCookie(request.headers.get("cookie"), SESSION_COOKIE),
         ).catch(() => null);
@@ -68,9 +72,11 @@ export const Route = createFileRoute("/api_/bunq/check-status")({
           return Response.json({ status: tab.status, activated: false, done: false });
         } catch (error) {
           console.error("[bunq:check-status]", error);
-          return Response.json({ status: "UNKNOWN", activated: false, done: false }, { status: 502 });
+          return Response.json(
+            { status: "UNKNOWN", activated: false, done: false },
+            { status: 502 },
+          );
         }
-
       },
     },
   },

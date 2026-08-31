@@ -6,8 +6,9 @@ import { createFileRoute } from "@tanstack/react-router";
  * embedden. Geen PII: alleen handle en verificatiestatus.
  */
 function escapeXml(value: string) {
-  return value.replace(/[<>&"']/g, (c) =>
-    ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&apos;" })[c] ?? c,
+  return value.replace(
+    /[<>&"']/g,
+    (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&apos;" })[c] ?? c,
   );
 }
 

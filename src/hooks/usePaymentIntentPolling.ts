@@ -117,4 +117,3 @@ export function usePaymentIntentPolling(
     retry: () => setAttempt((n) => n + 1),
   };
 }
-

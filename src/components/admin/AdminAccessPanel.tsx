@@ -1,5 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
-import { ChevronDown, Loader2, MapPin, Search, ShieldCheck, Smartphone, UserCog } from "lucide-react";
+import {
+  ChevronDown,
+  Loader2,
+  MapPin,
+  Search,
+  ShieldCheck,
+  Smartphone,
+  UserCog,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -246,10 +254,7 @@ export function AdminAccessPanel() {
                         const active =
                           grant.fullAdmin || grant.permissions.includes(permission.key);
                         return (
-                          <label
-                            key={permission.key}
-                            className="flex items-center gap-2 text-sm"
-                          >
+                          <label key={permission.key} className="flex items-center gap-2 text-sm">
                             <input
                               type="checkbox"
                               checked={active}
@@ -289,7 +294,11 @@ export function AdminAccessPanel() {
             className="h-9"
           />
           <Button type="button" className="h-9" onClick={() => void search()} disabled={busy}>
-            {busy ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : <Search className="h-4 w-4" aria-hidden />}
+            {busy ? (
+              <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+            ) : (
+              <Search className="h-4 w-4" aria-hidden />
+            )}
           </Button>
         </div>
         {hits.length > 0 ? (
@@ -318,16 +327,37 @@ export function AdminAccessPanel() {
 
           <div className="grid gap-2 sm:grid-cols-3">
             <div className="space-y-1">
-              <Label htmlFor="admin-first" className="text-xs">Voornaam</Label>
-              <Input id="admin-first" value={firstName} onChange={(e) => setFirstName(e.target.value)} className="h-9" />
+              <Label htmlFor="admin-first" className="text-xs">
+                Voornaam
+              </Label>
+              <Input
+                id="admin-first"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className="h-9"
+              />
             </div>
             <div className="space-y-1">
-              <Label htmlFor="admin-last" className="text-xs">Achternaam</Label>
-              <Input id="admin-last" value={lastName} onChange={(e) => setLastName(e.target.value)} className="h-9" />
+              <Label htmlFor="admin-last" className="text-xs">
+                Achternaam
+              </Label>
+              <Input
+                id="admin-last"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className="h-9"
+              />
             </div>
             <div className="space-y-1">
-              <Label htmlFor="admin-handle" className="text-xs">Gebruikersnaam</Label>
-              <Input id="admin-handle" value={handle} onChange={(e) => setHandle(e.target.value)} className="h-9 font-mono" />
+              <Label htmlFor="admin-handle" className="text-xs">
+                Gebruikersnaam
+              </Label>
+              <Input
+                id="admin-handle"
+                value={handle}
+                onChange={(e) => setHandle(e.target.value)}
+                className="h-9 font-mono"
+              />
             </div>
           </div>
           {suggestions.length > 0 ? (
@@ -360,9 +390,7 @@ export function AdminAccessPanel() {
               variant={insight.verified ? "outline" : "default"}
               className="ml-auto h-9"
               disabled={busy}
-              onClick={() =>
-                insight.verified ? void toggleVerified(false) : setVerifyOpen(true)
-              }
+              onClick={() => (insight.verified ? void toggleVerified(false) : setVerifyOpen(true))}
             >
               {insight.verified ? "Verificatie intrekken" : "Markeer als verified"}
             </Button>
@@ -374,13 +402,15 @@ export function AdminAccessPanel() {
                 <DialogTitle>Markeer als verified</DialogTitle>
                 <DialogDescription>
                   Vul de wettelijke voor- en achternaam in. Die naam is verplicht: het account
-                  krijgt het blauwe vinkje, de pro-tier en een handle op basis van de naam
-                  (voornaam + achternaam, één deel mag een initiaal zijn).
+                  krijgt het blauwe vinkje, de pro-tier en een handle op basis van de naam (voornaam
+                  + achternaam, één deel mag een initiaal zijn).
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-3 sm:grid-cols-2">
                 <div className="space-y-1">
-                  <Label htmlFor="verify-first" className="text-xs">Voornaam</Label>
+                  <Label htmlFor="verify-first" className="text-xs">
+                    Voornaam
+                  </Label>
                   <Input
                     id="verify-first"
                     value={verifyFirst}
@@ -389,7 +419,9 @@ export function AdminAccessPanel() {
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label htmlFor="verify-last" className="text-xs">Achternaam</Label>
+                  <Label htmlFor="verify-last" className="text-xs">
+                    Achternaam
+                  </Label>
                   <Input
                     id="verify-last"
                     value={verifyLast}
@@ -433,7 +465,9 @@ export function AdminAccessPanel() {
               <ul className="space-y-1 text-xs text-muted-foreground">
                 {insight.sessions.length === 0 ? <li>Geen sessies</li> : null}
                 {insight.sessions.slice(0, 5).map((session, index) => (
-                  <li key={index} className="truncate">{session.device ?? "onbekend toestel"}</li>
+                  <li key={index} className="truncate">
+                    {session.device ?? "onbekend toestel"}
+                  </li>
                 ))}
               </ul>
             </div>
@@ -469,7 +503,10 @@ export function AdminAccessPanel() {
               {FEATURES.map((feature) => {
                 const active = insight.blocks.some((b) => b.feature === feature.key);
                 return (
-                  <li key={feature.key} className="flex items-center justify-between gap-2 rounded-lg border border-border px-3 py-2 text-sm">
+                  <li
+                    key={feature.key}
+                    className="flex items-center justify-between gap-2 rounded-lg border border-border px-3 py-2 text-sm"
+                  >
                     <span>{feature.label}</span>
                     <Button
                       type="button"

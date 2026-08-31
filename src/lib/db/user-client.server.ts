@@ -37,7 +37,10 @@ function scope(descriptor: QueryDescriptor, userId: string): QueryDescriptor {
     return { ...descriptor, values: rows.map((row) => ({ [owner]: userId, ...row })) };
   }
   if (descriptor.filters.some((f) => f.column === owner && f.op === "eq")) return descriptor;
-  return { ...descriptor, filters: [...descriptor.filters, { op: "eq", column: owner, value: userId }] };
+  return {
+    ...descriptor,
+    filters: [...descriptor.filters, { op: "eq", column: owner, value: userId }],
+  };
 }
 
 export function createUserDb(userId: string) {

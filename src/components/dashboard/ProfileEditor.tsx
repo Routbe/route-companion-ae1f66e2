@@ -16,7 +16,6 @@ import {
   Link2,
   Loader2,
   Lock,
-
   Palette,
   Pencil,
   Plus,
@@ -126,11 +125,7 @@ import {
   getStudioProfile,
   saveStudioProfile,
 } from "@/lib/studio-profile.functions";
-import {
-  checkAliasHandle,
-  getAliasProfile,
-  saveAliasProfile,
-} from "@/lib/alias-profile.functions";
+import { checkAliasHandle, getAliasProfile, saveAliasProfile } from "@/lib/alias-profile.functions";
 import { SubdomainPanel } from "@/components/dashboard/SubdomainPanel";
 import { BadgesPanel } from "@/components/dashboard/BadgesPanel";
 import { SocialVerifyPanel } from "@/components/dashboard/SocialVerifyPanel";
@@ -364,9 +359,6 @@ export function ProfileEditor({ variant = "verified" }: { variant?: ProfileVaria
     };
   }, [user, loadProfileEditor, loadAttempt]);
 
-
-
-
   // Privacy-first counters: only aggregated counts, no visitor profiles (Neon).
   useEffect(() => {
     if (!user || tab !== "analytics") return;
@@ -406,17 +398,21 @@ export function ProfileEditor({ variant = "verified" }: { variant?: ProfileVaria
   // deze blokkeren het opslaan volledig.
   const strictIssue = strictHandleIssue(handle, { alias });
   const handleProblem = normalized ? handleIssue(normalized, handleCtx) : null;
-  const handleOk =
-    isValidHandle(normalized) && !reserved && !handleProblem && !strictIssue;
+  const handleOk = isValidHandle(normalized) && !reserved && !handleProblem && !strictIssue;
   /** Een reeds opgeslagen handle die niet meer aan de richtlijnen voldoet. */
   const storedHandleInvalid = claimed ? strictHandleIssue(claimed, { alias }) : null;
   // Volg de actieve identiteitsruimte; schone root-URLs blijven Pro-only.
-  const urlStyle = alias ? "u" : effectiveUrlStyle(
-    identitySpace === "verified" ? "clean" : rawUrlStyle === "clean" || rawUrlStyle === "clean_at" ? "u" : rawUrlStyle,
-    verified,
-  );
+  const urlStyle = alias
+    ? "u"
+    : effectiveUrlStyle(
+        identitySpace === "verified"
+          ? "clean"
+          : rawUrlStyle === "clean" || rawUrlStyle === "clean_at"
+            ? "u"
+            : rawUrlStyle,
+        verified,
+      );
   const publicPath = styledProfilePath(claimed ?? "", urlStyle);
-
 
   const visibleTabs = useMemo(() => TABS.filter((t) => !t.verifiedOnly || verified), [verified]);
   // Losing verification (or loading it late) must never leave the studio on a
@@ -690,7 +686,6 @@ export function ProfileEditor({ variant = "verified" }: { variant?: ProfileVaria
     );
   }
 
-
   /**
    * Snelkoppeling vanuit de kopbalk: spring naar "Settings & verified", open de
    * identiteitsaccordeon en zet de cursor in het juiste handle-veld
@@ -755,7 +750,10 @@ export function ProfileEditor({ variant = "verified" }: { variant?: ProfileVaria
             title="Gebruikersnaam bewerken"
             className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-border hover:bg-muted"
           >
-            <Pencil className="h-3.5 w-3.5 text-muted-foreground transition-colors hover:text-foreground" aria-hidden />
+            <Pencil
+              className="h-3.5 w-3.5 text-muted-foreground transition-colors hover:text-foreground"
+              aria-hidden
+            />
           </button>
         </div>
         <a
@@ -807,63 +805,62 @@ export function ProfileEditor({ variant = "verified" }: { variant?: ProfileVaria
                   <span className="text-base font-medium">👤 Profiel Basisinformatie</span>
                 </AccordionTrigger>
                 <AccordionContent className="space-y-4 pb-5">
-              {/* Permanent Profile Info Card */}
-              <section className="space-y-4 rounded-2xl border border-border bg-card p-4 sm:p-5">
+                  {/* Permanent Profile Info Card */}
+                  <section className="space-y-4 rounded-2xl border border-border bg-card p-4 sm:p-5">
+                    <h2 className="text-lg font-medium">Profile Info</h2>
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+                      <div className="w-full sm:max-w-xs">
+                        <AvatarUpload
+                          value={avatarUrl || null}
+                          name={displayName}
+                          onChange={(url) => setAvatarUrl(url ?? "")}
+                        />
+                      </div>
 
-                <h2 className="text-lg font-medium">Profile Info</h2>
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
-                  <div className="w-full sm:max-w-xs">
-                    <AvatarUpload
-                      value={avatarUrl || null}
-                      name={displayName}
-                      onChange={(url) => setAvatarUrl(url ?? "")}
-                    />
-                  </div>
-
-                  <div className="min-w-0 flex-1 space-y-2">
-                    <Input
-                      value={displayName}
-                      maxLength={60}
-                      placeholder="Jona Zeno"
-                      onChange={(e) => setDisplayName(e.target.value)}
-                      className="input-field h-10 rounded-xl"
-                      aria-label="Display Name"
-                    />
-                    <Input
-                      value={tagline}
-                      maxLength={120}
-                      placeholder="Open-source developer & designer"
-                      onChange={(e) => setTagline(e.target.value)}
-                      className="input-field h-10 rounded-xl"
-                      aria-label="Bio / Tagline"
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-wrap items-center gap-2 rounded-xl border border-border bg-background px-3 py-2">
-                  <span className="min-w-0 flex-1 truncate font-mono text-xs text-muted-foreground">
-                    rout.be{styledProfilePath(normalized || "handle", urlStyle)}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => setTab("settings")}
-                    className="shrink-0 rounded-lg border border-border px-2 py-1 text-[11px] font-medium hover:bg-muted"
-                  >
-                    Edit handle
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      void navigator.clipboard.writeText(
-                        `https://rout.be${styledProfilePath(normalized || "handle", urlStyle)}`,
-                      );
-                      toast.success("Link copied!");
-                    }}
-                    className="shrink-0 rounded-lg border border-border px-2 py-1 text-[11px] font-medium hover:bg-muted"
-                  >
-                    Copy link
-                  </button>
-                </div>
-              </section>
+                      <div className="min-w-0 flex-1 space-y-2">
+                        <Input
+                          value={displayName}
+                          maxLength={60}
+                          placeholder="Jona Zeno"
+                          onChange={(e) => setDisplayName(e.target.value)}
+                          className="input-field h-10 rounded-xl"
+                          aria-label="Display Name"
+                        />
+                        <Input
+                          value={tagline}
+                          maxLength={120}
+                          placeholder="Open-source developer & designer"
+                          onChange={(e) => setTagline(e.target.value)}
+                          className="input-field h-10 rounded-xl"
+                          aria-label="Bio / Tagline"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2 rounded-xl border border-border bg-background px-3 py-2">
+                      <span className="min-w-0 flex-1 truncate font-mono text-xs text-muted-foreground">
+                        rout.be{styledProfilePath(normalized || "handle", urlStyle)}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setTab("settings")}
+                        className="shrink-0 rounded-lg border border-border px-2 py-1 text-[11px] font-medium hover:bg-muted"
+                      >
+                        Edit handle
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          void navigator.clipboard.writeText(
+                            `https://rout.be${styledProfilePath(normalized || "handle", urlStyle)}`,
+                          );
+                          toast.success("Link copied!");
+                        }}
+                        className="shrink-0 rounded-lg border border-border px-2 py-1 text-[11px] font-medium hover:bg-muted"
+                      >
+                        Copy link
+                      </button>
+                    </div>
+                  </section>
                 </AccordionContent>
               </AccordionItem>
 
@@ -873,341 +870,340 @@ export function ProfileEditor({ variant = "verified" }: { variant?: ProfileVaria
               >
                 <AccordionTrigger className="hover:no-underline">
                   <span className="flex flex-1 items-center justify-between gap-3 pr-2">
-                    <span className="text-base font-medium">
-                      🔗 Links &amp; Inhoudscomponenten
-                    </span>
+                    <span className="text-base font-medium">🔗 Links &amp; Inhoudscomponenten</span>
                     <span className="rounded-full border border-border px-2 py-0.5 text-[10px] text-muted-foreground">
                       {blocks.filter((b) => !b.hidden).length} zichtbaar
                     </span>
                   </span>
                 </AccordionTrigger>
                 <AccordionContent className="space-y-4 pb-5">
+                  <section className="space-y-3 rounded-2xl border border-border bg-card p-4 sm:p-5">
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-lg font-medium">Components</h2>
+                      <span className="text-[11px] text-muted-foreground">
+                        {blocks.filter((b) => !b.hidden).length} visible
+                      </span>
+                    </div>
 
-              <section className="space-y-3 rounded-2xl border border-border bg-card p-4 sm:p-5">
-
-                <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-medium">Components</h2>
-                  <span className="text-[11px] text-muted-foreground">
-                    {blocks.filter((b) => !b.hidden).length} visible
-                  </span>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => setDrawer(true)}
-                  className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-foreground text-sm font-medium text-background transition-opacity hover:opacity-90"
-                >
-                  <Plus className="h-4 w-4" aria-hidden /> + Add component
-                </button>
-
-                <div className="flex flex-wrap gap-2">
-                  {QUICK_CREATE.map((q) => (
                     <button
-                      key={q.kind}
                       type="button"
-                      onClick={() => quickCreate(q.kind)}
-                      className="h-8 shrink-0 rounded-full border border-border px-3 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                      onClick={() => setDrawer(true)}
+                      className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-foreground text-sm font-medium text-background transition-opacity hover:opacity-90"
                     >
-                      {q.label}
+                      <Plus className="h-4 w-4" aria-hidden /> + Add component
                     </button>
-                  ))}
-                </div>
 
-                {blocks.length === 0 && (
-                  <p className="rounded-xl border border-dashed border-border p-6 text-center text-xs text-muted-foreground">
-                    No components yet — add your first social link, header, or custom URL.
-                  </p>
-                )}
+                    <div className="flex flex-wrap gap-2">
+                      {QUICK_CREATE.map((q) => (
+                        <button
+                          key={q.kind}
+                          type="button"
+                          onClick={() => quickCreate(q.kind)}
+                          className="h-8 shrink-0 rounded-full border border-border px-3 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                        >
+                          {q.label}
+                        </button>
+                      ))}
+                    </div>
 
-                <ul className="space-y-2">
-                  {blocks.map((b, index) => {
-                    const hint = inputHint(b.kind);
-                    const open = openBlock === b.id;
-                    return (
-                      <li
-                        key={b.id}
-                        draggable
-                        onDragStart={() => {
-                          dragId.current = b.id;
-                          setDragging(b.id);
-                        }}
-                        onDragEnd={() => {
-                          dragId.current = null;
-                          setDragging(null);
-                          setDropTarget(null);
-                        }}
-                        onDragOver={(e) => {
-                          e.preventDefault();
-                          if (dragId.current && dragId.current !== b.id) setDropTarget(b.id);
-                        }}
-                        onDragLeave={() => setDropTarget((t) => (t === b.id ? null : t))}
-                        onDrop={() => dropOn(b.id)}
-                        className={cn(
-                          "relative overflow-hidden rounded-xl border bg-background p-3 transition-all",
-                          b.hidden ? "border-border opacity-60" : "border-border",
-                          dragging === b.id && "opacity-40",
-                          dropTarget === b.id &&
-                            "before:absolute before:inset-x-2 before:-top-px before:h-0.5 before:rounded-full before:bg-primary",
-                        )}
-                        style={{ borderLeft: `4px solid ${brandOf(b.kind)}` }}
-                      >
-                        <div className="flex min-w-0 items-center gap-2">
-                          <GripVertical
-                            className="h-4 w-4 shrink-0 cursor-grab text-muted-foreground"
-                            aria-hidden
-                          />
-                          <span
-                            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-border bg-muted/40"
-                            style={{ color: brandOf(b.kind) }}
-                          >
-                            <SocialPlatformIcon
-                              source={b.value?.trim() || b.kind}
-                              className="h-4 w-4 text-current"
-                            />
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => setOpenBlock(open ? null : b.id)}
-                            className="min-w-0 flex-1 text-left"
-                          >
-                            <span className="block truncate text-sm font-medium">{b.label}</span>
-                            <span className="block truncate text-[11px] text-muted-foreground">
-                              {b.value ? blockHref(b) : "Not filled in yet"}
-                            </span>
-                          </button>
-                          <Switch
-                            checked={!b.hidden}
-                            onCheckedChange={(on) => patch(b.id, { hidden: !on })}
-                            aria-label={b.hidden ? "Show component" : "Hide component"}
-                            className="shrink-0 data-[state=checked]:bg-emerald-500"
-                          />
-                          <button
-                            type="button"
-                            aria-label="Settings"
-                            onClick={() => setOpenBlock(open ? null : b.id)}
-                            className="shrink-0 rounded-lg p-1 text-muted-foreground hover:bg-muted"
-                          >
-                            <ChevronDown
-                              className={cn("h-4 w-4 transition-transform", open && "rotate-180")}
-                            />
-                          </button>
-                        </div>
+                    {blocks.length === 0 && (
+                      <p className="rounded-xl border border-dashed border-border p-6 text-center text-xs text-muted-foreground">
+                        No components yet — add your first social link, header, or custom URL.
+                      </p>
+                    )}
 
-                        {open && (
-                          <div className="mt-3 space-y-2 border-t border-border pt-3">
-                            {b.kind === "media_gallery" ? (
-                              <GalleryBlockSettings
-                                value={b.value}
-                                onChange={(value) => patch(b.id, { value })}
-                                onTitle={(label) => patch(b.id, { label })}
-                              />
-                            ) : b.kind === "media_embed" ? (
-                              <MediaEmbedBlockSettings
-                                value={b.value}
-                                onChange={(value) => patch(b.id, { value })}
-                                onTitle={(label) => patch(b.id, { label })}
-                              />
-                            ) : b.kind === "booking_request" ? (
-                              <BookingBlockSettings
-                                value={b.value}
-                                onChange={(value) => patch(b.id, { value })}
-                                onTitle={(label) => patch(b.id, { label })}
-                              />
-                            ) : b.kind === "contact_form" ? (
-                              <ContactFormBlockSettings
-                                value={b.value}
-                                onChange={(value) => patch(b.id, { value })}
-                                onTitle={(label) => patch(b.id, { label })}
-                              />
-                            ) : b.kind === "event_list" ? (
-                              <EventListBlockSettings
-                                value={b.value}
-                                onChange={(value) => patch(b.id, { value })}
-                                onTitle={(label) => patch(b.id, { label })}
-                              />
-                            ) : b.kind === "live_poll" ? (
-                              <PollBlockSettings
-                                value={b.value}
-                                onChange={(value) => patch(b.id, { value })}
-                                onTitle={(label) => patch(b.id, { label })}
-                              />
-                            ) : b.kind === "faq_accordion" ? (
-                              <FaqBlockSettings
-                                value={b.value}
-                                onChange={(value) => patch(b.id, { value })}
-                                onTitle={(label) => patch(b.id, { label })}
-                              />
-                            ) : b.kind === "map_embed" ? (
-                              <MapBlockSettings
-                                value={b.value}
-                                onChange={(value) => patch(b.id, { value })}
-                                onTitle={(label) => patch(b.id, { label })}
-                              />
-
-                            ) : isHandleBlock(b.kind) && b.kind !== "matrix" ? (
-                              <>
-                                <SocialHandleInput
-                                  kind={b.kind}
-                                  label={b.label}
-                                  value={b.value}
-                                  onChange={(handle) => patch(b.id, { value: handle })}
-                                  placeholder={
-                                    BLOCK_KINDS.find((k) => k.kind === b.kind)?.placeholder?.replace(
-                                      /^@/,
-                                      "",
-                                    ) ?? "username"
-                                  }
-                                />
-                                <p className="text-[11px] text-muted-foreground">
-                                  Enter just your handle — paste a full link and we extract the
-                                  username automatically.
-                                </p>
-                              </>
-                            ) : (
-                              <>
-                                <Input
-                                  className="input-field h-11 rounded-xl"
-                                  placeholder={
-                                    BLOCK_KINDS.find((k) => k.kind === b.kind)?.placeholder
-                                  }
-                                  value={b.value}
-                                  maxLength={400}
-                                  onChange={(e) => patch(b.id, { value: e.target.value })}
-                                />
-                                <p className="text-[11px] text-muted-foreground">
-                                  {hint.prefix && (
-                                    <span className="mr-1 font-mono text-foreground">
-                                      {hint.prefix}
-                                    </span>
-                                  )}
-                                  {hint.help}
-                                </p>
-                              </>
+                    <ul className="space-y-2">
+                      {blocks.map((b, index) => {
+                        const hint = inputHint(b.kind);
+                        const open = openBlock === b.id;
+                        return (
+                          <li
+                            key={b.id}
+                            draggable
+                            onDragStart={() => {
+                              dragId.current = b.id;
+                              setDragging(b.id);
+                            }}
+                            onDragEnd={() => {
+                              dragId.current = null;
+                              setDragging(null);
+                              setDropTarget(null);
+                            }}
+                            onDragOver={(e) => {
+                              e.preventDefault();
+                              if (dragId.current && dragId.current !== b.id) setDropTarget(b.id);
+                            }}
+                            onDragLeave={() => setDropTarget((t) => (t === b.id ? null : t))}
+                            onDrop={() => dropOn(b.id)}
+                            className={cn(
+                              "relative overflow-hidden rounded-xl border bg-background p-3 transition-all",
+                              b.hidden ? "border-border opacity-60" : "border-border",
+                              dragging === b.id && "opacity-40",
+                              dropTarget === b.id &&
+                                "before:absolute before:inset-x-2 before:-top-px before:h-0.5 before:rounded-full before:bg-primary",
                             )}
-                            {isPromoBlock(b.kind) && (
-                              <div className="space-y-2 rounded-xl border border-border/60 bg-background p-3">
-                                <p className="text-[11px] font-medium text-foreground">
-                                  Promo-instellingen
-                                </p>
-                                <div className="flex flex-wrap gap-1.5">
-                                  {PROMO_BADGE_PRESETS.map((preset) => (
-                                    <button
-                                      key={preset}
-                                      type="button"
-                                      onClick={() => patch(b.id, { badge: preset })}
-                                      className="rounded-full border border-border px-2 py-1 text-[10px] font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
-                                    >
-                                      {preset}
-                                    </button>
-                                  ))}
-                                </div>
-                                <Input
-                                  className="input-field h-9 rounded-xl"
-                                  placeholder="Badge (bijv. 🔥 NIEUW)"
-                                  maxLength={32}
-                                  value={b.badge ?? ""}
-                                  onChange={(e) => patch(b.id, { badge: e.target.value })}
+                            style={{ borderLeft: `4px solid ${brandOf(b.kind)}` }}
+                          >
+                            <div className="flex min-w-0 items-center gap-2">
+                              <GripVertical
+                                className="h-4 w-4 shrink-0 cursor-grab text-muted-foreground"
+                                aria-hidden
+                              />
+                              <span
+                                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-border bg-muted/40"
+                                style={{ color: brandOf(b.kind) }}
+                              >
+                                <SocialPlatformIcon
+                                  source={b.value?.trim() || b.kind}
+                                  className="h-4 w-4 text-current"
                                 />
-                                <Input
-                                  type="datetime-local"
-                                  className="input-field h-9 rounded-xl"
-                                  aria-label="Actie loopt tot"
-                                  value={(b.expiresAt ?? "").slice(0, 16)}
-                                  onChange={(e) =>
-                                    patch(b.id, {
-                                      expiresAt: e.target.value
-                                        ? new Date(e.target.value).toISOString()
-                                        : "",
-                                    })
-                                  }
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => setOpenBlock(open ? null : b.id)}
+                                className="min-w-0 flex-1 text-left"
+                              >
+                                <span className="block truncate text-sm font-medium">
+                                  {b.label}
+                                </span>
+                                <span className="block truncate text-[11px] text-muted-foreground">
+                                  {b.value ? blockHref(b) : "Not filled in yet"}
+                                </span>
+                              </button>
+                              <Switch
+                                checked={!b.hidden}
+                                onCheckedChange={(on) => patch(b.id, { hidden: !on })}
+                                aria-label={b.hidden ? "Show component" : "Hide component"}
+                                className="shrink-0 data-[state=checked]:bg-emerald-500"
+                              />
+                              <button
+                                type="button"
+                                aria-label="Settings"
+                                onClick={() => setOpenBlock(open ? null : b.id)}
+                                className="shrink-0 rounded-lg p-1 text-muted-foreground hover:bg-muted"
+                              >
+                                <ChevronDown
+                                  className={cn(
+                                    "h-4 w-4 transition-transform",
+                                    open && "rotate-180",
+                                  )}
                                 />
-                                <div className="flex flex-wrap gap-1.5">
-                                  {PROMO_COPY_PRESETS.map((preset) => (
-                                    <button
-                                      key={preset}
-                                      type="button"
-                                      onClick={() => patch(b.id, { label: preset })}
-                                      className="rounded-full border border-dashed border-border px-2 py-1 text-[10px] text-muted-foreground hover:bg-muted hover:text-foreground"
-                                    >
-                                      {preset}
-                                    </button>
-                                  ))}
+                              </button>
+                            </div>
+
+                            {open && (
+                              <div className="mt-3 space-y-2 border-t border-border pt-3">
+                                {b.kind === "media_gallery" ? (
+                                  <GalleryBlockSettings
+                                    value={b.value}
+                                    onChange={(value) => patch(b.id, { value })}
+                                    onTitle={(label) => patch(b.id, { label })}
+                                  />
+                                ) : b.kind === "media_embed" ? (
+                                  <MediaEmbedBlockSettings
+                                    value={b.value}
+                                    onChange={(value) => patch(b.id, { value })}
+                                    onTitle={(label) => patch(b.id, { label })}
+                                  />
+                                ) : b.kind === "booking_request" ? (
+                                  <BookingBlockSettings
+                                    value={b.value}
+                                    onChange={(value) => patch(b.id, { value })}
+                                    onTitle={(label) => patch(b.id, { label })}
+                                  />
+                                ) : b.kind === "contact_form" ? (
+                                  <ContactFormBlockSettings
+                                    value={b.value}
+                                    onChange={(value) => patch(b.id, { value })}
+                                    onTitle={(label) => patch(b.id, { label })}
+                                  />
+                                ) : b.kind === "event_list" ? (
+                                  <EventListBlockSettings
+                                    value={b.value}
+                                    onChange={(value) => patch(b.id, { value })}
+                                    onTitle={(label) => patch(b.id, { label })}
+                                  />
+                                ) : b.kind === "live_poll" ? (
+                                  <PollBlockSettings
+                                    value={b.value}
+                                    onChange={(value) => patch(b.id, { value })}
+                                    onTitle={(label) => patch(b.id, { label })}
+                                  />
+                                ) : b.kind === "faq_accordion" ? (
+                                  <FaqBlockSettings
+                                    value={b.value}
+                                    onChange={(value) => patch(b.id, { value })}
+                                    onTitle={(label) => patch(b.id, { label })}
+                                  />
+                                ) : b.kind === "map_embed" ? (
+                                  <MapBlockSettings
+                                    value={b.value}
+                                    onChange={(value) => patch(b.id, { value })}
+                                    onTitle={(label) => patch(b.id, { label })}
+                                  />
+                                ) : isHandleBlock(b.kind) && b.kind !== "matrix" ? (
+                                  <>
+                                    <SocialHandleInput
+                                      kind={b.kind}
+                                      label={b.label}
+                                      value={b.value}
+                                      onChange={(handle) => patch(b.id, { value: handle })}
+                                      placeholder={
+                                        BLOCK_KINDS.find(
+                                          (k) => k.kind === b.kind,
+                                        )?.placeholder?.replace(/^@/, "") ?? "username"
+                                      }
+                                    />
+                                    <p className="text-[11px] text-muted-foreground">
+                                      Enter just your handle — paste a full link and we extract the
+                                      username automatically.
+                                    </p>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Input
+                                      className="input-field h-11 rounded-xl"
+                                      placeholder={
+                                        BLOCK_KINDS.find((k) => k.kind === b.kind)?.placeholder
+                                      }
+                                      value={b.value}
+                                      maxLength={400}
+                                      onChange={(e) => patch(b.id, { value: e.target.value })}
+                                    />
+                                    <p className="text-[11px] text-muted-foreground">
+                                      {hint.prefix && (
+                                        <span className="mr-1 font-mono text-foreground">
+                                          {hint.prefix}
+                                        </span>
+                                      )}
+                                      {hint.help}
+                                    </p>
+                                  </>
+                                )}
+                                {isPromoBlock(b.kind) && (
+                                  <div className="space-y-2 rounded-xl border border-border/60 bg-background p-3">
+                                    <p className="text-[11px] font-medium text-foreground">
+                                      Promo-instellingen
+                                    </p>
+                                    <div className="flex flex-wrap gap-1.5">
+                                      {PROMO_BADGE_PRESETS.map((preset) => (
+                                        <button
+                                          key={preset}
+                                          type="button"
+                                          onClick={() => patch(b.id, { badge: preset })}
+                                          className="rounded-full border border-border px-2 py-1 text-[10px] font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+                                        >
+                                          {preset}
+                                        </button>
+                                      ))}
+                                    </div>
+                                    <Input
+                                      className="input-field h-9 rounded-xl"
+                                      placeholder="Badge (bijv. 🔥 NIEUW)"
+                                      maxLength={32}
+                                      value={b.badge ?? ""}
+                                      onChange={(e) => patch(b.id, { badge: e.target.value })}
+                                    />
+                                    <Input
+                                      type="datetime-local"
+                                      className="input-field h-9 rounded-xl"
+                                      aria-label="Actie loopt tot"
+                                      value={(b.expiresAt ?? "").slice(0, 16)}
+                                      onChange={(e) =>
+                                        patch(b.id, {
+                                          expiresAt: e.target.value
+                                            ? new Date(e.target.value).toISOString()
+                                            : "",
+                                        })
+                                      }
+                                    />
+                                    <div className="flex flex-wrap gap-1.5">
+                                      {PROMO_COPY_PRESETS.map((preset) => (
+                                        <button
+                                          key={preset}
+                                          type="button"
+                                          onClick={() => patch(b.id, { label: preset })}
+                                          className="rounded-full border border-dashed border-border px-2 py-1 text-[10px] text-muted-foreground hover:bg-muted hover:text-foreground"
+                                        >
+                                          {preset}
+                                        </button>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+                                <div className="flex items-center gap-1">
+                                  <button
+                                    type="button"
+                                    aria-label="Move up"
+                                    disabled={index === 0}
+                                    onClick={() => move(b.id, -1)}
+                                    className="rounded-lg p-1.5 text-muted-foreground hover:bg-muted disabled:opacity-30"
+                                  >
+                                    <ArrowUp className="h-3.5 w-3.5" />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    aria-label="Move down"
+                                    disabled={index === blocks.length - 1}
+                                    onClick={() => move(b.id, 1)}
+                                    className="rounded-lg p-1.5 text-muted-foreground hover:bg-muted disabled:opacity-30"
+                                  >
+                                    <ArrowDown className="h-3.5 w-3.5" />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => setBlocks((x) => x.filter((y) => y.id !== b.id))}
+                                    className="ml-auto inline-flex items-center gap-1 rounded-lg px-2 py-1.5 text-[11px] font-medium text-muted-foreground hover:bg-muted hover:text-destructive"
+                                  >
+                                    <Trash2 className="h-3.5 w-3.5" /> Delete
+                                  </button>
                                 </div>
                               </div>
                             )}
-                            <div className="flex items-center gap-1">
-                              <button
-                                type="button"
-                                aria-label="Move up"
-                                disabled={index === 0}
-                                onClick={() => move(b.id, -1)}
-                                className="rounded-lg p-1.5 text-muted-foreground hover:bg-muted disabled:opacity-30"
-                              >
-                                <ArrowUp className="h-3.5 w-3.5" />
-                              </button>
-                              <button
-                                type="button"
-                                aria-label="Move down"
-                                disabled={index === blocks.length - 1}
-                                onClick={() => move(b.id, 1)}
-                                className="rounded-lg p-1.5 text-muted-foreground hover:bg-muted disabled:opacity-30"
-                              >
-                                <ArrowDown className="h-3.5 w-3.5" />
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => setBlocks((x) => x.filter((y) => y.id !== b.id))}
-                                className="ml-auto inline-flex items-center gap-1 rounded-lg px-2 py-1.5 text-[11px] font-medium text-muted-foreground hover:bg-muted hover:text-destructive"
-                              >
-                                <Trash2 className="h-3.5 w-3.5" /> Delete
-                              </button>
-                            </div>
-                          </div>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </section>
-              <section className="space-y-3">
-                <h2 className="px-1 text-lg font-medium">Referrals &amp; Rewards</h2>
-                <p className="px-1 text-sm text-muted-foreground">
-                  Nodig vrienden uit met je persoonlijke link. 3 vrienden = 50% korting,
-                  3 geverifieerde vrienden = gratis verificatie, 10 vrienden = gratis
-                  verificatie én de Epic badge “The Influencer”.
-                </p>
-                <ReferralPanel />
-                <ReferralAnalytics />
-              </section>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </section>
+                  <section className="space-y-3">
+                    <h2 className="px-1 text-lg font-medium">Referrals &amp; Rewards</h2>
+                    <p className="px-1 text-sm text-muted-foreground">
+                      Nodig vrienden uit met je persoonlijke link. 3 vrienden = 50% korting, 3
+                      geverifieerde vrienden = gratis verificatie, 10 vrienden = gratis verificatie
+                      én de Epic badge “The Influencer”.
+                    </p>
+                    <ReferralPanel />
+                    <ReferralAnalytics />
+                  </section>
 
-              <SocialVerifyPanel handle={normalized || handle} />
+                  <SocialVerifyPanel handle={normalized || handle} />
 
-              <section className="space-y-3 rounded-2xl border border-border bg-card p-4 sm:p-5">
-                <h2 className="text-lg font-medium">Totaal bereik</h2>
-                <p className="text-sm text-muted-foreground">
-                  Toon één badge met je totale volgersaantal over al je gekoppelde accounts.
-                </p>
-                <TotalReachButton />
-              </section>
+                  <section className="space-y-3 rounded-2xl border border-border bg-card p-4 sm:p-5">
+                    <h2 className="text-lg font-medium">Totaal bereik</h2>
+                    <p className="text-sm text-muted-foreground">
+                      Toon één badge met je totale volgersaantal over al je gekoppelde accounts.
+                    </p>
+                    <TotalReachButton />
+                  </section>
 
-              {/* Eén bron van waarheid: QR-styling gebeurt in de generator. */}
-              <section className="space-y-3 rounded-2xl border border-border bg-card p-4 sm:p-5">
-                <h2 className="text-lg font-medium">Profiel-QR</h2>
-                <p className="text-sm text-muted-foreground">
-                  Je profiel-QR ontwerp je in de QR-generator: kleuren, patronen, hoeken en logo.
-                  De code verwijst altijd naar je profiel, dus geprinte kaartjes blijven geldig.
-                </p>
-                <a
-                  href="/qr?type=profile_hub"
-                  className="inline-flex h-9 items-center gap-2 rounded-xl bg-foreground px-3 text-xs font-medium text-background transition-opacity hover:opacity-90"
-                >
-                  <QrCode className="h-3.5 w-3.5" aria-hidden /> Stijl &amp; download profiel-QR
-                </a>
-              </section>
+                  {/* Eén bron van waarheid: QR-styling gebeurt in de generator. */}
+                  <section className="space-y-3 rounded-2xl border border-border bg-card p-4 sm:p-5">
+                    <h2 className="text-lg font-medium">Profiel-QR</h2>
+                    <p className="text-sm text-muted-foreground">
+                      Je profiel-QR ontwerp je in de QR-generator: kleuren, patronen, hoeken en
+                      logo. De code verwijst altijd naar je profiel, dus geprinte kaartjes blijven
+                      geldig.
+                    </p>
+                    <a
+                      href="/qr?type=profile_hub"
+                      className="inline-flex h-9 items-center gap-2 rounded-xl bg-foreground px-3 text-xs font-medium text-background transition-opacity hover:opacity-90"
+                    >
+                      <QrCode className="h-3.5 w-3.5" aria-hidden /> Stijl &amp; download profiel-QR
+                    </a>
+                  </section>
 
-
-              <BadgesPanel />
-              <BadgeActivityPanel />
+                  <BadgesPanel />
+                  <BadgeActivityPanel />
                 </AccordionContent>
               </AccordionItem>
 
@@ -1248,13 +1244,8 @@ export function ProfileEditor({ variant = "verified" }: { variant?: ProfileVaria
             </Accordion>
           )}
 
-
           {tab === "design" && (
-            <Accordion
-              type="single"
-              collapsible
-              className="space-y-3"
-            >
+            <Accordion type="single" collapsible className="space-y-3">
               {/* 1 — Avatar, header & kaders */}
               <AccordionItem
                 value="avatar_header"
@@ -1438,12 +1429,10 @@ export function ProfileEditor({ variant = "verified" }: { variant?: ProfileVaria
                       </p>
                     </div>
                     <div className="grid gap-3 sm:grid-cols-2">
-                      {(
-                        [
-                          { key: "canvasColor" as const, label: "Achtergrondkleur" },
-                          { key: "patternColor" as const, label: "Patroon- en randkleur" },
-                        ]
-                      ).map((f) => (
+                      {[
+                        { key: "canvasColor" as const, label: "Achtergrondkleur" },
+                        { key: "patternColor" as const, label: "Patroon- en randkleur" },
+                      ].map((f) => (
                         <div key={f.key} className="space-y-1.5">
                           <p className="input-label">{f.label}</p>
                           <div className="flex items-center gap-2">
@@ -1823,8 +1812,6 @@ export function ProfileEditor({ variant = "verified" }: { variant?: ProfileVaria
                 </table>
               </div>
 
-
-
               <div className="rounded-xl border border-border p-3">
                 <p className="mb-2 text-xs font-medium text-muted-foreground">
                   Top Clicked Components
@@ -1868,35 +1855,32 @@ export function ProfileEditor({ variant = "verified" }: { variant?: ProfileVaria
                 className="rounded-2xl border border-border bg-card px-4 sm:px-5"
               >
                 <AccordionTrigger className="hover:no-underline">
-                  <span className="text-base font-medium">
-                    💳 Account, Data &amp; Facturatie
-                  </span>
+                  <span className="text-base font-medium">💳 Account, Data &amp; Facturatie</span>
                 </AccordionTrigger>
                 <AccordionContent className="space-y-4 pb-5">
-              <section className="space-y-3 rounded-2xl border border-border bg-card p-4 sm:p-5">
-
-                <h2 className="text-lg font-medium">Betalingen, data &amp; domein</h2>
-                <p className="text-sm text-muted-foreground">
-                  Facturen, betaalmethodes, data-export en je eigen domein staan nu bij je
-                  accountinstellingen.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <a
-                    href="/settings?tab=payments"
-                    className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium hover:bg-muted"
-                  >
-                    Betalingen &amp; facturen →
-                  </a>
-                  <a
-                    href="/settings?tab=data"
-                    className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium hover:bg-muted"
-                  >
-                    Data &amp; domein →
-                  </a>
-                </div>
-                <div className="h-px bg-border" />
-                <VerifiedBadgeCard verified={verified} handle={handle || null} />
-              </section>
+                  <section className="space-y-3 rounded-2xl border border-border bg-card p-4 sm:p-5">
+                    <h2 className="text-lg font-medium">Betalingen, data &amp; domein</h2>
+                    <p className="text-sm text-muted-foreground">
+                      Facturen, betaalmethodes, data-export en je eigen domein staan nu bij je
+                      accountinstellingen.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      <a
+                        href="/settings?tab=payments"
+                        className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium hover:bg-muted"
+                      >
+                        Betalingen &amp; facturen →
+                      </a>
+                      <a
+                        href="/settings?tab=data"
+                        className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium hover:bg-muted"
+                      >
+                        Data &amp; domein →
+                      </a>
+                    </div>
+                    <div className="h-px bg-border" />
+                    <VerifiedBadgeCard verified={verified} handle={handle || null} />
+                  </section>
                 </AccordionContent>
               </AccordionItem>
 
@@ -1929,265 +1913,265 @@ export function ProfileEditor({ variant = "verified" }: { variant?: ProfileVaria
                   </span>
                 </AccordionTrigger>
                 <AccordionContent className="space-y-4 pb-5">
-              <section className="rounded-2xl border border-border bg-card p-4 sm:p-5">
-
-                <div className="flex flex-wrap items-center gap-2">
-                  <h2 className="text-lg font-medium">
-                    {alias
-                      ? "Privacy Alias (rout.be/u/[alias])"
-                      : "Geverifieerde Handle (rout.be/[handle])"}
-                  </h2>
-                  {alias && (
-                    <span className="rounded-full border border-border bg-muted/50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
-                      minimaal 5 tekens · 2 cijfers
-                    </span>
-                  )}
-                </div>
-                <p id="handle-help" className="mt-1 text-xs text-muted-foreground">
-                  {alias
-                    ? "Kies vrij een pseudoniem. Enkel kleine letters, cijfers en . - _ — minstens 5 tekens en 2 cijfers."
-                    : handleRuleHint(handleCtx)}
-                </p>
-                <div className="mt-3 flex min-w-0 items-center gap-2">
-                  <span className="shrink-0 font-mono text-sm text-muted-foreground">
-                    {host}
-                    {styledProfilePath("", urlStyle)}
-                  </span>
-                  <Input
-                    ref={handleInputRef}
-                    id={alias ? "alias_handle" : "verified_handle"}
-                    name={alias ? "alias_handle" : "verified_handle"}
-                    value={handle}
-                    maxLength={30}
-                    placeholder="yourname"
-                    minLength={HANDLE_MIN_LENGTH}
-                    autoComplete="off"
-                    autoCapitalize="none"
-                    spellCheck={false}
-                    inputMode="text"
-                    aria-invalid={normalized ? !handleOk : undefined}
-                    aria-describedby="handle-help"
-                    onChange={(e) =>
-                      // Geen @, spaties, cijferruis of symbolen: strak en leesbaar.
-                      setHandle(e.target.value.toLowerCase().replace(/[^a-z0-9._-]/g, ""))
-                    }
-                    className="input-field h-11 min-w-0 flex-1 rounded-xl focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background aria-[invalid=true]:border-destructive"
-                  />
-                </div>
-                {strictIssue && (
-                  <HandleErrorBanner
-                    message={
-                      alias && strictIssue === MSG_ALIAS_DIGITS ? ALIAS_DIGITS_HINT : strictIssue
-                    }
-                    className="mt-3"
-                  />
-                )}
-                {normalized && (
-                  <p className="mt-2 break-all text-xs">
-                    {!handleOk ? (
-                      <span className="text-muted-foreground" role="status">
-                        {handleProblem ?? handleIssue(normalized, handleCtx)}
-                      </span>
-                    ) : availability === "checking" ? (
-                      <span className="text-muted-foreground">Checking availability…</span>
-                    ) : availability === "taken" ? (
-                      <span className="inline-flex items-center gap-1 font-mono text-destructive">
-                        <X className="h-3.5 w-3.5" /> @{normalized} is already registered
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1 font-mono text-emerald-600 dark:text-emerald-400">
-                        <Check className="h-3.5 w-3.5" /> @{normalized} is available
-                      </span>
-                    )}
-                  </p>
-                )}
-                {verified && !alias && (
-                  <div className="mt-4">
-                    <VerifiedHandleBuilder
-                      legalName={legalName}
-                      hostPrefix={`${host}${styledProfilePath("", urlStyle)}`}
-                      onSelect={(next) => setHandle(next)}
-                    />
-                  </div>
-                )}
-              </section>
-
-              <section className="space-y-4 rounded-2xl border border-border bg-card p-4 sm:p-5">
-                <div>
-                  <h2 className="text-lg font-medium">Identiteit, URL &amp; badge</h2>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {verified
-                      ? "Eén account, twee publieke ruimtes: je geverifieerde profiel en je privé alias-hub."
-                      : "Je alias-hub is actief. Directe rout.be/ links komen vrij met Pro."}
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <p className="input-label">Actieve identiteit</p>
-                  <div className="flex flex-wrap gap-2">
-                    {(
-                      [
-                        {
-                          id: "legal" as const,
-                          space: "verified" as const,
-                          label: "Echte naam · Directe URL",
-                          note: "bv. rout.be/creatief",
-                          pro: true,
-                        },
-                        {
-                          id: "private" as const,
-                          space: "alias" as const,
-                          label: "Privé alias",
-                          note: "bv. rout.be/u/creatief",
-                          pro: false,
-                        },
-                      ]
-                    ).map((m) => {
-                      const locked = m.pro && !verified;
-                      const active = identitySpace === m.space;
-                      return (
-                        <button
-                          key={m.id}
-                          type="button"
-                          disabled={locked}
-                          aria-disabled={locked}
-                          onClick={() => {
-                            if (locked) return;
-                            setPref("identityMode", m.id);
-                            selectIdentitySpace(m.space);
-                            void saveUrlStylePref((m.space === "alias" ? "u" : "clean") as UrlStyle);
-                          }}
-                          className={cn(
-                            "min-w-[9rem] flex-1 rounded-xl border px-3 py-2 text-left text-xs transition-colors",
-                            locked
-                              ? "cursor-not-allowed border-border opacity-60"
-                              : active
-                                ? "border-primary/50 bg-primary/10"
-                                : "border-border",
-                          )}
-                        >
-                          <span className="flex items-center gap-1.5 font-medium">
-                            {locked && <Lock className="h-3.5 w-3.5" aria-hidden />}
-                            {m.label}
-                            {locked && (
-                              <span className="ml-auto rounded bg-foreground px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase text-background">
-                                Pro
-                              </span>
-                            )}
-                          </span>
-                          <span className="mt-0.5 block text-muted-foreground">{m.note}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                  {!verified && (
-                    <p className="text-[11px] text-muted-foreground">
-                      Directe rout.be/ links en het blauwe vinkje zijn exclusief voor Pro-accounts.
-                    </p>
-                  )}
-                  <p className="text-[11px] text-muted-foreground">
-                    Geverifieerde handles krijgen nooit automatische cijfers. In privé-modus hoeft je
-                    alias niets met je wettelijke naam te maken te hebben.
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <p className="input-label">Je profiel-URL</p>
-                  <div className="flex items-center justify-between gap-3 rounded-xl border border-border bg-background/60 px-3 py-2.5">
-                    <span className="truncate font-mono text-sm text-foreground">
-                      {host}
-                      {styledProfilePath(normalized || "handle", urlStyle)}
-                    </span>
-                    <span className="shrink-0 text-[10px] uppercase tracking-wide text-muted-foreground">
-                      {identitySpace === "verified" ? "Geverifieerd" : "Privé alias"}
-                    </span>
-                  </div>
-                  <p className="text-[11px] text-muted-foreground">
-                    Je URL volgt automatisch je actieve identiteit — geen cijfers, geen symbolen.
-                  </p>
-                </div>
-
-
-
-                <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium">Badge tonen</p>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      Verberg je badge als je liever geen status op je profiel toont.
-                    </p>
-                  </div>
-                  <Switch
-                    aria-label="Badge tonen"
-                    disabled={!verified}
-                    checked={prefs.badgeVisible}
-                    onCheckedChange={(v) => setPref("badgeVisible", v)}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <p className="input-label">Badgetype</p>
-                  <div className="grid gap-2 sm:grid-cols-2">
-                    {BADGE_TYPES.map((b) => (
-                      <button
-                        key={b.id}
-                        type="button"
-                        disabled={!verified || !prefs.badgeVisible}
-                        onClick={() => setPref("badgeType", b.id)}
-                        className={cn(
-                          "rounded-xl border px-3 py-2 text-left text-xs transition-colors disabled:opacity-50",
-                          prefs.badgeType === b.id
-                            ? "border-primary/50 bg-primary/10"
-                            : "border-border",
-                        )}
-                      >
-                        <span className="block font-medium">{b.label}</span>
-                        <span className="block text-muted-foreground">{b.note}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {prefs.badgeType === "verified" && (
-                  <div className="space-y-2">
-                    <p className="input-label">Naamweergave in de badge</p>
-                    <div className="flex flex-wrap gap-2">
-                      {BADGE_NAME_FORMATS.map((f) => (
-                        <button
-                          key={f.id}
-                          type="button"
-                          disabled={!verified || !prefs.badgeVisible}
-                          onClick={() => setPref("badgeNameFormat", f.id)}
-                          className={cn(
-                            "h-10 shrink-0 rounded-full border px-3 text-xs font-medium transition-colors disabled:opacity-50",
-                            prefs.badgeNameFormat === f.id
-                              ? "border-primary/50 bg-primary/10"
-                              : "border-border",
-                          )}
-                        >
-                          {f.label}
-                        </button>
-                      ))}
+                  <section className="rounded-2xl border border-border bg-card p-4 sm:p-5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h2 className="text-lg font-medium">
+                        {alias
+                          ? "Privacy Alias (rout.be/u/[alias])"
+                          : "Geverifieerde Handle (rout.be/[handle])"}
+                      </h2>
+                      {alias && (
+                        <span className="rounded-full border border-border bg-muted/50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+                          minimaal 5 tekens · 2 cijfers
+                        </span>
+                      )}
                     </div>
-                    {legalName && (
-                      <p className="text-[11px] text-muted-foreground">
-                        Voorbeeld: {formatBadgeName(legalName, prefs.badgeNameFormat)}
+                    <p id="handle-help" className="mt-1 text-xs text-muted-foreground">
+                      {alias
+                        ? "Kies vrij een pseudoniem. Enkel kleine letters, cijfers en . - _ — minstens 5 tekens en 2 cijfers."
+                        : handleRuleHint(handleCtx)}
+                    </p>
+                    <div className="mt-3 flex min-w-0 items-center gap-2">
+                      <span className="shrink-0 font-mono text-sm text-muted-foreground">
+                        {host}
+                        {styledProfilePath("", urlStyle)}
+                      </span>
+                      <Input
+                        ref={handleInputRef}
+                        id={alias ? "alias_handle" : "verified_handle"}
+                        name={alias ? "alias_handle" : "verified_handle"}
+                        value={handle}
+                        maxLength={30}
+                        placeholder="yourname"
+                        minLength={HANDLE_MIN_LENGTH}
+                        autoComplete="off"
+                        autoCapitalize="none"
+                        spellCheck={false}
+                        inputMode="text"
+                        aria-invalid={normalized ? !handleOk : undefined}
+                        aria-describedby="handle-help"
+                        onChange={(e) =>
+                          // Geen @, spaties, cijferruis of symbolen: strak en leesbaar.
+                          setHandle(e.target.value.toLowerCase().replace(/[^a-z0-9._-]/g, ""))
+                        }
+                        className="input-field h-11 min-w-0 flex-1 rounded-xl focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background aria-[invalid=true]:border-destructive"
+                      />
+                    </div>
+                    {strictIssue && (
+                      <HandleErrorBanner
+                        message={
+                          alias && strictIssue === MSG_ALIAS_DIGITS
+                            ? ALIAS_DIGITS_HINT
+                            : strictIssue
+                        }
+                        className="mt-3"
+                      />
+                    )}
+                    {normalized && (
+                      <p className="mt-2 break-all text-xs">
+                        {!handleOk ? (
+                          <span className="text-muted-foreground" role="status">
+                            {handleProblem ?? handleIssue(normalized, handleCtx)}
+                          </span>
+                        ) : availability === "checking" ? (
+                          <span className="text-muted-foreground">Checking availability…</span>
+                        ) : availability === "taken" ? (
+                          <span className="inline-flex items-center gap-1 font-mono text-destructive">
+                            <X className="h-3.5 w-3.5" /> @{normalized} is already registered
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 font-mono text-emerald-600 dark:text-emerald-400">
+                            <Check className="h-3.5 w-3.5" /> @{normalized} is available
+                          </span>
+                        )}
                       </p>
                     )}
-                  </div>
-                )}
-              </section>
-              {/* Steunpagina staat er voor iedereen — free én Pro. */}
-              <DonationPanel
-                handle={claimed || normalized || null}
-                urlStyle={urlStyle}
-                verified={verified}
-              />
-              {!verified && <VerificationPanel />}
+                    {verified && !alias && (
+                      <div className="mt-4">
+                        <VerifiedHandleBuilder
+                          legalName={legalName}
+                          hostPrefix={`${host}${styledProfilePath("", urlStyle)}`}
+                          onSelect={(next) => setHandle(next)}
+                        />
+                      </div>
+                    )}
+                  </section>
+
+                  <section className="space-y-4 rounded-2xl border border-border bg-card p-4 sm:p-5">
+                    <div>
+                      <h2 className="text-lg font-medium">Identiteit, URL &amp; badge</h2>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {verified
+                          ? "Eén account, twee publieke ruimtes: je geverifieerde profiel en je privé alias-hub."
+                          : "Je alias-hub is actief. Directe rout.be/ links komen vrij met Pro."}
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <p className="input-label">Actieve identiteit</p>
+                      <div className="flex flex-wrap gap-2">
+                        {[
+                          {
+                            id: "legal" as const,
+                            space: "verified" as const,
+                            label: "Echte naam · Directe URL",
+                            note: "bv. rout.be/creatief",
+                            pro: true,
+                          },
+                          {
+                            id: "private" as const,
+                            space: "alias" as const,
+                            label: "Privé alias",
+                            note: "bv. rout.be/u/creatief",
+                            pro: false,
+                          },
+                        ].map((m) => {
+                          const locked = m.pro && !verified;
+                          const active = identitySpace === m.space;
+                          return (
+                            <button
+                              key={m.id}
+                              type="button"
+                              disabled={locked}
+                              aria-disabled={locked}
+                              onClick={() => {
+                                if (locked) return;
+                                setPref("identityMode", m.id);
+                                selectIdentitySpace(m.space);
+                                void saveUrlStylePref(
+                                  (m.space === "alias" ? "u" : "clean") as UrlStyle,
+                                );
+                              }}
+                              className={cn(
+                                "min-w-[9rem] flex-1 rounded-xl border px-3 py-2 text-left text-xs transition-colors",
+                                locked
+                                  ? "cursor-not-allowed border-border opacity-60"
+                                  : active
+                                    ? "border-primary/50 bg-primary/10"
+                                    : "border-border",
+                              )}
+                            >
+                              <span className="flex items-center gap-1.5 font-medium">
+                                {locked && <Lock className="h-3.5 w-3.5" aria-hidden />}
+                                {m.label}
+                                {locked && (
+                                  <span className="ml-auto rounded bg-foreground px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase text-background">
+                                    Pro
+                                  </span>
+                                )}
+                              </span>
+                              <span className="mt-0.5 block text-muted-foreground">{m.note}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                      {!verified && (
+                        <p className="text-[11px] text-muted-foreground">
+                          Directe rout.be/ links en het blauwe vinkje zijn exclusief voor
+                          Pro-accounts.
+                        </p>
+                      )}
+                      <p className="text-[11px] text-muted-foreground">
+                        Geverifieerde handles krijgen nooit automatische cijfers. In privé-modus
+                        hoeft je alias niets met je wettelijke naam te maken te hebben.
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <p className="input-label">Je profiel-URL</p>
+                      <div className="flex items-center justify-between gap-3 rounded-xl border border-border bg-background/60 px-3 py-2.5">
+                        <span className="truncate font-mono text-sm text-foreground">
+                          {host}
+                          {styledProfilePath(normalized || "handle", urlStyle)}
+                        </span>
+                        <span className="shrink-0 text-[10px] uppercase tracking-wide text-muted-foreground">
+                          {identitySpace === "verified" ? "Geverifieerd" : "Privé alias"}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-muted-foreground">
+                        Je URL volgt automatisch je actieve identiteit — geen cijfers, geen
+                        symbolen.
+                      </p>
+                    </div>
+
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium">Badge tonen</p>
+                        <p className="mt-1 text-xs text-muted-foreground">
+                          Verberg je badge als je liever geen status op je profiel toont.
+                        </p>
+                      </div>
+                      <Switch
+                        aria-label="Badge tonen"
+                        disabled={!verified}
+                        checked={prefs.badgeVisible}
+                        onCheckedChange={(v) => setPref("badgeVisible", v)}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <p className="input-label">Badgetype</p>
+                      <div className="grid gap-2 sm:grid-cols-2">
+                        {BADGE_TYPES.map((b) => (
+                          <button
+                            key={b.id}
+                            type="button"
+                            disabled={!verified || !prefs.badgeVisible}
+                            onClick={() => setPref("badgeType", b.id)}
+                            className={cn(
+                              "rounded-xl border px-3 py-2 text-left text-xs transition-colors disabled:opacity-50",
+                              prefs.badgeType === b.id
+                                ? "border-primary/50 bg-primary/10"
+                                : "border-border",
+                            )}
+                          >
+                            <span className="block font-medium">{b.label}</span>
+                            <span className="block text-muted-foreground">{b.note}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {prefs.badgeType === "verified" && (
+                      <div className="space-y-2">
+                        <p className="input-label">Naamweergave in de badge</p>
+                        <div className="flex flex-wrap gap-2">
+                          {BADGE_NAME_FORMATS.map((f) => (
+                            <button
+                              key={f.id}
+                              type="button"
+                              disabled={!verified || !prefs.badgeVisible}
+                              onClick={() => setPref("badgeNameFormat", f.id)}
+                              className={cn(
+                                "h-10 shrink-0 rounded-full border px-3 text-xs font-medium transition-colors disabled:opacity-50",
+                                prefs.badgeNameFormat === f.id
+                                  ? "border-primary/50 bg-primary/10"
+                                  : "border-border",
+                              )}
+                            >
+                              {f.label}
+                            </button>
+                          ))}
+                        </div>
+                        {legalName && (
+                          <p className="text-[11px] text-muted-foreground">
+                            Voorbeeld: {formatBadgeName(legalName, prefs.badgeNameFormat)}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </section>
+                  {/* Steunpagina staat er voor iedereen — free én Pro. */}
+                  <DonationPanel
+                    handle={claimed || normalized || null}
+                    urlStyle={urlStyle}
+                    verified={verified}
+                  />
+                  {!verified && <VerificationPanel />}
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
           )}
-
 
           {tab === "identity" && verified && (
             <Accordion type="single" collapsible className="space-y-3">
@@ -2196,9 +2180,7 @@ export function ProfileEditor({ variant = "verified" }: { variant?: ProfileVaria
                 className="rounded-2xl border border-border bg-card px-4 sm:px-5"
               >
                 <AccordionTrigger className="hover:no-underline">
-                  <span className="text-base font-medium">
-                    🌐 Subdomeinen &amp; Custom Domains
-                  </span>
+                  <span className="text-base font-medium">🌐 Subdomeinen &amp; Custom Domains</span>
                 </AccordionTrigger>
                 <AccordionContent className="space-y-4 pb-5">
                   <SubdomainPanel />
@@ -2222,130 +2204,131 @@ export function ProfileEditor({ variant = "verified" }: { variant?: ProfileVaria
               </AccordionItem>
             </Accordion>
           )}
-
-
         </div>
 
-        
         {/* Live preview — desktop: volledig stationair naast de editor terwijl
             de formulieren links scrollen (z-10 < vaste header z-50) */}
         <aside className="z-10 hidden self-start lg:sticky lg:top-4 lg:col-span-5 lg:flex lg:h-[calc(100vh-2rem)] lg:flex-col lg:justify-between lg:py-2">
           <div className="flex min-h-0 flex-1 flex-col items-center justify-start rounded-3xl border border-border/80 bg-card/40 p-6 shadow-2xl">
-
-          <div className="mb-4 flex w-full items-center justify-between gap-2">
-            <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
-              Live preview
-            </p>
-            {/* Viewport-switcher: telefoonmockup ↔ desktopvenster */}
-            <div
-              role="group"
-              aria-label="Preview-formaat"
-              className="inline-flex items-center rounded-full border border-border bg-muted/40 p-0.5"
-            >
-              {(
-                [
-                  { id: "mobile", label: "Mobiel", Icon: Smartphone },
-                  { id: "desktop", label: "Desktop", Icon: Monitor },
-                ] as const
-              ).map(({ id, label, Icon }) => (
-                <button
-                  key={id}
-                  type="button"
-                  onClick={() => setPreviewDevice(id)}
-                  aria-pressed={previewDevice === id}
-                  title={label}
-                  className={cn(
-                    "inline-flex h-7 items-center gap-1.5 rounded-full px-2.5 text-[11px] font-medium transition-all",
-                    previewDevice === id
-                      ? "bg-background text-foreground shadow-sm"
-                      : "text-muted-foreground hover:text-foreground",
-                  )}
-                >
-                  <Icon className="h-3.5 w-3.5" aria-hidden />
-                  {label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="transition-all duration-300 ease-out">
-          {previewDevice === "mobile" ? (
-            /* Smartphone: 9:18, ronde hoeken, bezel en camera-eiland; gecentreerd
-               en begrensd op 580px hoog zodat hij in de sticky kolom past */
-            <div className="mx-auto flex max-h-[580px] w-full max-w-[290px] flex-1 items-stretch overflow-hidden rounded-[36px] border-[6px] border-zinc-800 bg-black shadow-2xl transition-all duration-300">
-              <div className="relative w-full overflow-hidden rounded-[28px] bg-background">
-                <span className="absolute left-1/2 top-2 z-10 flex h-3 w-20 -translate-x-1/2 items-center justify-center gap-1 rounded-full bg-zinc-800">
-                  <span className="h-1 w-8 rounded-full bg-background/25" />
-                  <span className="h-1.5 w-1.5 rounded-full bg-background/35" />
-                </span>
-                <div className="preview-noscroll aspect-[9/18] max-h-[560px] w-full overflow-y-auto overflow-x-hidden text-foreground">
-                  <ProfileView profile={previewDraft} free={!verified} />
-                </div>
+            <div className="mb-4 flex w-full items-center justify-between gap-2">
+              <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+                Live preview
+              </p>
+              {/* Viewport-switcher: telefoonmockup ↔ desktopvenster */}
+              <div
+                role="group"
+                aria-label="Preview-formaat"
+                className="inline-flex items-center rounded-full border border-border bg-muted/40 p-0.5"
+              >
+                {(
+                  [
+                    { id: "mobile", label: "Mobiel", Icon: Smartphone },
+                    { id: "desktop", label: "Desktop", Icon: Monitor },
+                  ] as const
+                ).map(({ id, label, Icon }) => (
+                  <button
+                    key={id}
+                    type="button"
+                    onClick={() => setPreviewDevice(id)}
+                    aria-pressed={previewDevice === id}
+                    title={label}
+                    className={cn(
+                      "inline-flex h-7 items-center gap-1.5 rounded-full px-2.5 text-[11px] font-medium transition-all",
+                      previewDevice === id
+                        ? "bg-background text-foreground shadow-sm"
+                        : "text-muted-foreground hover:text-foreground",
+                    )}
+                  >
+                    <Icon className="h-3.5 w-3.5" aria-hidden />
+                    {label}
+                  </button>
+                ))}
               </div>
             </div>
-          ) : (
-            /* Laptop: ultradunne metalen bezel met webcamstip, glasglans, hinge en 3D-toetsenborddek */
-            <div className="mx-auto w-full max-w-[520px] px-8 transition-all duration-300">
-              {/* Scherm: 16:10 retina-paneel, dunne bezel, ambient glow */}
-              <div className="relative rounded-t-xl border-[2px] border-zinc-700/60 bg-zinc-950 p-1.5 shadow-2xl shadow-black/60 shadow-[0_0_30px_rgba(255,255,255,0.04)]">
-                {/* Webcamstip gecentreerd in de bovenbezel */}
-                <span className="mx-auto my-0.5 block h-1.5 w-1.5 rounded-full bg-zinc-800" aria-hidden />
-                <div
-                  ref={laptopScreenRef}
-                  className="preview-noscroll relative aspect-[16/10] w-full overflow-hidden rounded-[4px] bg-background text-foreground"
-                >
-                  {/* 1:1 desktopproporties: render in virtueel 1280×800-viewport en schaal
-                      mee met de werkelijke containerbreedte via CSS-transform */}
-                  <div
-                    className="h-[800px] w-[1280px] origin-top-left"
-                    style={{ transform: `scale(${laptopScale})` }}
-                  >
-                    <ProfileView profile={previewDraft} free={!verified} layout="wide" />
+
+            <div className="transition-all duration-300 ease-out">
+              {previewDevice === "mobile" ? (
+                /* Smartphone: 9:18, ronde hoeken, bezel en camera-eiland; gecentreerd
+               en begrensd op 580px hoog zodat hij in de sticky kolom past */
+                <div className="mx-auto flex max-h-[580px] w-full max-w-[290px] flex-1 items-stretch overflow-hidden rounded-[36px] border-[6px] border-zinc-800 bg-black shadow-2xl transition-all duration-300">
+                  <div className="relative w-full overflow-hidden rounded-[28px] bg-background">
+                    <span className="absolute left-1/2 top-2 z-10 flex h-3 w-20 -translate-x-1/2 items-center justify-center gap-1 rounded-full bg-zinc-800">
+                      <span className="h-1 w-8 rounded-full bg-background/25" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-background/35" />
+                    </span>
+                    <div className="preview-noscroll aspect-[9/18] max-h-[560px] w-full overflow-y-auto overflow-x-hidden text-foreground">
+                      <ProfileView profile={previewDraft} free={!verified} />
+                    </div>
                   </div>
-                  {/* Diagonale glasglans over het scherm */}
+                </div>
+              ) : (
+                /* Laptop: ultradunne metalen bezel met webcamstip, glasglans, hinge en 3D-toetsenborddek */
+                <div className="mx-auto w-full max-w-[520px] px-8 transition-all duration-300">
+                  {/* Scherm: 16:10 retina-paneel, dunne bezel, ambient glow */}
+                  <div className="relative rounded-t-xl border-[2px] border-zinc-700/60 bg-zinc-950 p-1.5 shadow-2xl shadow-black/60 shadow-[0_0_30px_rgba(255,255,255,0.04)]">
+                    {/* Webcamstip gecentreerd in de bovenbezel */}
+                    <span
+                      className="mx-auto my-0.5 block h-1.5 w-1.5 rounded-full bg-zinc-800"
+                      aria-hidden
+                    />
+                    <div
+                      ref={laptopScreenRef}
+                      className="preview-noscroll relative aspect-[16/10] w-full overflow-hidden rounded-[4px] bg-background text-foreground"
+                    >
+                      {/* 1:1 desktopproporties: render in virtueel 1280×800-viewport en schaal
+                      mee met de werkelijke containerbreedte via CSS-transform */}
+                      <div
+                        className="h-[800px] w-[1280px] origin-top-left"
+                        style={{ transform: `scale(${laptopScale})` }}
+                      >
+                        <ProfileView profile={previewDraft} free={!verified} layout="wide" />
+                      </div>
+                      {/* Diagonale glasglans over het scherm */}
+                      <div
+                        className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent"
+                        aria-hidden
+                      />
+                    </div>
+                  </div>
+                  {/* Hinge: donkere metalen balk tussen scherm en dek */}
                   <div
-                    className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent"
+                    className="mx-auto h-2 w-[98%] rounded-b-sm border-t border-zinc-800 bg-zinc-950"
+                    aria-hidden
+                  />
+                  {/* Onderdek: echt 3D-perspectief — bovenste rij wijkt naar achteren,
+                  spacebar en trackpad komen naar voren */}
+                  <div className="[perspective:1000px]">
+                    <div className="relative mx-auto w-[104%] -translate-x-[2%] origin-top rounded-b-2xl border border-t-0 border-zinc-700/80 bg-gradient-to-b from-zinc-800 to-zinc-900 px-4 pb-3 pt-2 shadow-2xl shadow-black/60 [transform:rotateX(32deg)] [transform-style:preserve-3d]">
+                      <div className="space-y-1 rounded-md bg-zinc-950/50 p-1.5">
+                        {Array.from({ length: 4 }).map((_, row) => (
+                          <div key={row} className="grid grid-cols-12 gap-1">
+                            {Array.from({ length: 12 }).map((_, col) => (
+                              <span
+                                key={col}
+                                className="h-2.5 rounded-[2px] border border-zinc-700/50 bg-zinc-800/80"
+                              />
+                            ))}
+                          </div>
+                        ))}
+                        {/* Spacebar */}
+                        <div className="mx-auto h-2.5 w-1/2 rounded-[2px] border border-zinc-700/50 bg-zinc-800/80" />
+                      </div>
+                      {/* Trackpad */}
+                      <div className="mx-auto mt-2 h-3.5 w-1/3 rounded-sm border border-zinc-700/50 bg-zinc-800/40" />
+                    </div>
+                  </div>
+                  <div
+                    className="mx-auto h-1 w-[70%] rounded-b-full bg-black/40 blur-[2px]"
                     aria-hidden
                   />
                 </div>
-              </div>
-              {/* Hinge: donkere metalen balk tussen scherm en dek */}
-              <div className="mx-auto h-2 w-[98%] rounded-b-sm border-t border-zinc-800 bg-zinc-950" aria-hidden />
-              {/* Onderdek: echt 3D-perspectief — bovenste rij wijkt naar achteren,
-                  spacebar en trackpad komen naar voren */}
-              <div className="[perspective:1000px]">
-                <div
-                  className="relative mx-auto w-[104%] -translate-x-[2%] origin-top rounded-b-2xl border border-t-0 border-zinc-700/80 bg-gradient-to-b from-zinc-800 to-zinc-900 px-4 pb-3 pt-2 shadow-2xl shadow-black/60 [transform:rotateX(32deg)] [transform-style:preserve-3d]"
-                >
-                  <div className="space-y-1 rounded-md bg-zinc-950/50 p-1.5">
-                    {Array.from({ length: 4 }).map((_, row) => (
-                      <div key={row} className="grid grid-cols-12 gap-1">
-                        {Array.from({ length: 12 }).map((_, col) => (
-                          <span
-                            key={col}
-                            className="h-2.5 rounded-[2px] border border-zinc-700/50 bg-zinc-800/80"
-                          />
-                        ))}
-                      </div>
-                    ))}
-                    {/* Spacebar */}
-                    <div className="mx-auto h-2.5 w-1/2 rounded-[2px] border border-zinc-700/50 bg-zinc-800/80" />
-                  </div>
-                  {/* Trackpad */}
-                  <div className="mx-auto mt-2 h-3.5 w-1/3 rounded-sm border border-zinc-700/50 bg-zinc-800/40" />
-                </div>
-              </div>
-              <div className="mx-auto h-1 w-[70%] rounded-b-full bg-black/40 blur-[2px]" aria-hidden />
+              )}
             </div>
-          )}
-
-          </div>
-          <p className="mt-3 text-center text-[11px] text-muted-foreground">
-            Wijzigingen zijn direct zichtbaar — opslaan maakt ze live.
-          </p>
+            <p className="mt-3 text-center text-[11px] text-muted-foreground">
+              Wijzigingen zijn direct zichtbaar — opslaan maakt ze live.
+            </p>
           </div>
         </aside>
-
       </div>
 
       {/* Low, compact mobile bar: subtle autosave status + primary live-preview action.
@@ -2368,7 +2351,10 @@ export function ProfileEditor({ variant = "verified" }: { variant?: ProfileVaria
                 </>
               ) : (
                 <>
-                  <Check className="h-3 w-3 shrink-0 text-emerald-600 dark:text-emerald-400" aria-hidden />
+                  <Check
+                    className="h-3 w-3 shrink-0 text-emerald-600 dark:text-emerald-400"
+                    aria-hidden
+                  />
                   Automatisch opgeslagen
                 </>
               )}
@@ -2407,7 +2393,6 @@ export function ProfileEditor({ variant = "verified" }: { variant?: ProfileVaria
                 </div>
               </div>
             </div>
-
           </div>
         </DrawerContent>
       </Drawer>
@@ -2535,7 +2520,9 @@ export function ProfileEditor({ variant = "verified" }: { variant?: ProfileVaria
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block text-xs font-medium">Smart Link toevoegen</span>
-                  <span className="block truncate text-[11px] text-muted-foreground">{pastedUrl}</span>
+                  <span className="block truncate text-[11px] text-muted-foreground">
+                    {pastedUrl}
+                  </span>
                 </span>
                 <span className="shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium">
                   URL gedetecteerd
@@ -2592,7 +2579,6 @@ export function ProfileEditor({ variant = "verified" }: { variant?: ProfileVaria
                   </div>
                 </div>
               ))
-
             )}
           </div>
         </DrawerContent>

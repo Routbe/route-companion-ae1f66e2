@@ -54,7 +54,9 @@ export function ProfileBadge({
     : t("profile.verified_badge_title");
   // Het blauwe vinkje toont bij het openklikken altijd de echte, volledige naam:
   // de weergavenaam mag vrij zijn, de identiteit erachter niet.
-  const shownName = human ? "" : (legalName ?? "").trim() || formatBadgeName(legalName ?? "", nameFormat);
+  const shownName = human
+    ? ""
+    : (legalName ?? "").trim() || formatBadgeName(legalName ?? "", nameFormat);
 
   return (
     <Popover>
@@ -71,7 +73,9 @@ export function ProfileBadge({
       <PopoverContent
         align="center"
         className="w-72 rounded-xl border p-4 text-left"
-        style={cardBg ? { background: cardBg, borderColor: cardBorder, color: textColor } : undefined}
+        style={
+          cardBg ? { background: cardBg, borderColor: cardBorder, color: textColor } : undefined
+        }
       >
         <div className="flex items-start gap-2">
           <Icon
@@ -81,7 +85,10 @@ export function ProfileBadge({
           <div className="space-y-1">
             <p className="text-sm font-semibold leading-tight">{title}</p>
             {shownName && (
-              <p className="text-xs font-medium" style={mutedColor ? { color: mutedColor } : undefined}>
+              <p
+                className="text-xs font-medium"
+                style={mutedColor ? { color: mutedColor } : undefined}
+              >
                 {shownName}
               </p>
             )}

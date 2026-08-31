@@ -31,21 +31,23 @@ export function NotificationsPanel() {
     let cancelled = false;
 
     const load = () =>
-      void (db as unknown as {
-        from: (t: string) => {
-          select: (c: string) => {
-            eq: (
-              c: string,
-              v: string,
-            ) => {
-              order: (
+      void (
+        db as unknown as {
+          from: (t: string) => {
+            select: (c: string) => {
+              eq: (
                 c: string,
-                o: { ascending: boolean },
-              ) => { limit: (n: number) => Promise<{ data: unknown }> };
+                v: string,
+              ) => {
+                order: (
+                  c: string,
+                  o: { ascending: boolean },
+                ) => { limit: (n: number) => Promise<{ data: unknown }> };
+              };
             };
           };
-        };
-      })
+        }
+      )
         .from("notifications")
         .select("id, kind, title, body, severity, read_at, created_at")
         .eq("user_id", user.id)
@@ -80,11 +82,15 @@ export function NotificationsPanel() {
       (prev ?? []).map((r) => (r.id === id ? { ...r, read_at: new Date().toISOString() } : r)),
     );
     try {
-      await (db as unknown as {
-        from: (t: string) => {
-          update: (v: Record<string, unknown>) => { eq: (c: string, v: string) => Promise<unknown> };
-        };
-      })
+      await (
+        db as unknown as {
+          from: (t: string) => {
+            update: (v: Record<string, unknown>) => {
+              eq: (c: string, v: string) => Promise<unknown>;
+            };
+          };
+        }
+      )
         .from("notifications")
         .update({ read_at: new Date().toISOString() })
         .eq("id", id);
