@@ -11,7 +11,6 @@ import {
   Plus,
   Sparkles,
   UserRound,
-
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -107,10 +106,7 @@ export default function Dashboard() {
         const since = new Date(Date.now() - 13 * 86400000);
         since.setHours(0, 0, 0, 0);
         const [{ count }, { data: recentScans }] = await Promise.all([
-          db
-            .from("qr_scans")
-            .select("id", { count: "exact", head: true })
-            .in("tracked_qr_id", ids),
+          db.from("qr_scans").select("id", { count: "exact", head: true }).in("tracked_qr_id", ids),
           db
             .from("qr_scans")
             .select("scanned_at")
@@ -197,7 +193,9 @@ export default function Dashboard() {
     return (
       <AppLayout title="Dashboard">
         <div className="flex min-h-[40vh] items-center justify-center">
-          <div className="relative h-24 w-24"><BrandLoader label="Dashboard laden…" /></div>
+          <div className="relative h-24 w-24">
+            <BrandLoader label="Dashboard laden…" />
+          </div>
         </div>
       </AppLayout>
     );

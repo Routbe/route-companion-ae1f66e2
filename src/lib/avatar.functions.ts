@@ -23,7 +23,11 @@ export const uploadAvatar = createServerFn({ method: "POST" })
     if (bytes > MAX_BYTES) return { ok: false, message: "Keep the image under 5 MB." };
 
     const { sql } = await import("@/lib/neon");
-    const ext = (data.ext || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 5) || "jpg";
+    const ext =
+      (data.ext || "jpg")
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "")
+        .slice(0, 5) || "jpg";
     const path = `${context.userId}/avatar-${Date.now()}.${ext}`;
     await sql.query(
       `insert into public.avatar_objects (path, user_id, content_type, data)

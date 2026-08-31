@@ -24,9 +24,15 @@ export const Route = createFileRoute("/auth_/verify")({
   head: () => ({
     meta: [
       { title: "Aanmeldlink bevestigen — ROUT" },
-      { name: "description", content: "Bevestig je aanmeldlink, e-mailadres of nieuw wachtwoord voor je ROUT-account." },
+      {
+        name: "description",
+        content: "Bevestig je aanmeldlink, e-mailadres of nieuw wachtwoord voor je ROUT-account.",
+      },
       { property: "og:title", content: "Aanmeldlink bevestigen — ROUT" },
-      { property: "og:description", content: "Bevestig je aanmeldlink, e-mailadres of nieuw wachtwoord voor je ROUT-account." },
+      {
+        property: "og:description",
+        content: "Bevestig je aanmeldlink, e-mailadres of nieuw wachtwoord voor je ROUT-account.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
@@ -130,7 +136,11 @@ function VerifyPage() {
               </div>
               <PasswordField value={password} onChange={setPassword} required minLength={10} />
               <Button type="submit" className="h-11 w-full rounded-lg" disabled={saving}>
-                {saving ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : "Wachtwoord opslaan"}
+                {saving ? (
+                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                ) : (
+                  "Wachtwoord opslaan"
+                )}
               </Button>
             </form>
           )}
@@ -141,7 +151,11 @@ function VerifyPage() {
                 <XCircle className="h-5 w-5 text-destructive" aria-hidden /> Link werkt niet
               </h1>
               <p className="text-sm text-muted-foreground">{message}</p>
-              <Button variant="outline" className="w-full" onClick={() => nav("/auth", { replace: true })}>
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => nav("/auth", { replace: true })}
+              >
                 Terug naar aanmelden
               </Button>
             </div>

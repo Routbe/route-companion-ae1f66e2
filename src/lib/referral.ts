@@ -17,7 +17,8 @@ export function referralPath(username: string): string {
 }
 
 export function referralUrl(username: string, origin?: string): string {
-  const base = origin ?? (typeof window !== "undefined" ? window.location.origin : "https://rout.be");
+  const base =
+    origin ?? (typeof window !== "undefined" ? window.location.origin : "https://rout.be");
   return `${base}${referralPath(username)}`;
 }
 
@@ -92,4 +93,3 @@ export function clearReferrer(): void {
     }
   }
 }
-

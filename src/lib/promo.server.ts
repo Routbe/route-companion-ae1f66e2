@@ -92,7 +92,6 @@ async function resolveFromDb(normalized: string): Promise<PromoDiscount | null> 
   );
 }
 
-
 /** Zoekt de code op. Geeft `null` bij een onbekende of lege code. */
 export async function resolvePromo(code: string | null | undefined): Promise<PromoDiscount | null> {
   if (!code) return null;
@@ -171,4 +170,3 @@ export async function recordPromoRedemption(code: string | null | undefined): Pr
     return false;
   }
 }
-

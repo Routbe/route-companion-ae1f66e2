@@ -7,10 +7,7 @@
  * variable and the action needed to fix it.
  */
 
-export const REQUIRED_SERVER_SECRETS = [
-  "DATABASE_URL",
-  "BREVO_API_KEY",
-] as const;
+export const REQUIRED_SERVER_SECRETS = ["DATABASE_URL", "BREVO_API_KEY"] as const;
 
 export type AdminErrorInfo = {
   /** Toast title. */
@@ -97,7 +94,9 @@ export function describeAdminError(error: unknown, fallback: string): AdminError
 
   return {
     title: fallback,
-    description: message ? message.slice(0, 200) : "Please retry — if it persists, check the Deployment tab.",
+    description: message
+      ? message.slice(0, 200)
+      : "Please retry — if it persists, check the Deployment tab.",
     missing: [],
     kind: "unknown",
   };

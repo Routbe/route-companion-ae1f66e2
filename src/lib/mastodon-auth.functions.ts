@@ -69,7 +69,9 @@ export const completeMastodonLogin = createServerFn({ method: "POST" })
       // Open the session here: the browser never handles a token, it just gets
       // the same httpOnly cookie as a password sign-in.
       const { createSession, buildSessionCookie } = await import("./auth/session.server");
-      const session = await createSession(result.userId, { userAgent: getRequestHeader("user-agent") });
+      const session = await createSession(result.userId, {
+        userAgent: getRequestHeader("user-agent"),
+      });
       setResponseHeader("set-cookie", buildSessionCookie(session.token, 60 * 60 * 24 * 30));
       const { userId: _userId, ...safe } = result;
       return safe;

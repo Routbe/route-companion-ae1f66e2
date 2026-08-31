@@ -69,9 +69,10 @@ export function parseBookingConfig(value: string | null | undefined): BookingCon
   try {
     const parsed = JSON.parse(raw) as Partial<BookingConfig>;
     return {
-      title: typeof parsed.title === "string" && parsed.title.trim()
-        ? parsed.title.trim()
-        : DEFAULT_BOOKING_CONFIG.title,
+      title:
+        typeof parsed.title === "string" && parsed.title.trim()
+          ? parsed.title.trim()
+          : DEFAULT_BOOKING_CONFIG.title,
       note: typeof parsed.note === "string" ? parsed.note : DEFAULT_BOOKING_CONFIG.note,
       duration: asDuration(parsed.duration),
       mode: parsed.mode === "embed" ? "embed" : "direct",
@@ -108,7 +109,11 @@ function icsStamp(date: Date): string {
 }
 
 function escapeIcs(text: string): string {
-  return text.replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
+  return text
+    .replace(/\\/g, "\\\\")
+    .replace(/;/g, "\\;")
+    .replace(/,/g, "\\,")
+    .replace(/\n/g, "\\n");
 }
 
 export interface IcsInput {

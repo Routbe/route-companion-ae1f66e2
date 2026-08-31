@@ -26,7 +26,6 @@ export interface BankTransferDetails {
   upiVpa?: string | null;
 }
 
-
 /**
  * Haalt de land-/valuta-specifieke bunq-subrekening op voor een
  * bankoverschrijving.
@@ -88,7 +87,6 @@ export const getBankTransferDetails = createServerFn({ method: "POST" })
       pixCity: currency === "BRL" ? pixCity : null,
       upiVpa: currency === "INR" ? upiVpa : null,
     });
-
 
     try {
       const accounts = await listMonetaryAccounts();

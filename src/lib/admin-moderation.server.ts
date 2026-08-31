@@ -11,7 +11,6 @@ import { VIP_HANDLE_GRANT, needsVipGrant, normalizeHandleInput } from "./handle-
 import { writeAudit } from "./admin.server";
 import { selectTolerant } from "./optional-columns";
 
-
 const PERMANENT_BAN = "876000h"; // ~100 years
 
 export type ModeratedUser = {
@@ -52,7 +51,6 @@ export type ModeratedUser = {
 const PROFILE_COLUMNS =
   "id, display_name, username, tagline, avatar_url, blocks, tier, verified, status, is_suspended, is_banned, moderation_reason, handle_grant, alias_status, forwarding_email, created_at, is_paid, payment_method, is_early_believer, alias_sync_status, alias_sync_attempts, alias_synced_at, alias_sync_error, subdomain_alias, last_country, last_city";
 
-
 type ProfileRow = Record<string, unknown>;
 
 function mapProfile(row: ProfileRow, email: string | null): ModeratedUser {
@@ -88,7 +86,6 @@ function mapProfile(row: ProfileRow, email: string | null): ModeratedUser {
     lastCity: (row["last_city"] as string | null) ?? null,
   };
 }
-
 
 /** Aliashandles van de zichtbare pagina in één query (tolerant: tabel kan ontbreken). */
 async function readAliasHandles(
@@ -232,7 +229,6 @@ export async function listUsersPage(opts: {
     );
   }
   return { rows, total: count ?? rows.length, page, perPage };
-
 }
 
 /** Suspend / unsuspend: hides the public profile and disables dynamic QR redirects. */
@@ -1031,15 +1027,17 @@ export async function fetchInboundPayments(
 }
 
 /** Server-side CSV export of inbound bank references (admin-only, all rows). */
-export async function exportInboundPayments(filters: {
-  matched?: boolean;
-  status?: "paid" | "pending" | "failed";
-} = {}) {
+export async function exportInboundPayments(
+  filters: {
+    matched?: boolean;
+    status?: "paid" | "pending" | "failed";
+  } = {},
+) {
   const { dbAdmin } = await import("@/lib/db/admin.server");
   const { INBOUND_CSV_COLUMNS, inboundCsvRows } = await import("./payments");
   const { toCsv } = await import("./csv");
 
-  let q = dbAdmin
+  const q = dbAdmin
     .from("webhook_events")
     .select("id, source, kind, created_at")
     .eq("kind", "payment_email")
@@ -1440,7 +1438,11 @@ export async function bulkRetryAliasSync(opts: {
           : { userId, ok: true },
       );
     } catch (error) {
-      results.push({ userId, ok: false, reason: error instanceof Error ? error.message : "Sync failed." });
+      results.push({
+        userId,
+        ok: false,
+        reason: error instanceof Error ? error.message : "Sync failed.",
+      });
     }
   }
 
@@ -1538,10 +1540,7 @@ export type AdminKpiRow = {
  * Levert de profielen achter één KPI-getal, zodat een admin op de tegel kan
  * klikken en meteen ziet om welke accounts het gaat.
  */
-export async function getAdminKpiRows(
-  metric: AdminKpiMetric,
-  limit = 200,
-): Promise<AdminKpiRow[]> {
+export async function getAdminKpiRows(metric: AdminKpiMetric, limit = 200): Promise<AdminKpiRow[]> {
   const { sql } = await import("@/lib/neon");
   const cap = Math.min(500, Math.max(1, limit));
   type Row = Record<string, unknown>;
@@ -1587,7 +1586,6 @@ export async function getAdminKpiRows(
     detail: (r["detail"] as string | null) ?? null,
   }));
 }
-
 
 /* ------------------------------------------------------------------ *
  * SEPA reference auto-parsing                                         *

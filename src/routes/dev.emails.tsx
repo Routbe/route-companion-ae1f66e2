@@ -2,8 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import Page from "@/pages/routes/dev-email-preview";
 
 const title = "Auth-mail preview | ROUT";
-const description =
-  "Preview van alle authenticatie-e-mails in ROUT-huisstijl met sample data.";
+const description = "Preview van alle authenticatie-e-mails in ROUT-huisstijl met sample data.";
 
 export const Route = createFileRoute("/dev/emails")({
   head: () => ({

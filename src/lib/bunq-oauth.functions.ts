@@ -44,9 +44,8 @@ export const completeBunqOAuth = createServerFn({ method: "POST" })
 export const bunqOAuthStatus = createServerFn({ method: "GET" })
   .middleware([requireAuth])
   .handler(async ({ context }) => {
-    const { bunqOAuthConfigured, getBunqOAuthToken, bunqOAuthEnvironment } = await import(
-      "./bunq-oauth.server"
-    );
+    const { bunqOAuthConfigured, getBunqOAuthToken, bunqOAuthEnvironment } =
+      await import("./bunq-oauth.server");
     const token = bunqOAuthConfigured() ? await getBunqOAuthToken(context.userId) : null;
     return {
       configured: bunqOAuthConfigured(),

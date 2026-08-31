@@ -13,18 +13,11 @@ import { ProfileView } from "@/components/profile/ProfileView";
 import { useAuth } from "@/hooks/useAuth";
 import { notifyError, notifySuccess } from "@/lib/notify";
 import { cn } from "@/lib/utils";
-import {
-  checkHandleAvailability,
-  suggestHandlesFromEmailAddress,
-} from "@/lib/bootstrap.functions";
+import { checkHandleAvailability, suggestHandlesFromEmailAddress } from "@/lib/bootstrap.functions";
 import { claimHandle, getMyHandle } from "@/lib/claim.functions";
 import { saveStudioProfile } from "@/lib/studio-profile.functions";
 import { PROFILE_THEMES, themeOf, type ProfileBlock, type ProfileRecord } from "@/lib/profile";
-import {
-  DEFAULT_DISPLAY_PREFS,
-  TYPOGRAPHY_STYLES,
-  type Typography,
-} from "@/lib/profile-display";
+import { DEFAULT_DISPLAY_PREFS, TYPOGRAPHY_STYLES, type Typography } from "@/lib/profile-display";
 import { handleLengthMessage, normalizeHandleForStorage } from "@/lib/handle-rules";
 import { strictHandleIssue } from "@/lib/handle-validation";
 import { HandleErrorBanner } from "@/components/HandleValidationMessage";
@@ -313,20 +306,18 @@ export default function Onboarding() {
                   </div>
 
                   <div className="grid gap-3 sm:grid-cols-2">
-                    {(
-                      [
-                        {
-                          id: "free" as const,
-                          title: "Gratis alias",
-                          note: "Direct live op rout.be/u/ met je eigen handle.",
-                        },
-                        {
-                          id: "pro" as const,
-                          title: "Verified Pro",
-                          note: "Blauw vinkje en schone namespace na verificatie.",
-                        },
-                      ]
-                    ).map((option) => (
+                    {[
+                      {
+                        id: "free" as const,
+                        title: "Gratis alias",
+                        note: "Direct live op rout.be/u/ met je eigen handle.",
+                      },
+                      {
+                        id: "pro" as const,
+                        title: "Verified Pro",
+                        note: "Blauw vinkje en schone namespace na verificatie.",
+                      },
+                    ].map((option) => (
                       <button
                         key={option.id}
                         type="button"
@@ -527,9 +518,7 @@ export default function Onboarding() {
                   </Button>
                 ) : (
                   <Button type="button" onClick={() => void finish()} disabled={saving}>
-                    {saving ? (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    ) : null}
+                    {saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                     Naar mijn Studio ➔
                   </Button>
                 )}

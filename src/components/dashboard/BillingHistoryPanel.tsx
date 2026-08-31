@@ -115,7 +115,6 @@ export function BillingHistoryPanel() {
               )}
               Factuur downloaden (PDF)
             </Button>
-
           </li>
         ))}
       </ul>

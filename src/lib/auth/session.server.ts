@@ -84,7 +84,6 @@ export async function createSession(
   return { token, expiresAt: rows[0]?.["expires_at"] as string };
 }
 
-
 /** Resolves a raw cookie token to its user, sliding the last-seen stamp. */
 export async function readSession(token: string | null | undefined): Promise<SessionUser | null> {
   if (!token) return null;

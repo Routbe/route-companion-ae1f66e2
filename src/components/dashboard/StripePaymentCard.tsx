@@ -7,10 +7,7 @@ import { Button } from "@/components/ui/button";
 import { euro } from "@/lib/profile";
 import { useI18n } from "@/lib/i18n";
 import { confirmCardPaymentIntent } from "@/lib/verification.functions";
-import {
-  usePaymentIntentPolling,
-  type PaymentIntentRef,
-} from "@/hooks/usePaymentIntentPolling";
+import { usePaymentIntentPolling, type PaymentIntentRef } from "@/hooks/usePaymentIntentPolling";
 
 /** ROUT dark-mode huisstijl voor het Payment Element. */
 const APPEARANCE: Appearance = {
@@ -91,9 +88,9 @@ function messageForCode(
     return t("pay.err.3ds");
   }
   if (code === "expired_card" || declineCode === "expired_card") return t("pay.err.expired_card");
-  if (code === "card_declined" || code === "card_error" || declineCode) return t("pay.err.declined");
+  if (code === "card_declined" || code === "card_error" || declineCode)
+    return t("pay.err.declined");
   return t("pay.err.checkout");
-
 }
 
 /**
@@ -342,10 +339,11 @@ function PaymentForm({
     );
   }
 
-
-
   return (
-    <form onSubmit={(e) => void submit(e)} className="space-y-3 rounded-xl border border-border p-4">
+    <form
+      onSubmit={(e) => void submit(e)}
+      className="space-y-3 rounded-xl border border-border p-4"
+    >
       <PaymentElement options={{ layout: "tabs" }} />
       {error && (
         <p role="alert" className="text-[11px] text-destructive">

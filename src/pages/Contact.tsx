@@ -14,14 +14,9 @@ import { submitContactMessage } from "@/lib/contact.functions";
 export const CONTACT_EMAIL = "hallo@rout.be";
 import { SOCIAL_LINKS, EXTERNAL_LINK_PROPS } from "@/lib/social-links";
 
-
 const GITHUB_ISSUES = SOCIAL_LINKS.github;
 
-const TOPICS = [
-  { id: "general" },
-  { id: "bug" },
-  { id: "enterprise" },
-] as const;
+const TOPICS = [{ id: "general" }, { id: "bug" }, { id: "enterprise" }] as const;
 
 type TopicId = (typeof TOPICS)[number]["id"];
 
@@ -123,8 +118,6 @@ export default function Contact() {
     }
   };
 
-
-
   return (
     <AppLayout crumbs={[{ label: t("contact.crumb") }]}>
       <div className="px-4 py-8 sm:py-14">
@@ -184,9 +177,7 @@ export default function Contact() {
             >
               <CheckCircle2 className="h-10 w-10 text-primary" aria-hidden />
               <h2 className="font-serif text-2xl font-medium">{t("contact.form.sentTitle")}</h2>
-              <p className="max-w-sm text-sm text-muted-foreground">
-                {t("contact.form.sentBody")}
-              </p>
+              <p className="max-w-sm text-sm text-muted-foreground">{t("contact.form.sentBody")}</p>
               <Button variant="outline" className="mt-2" onClick={() => setSent(false)}>
                 {t("contact.form.again")}
               </Button>
@@ -272,7 +263,6 @@ export default function Contact() {
             </form>
           )}
         </div>
-
 
         <section
           data-testid="direct-channels"

@@ -82,10 +82,7 @@ export function buildPixPayload(input: {
   const txid = pixText(input.reference, 25).replace(/ /g, "") || "***";
   const body =
     emv("00", "01") +
-    emv(
-      "26",
-      emv("00", "BR.GOV.BCB.PIX") + emv("01", input.pixKey.trim()),
-    ) +
+    emv("26", emv("00", "BR.GOV.BCB.PIX") + emv("01", input.pixKey.trim())) +
     emv("52", "0000") +
     emv("53", "986") +
     (input.amountCents > 0 ? emv("54", amountString(input.amountCents)) : "") +

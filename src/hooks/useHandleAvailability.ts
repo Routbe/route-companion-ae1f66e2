@@ -36,10 +36,13 @@ export function useHandleAvailability(raw: string, hasRuleError = false): Handle
     const timer = window.setTimeout(() => {
       void (async () => {
         try {
-          const res = await fetch(`/api/profiles/check-handle?handle=${encodeURIComponent(handle)}`, {
-            headers: { accept: "application/json" },
-            credentials: "same-origin",
-          });
+          const res = await fetch(
+            `/api/profiles/check-handle?handle=${encodeURIComponent(handle)}`,
+            {
+              headers: { accept: "application/json" },
+              credentials: "same-origin",
+            },
+          );
           const body = (await res.json()) as { available?: boolean; reason?: string | null };
           if (cancelled) return;
           setResult({

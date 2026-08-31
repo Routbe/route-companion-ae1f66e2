@@ -118,7 +118,6 @@ export function PatternGlyph({ pattern }: { pattern: PatternItem }) {
   );
 }
 
-
 /**
  * Compact pattern summary: shows the active style and opens the shape studio.
  * Replaces the old oversized 3×3 selection grid.

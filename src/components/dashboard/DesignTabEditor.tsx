@@ -340,10 +340,7 @@ export function DesignTabEditor({
             </SelectContent>
           </Select>
           <div className="rounded-xl border border-border p-3">
-            <p
-              className="text-lg"
-              style={{ fontFamily: fontPairingOf(prefs.fontPairing).heading }}
-            >
+            <p className="text-lg" style={{ fontFamily: fontPairingOf(prefs.fontPairing).heading }}>
               {fontPairingOf(prefs.fontPairing).label}
             </p>
             <p

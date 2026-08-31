@@ -2,16 +2,9 @@ import { useEffect } from "react";
 import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute, useParams } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
-import {
-  ProfileLookupError,
-  ProfileMissing,
-  ProfileView,
-} from "@/components/profile/ProfileView";
+import { ProfileLookupError, ProfileMissing, ProfileView } from "@/components/profile/ProfileView";
 import { ProfileSuspended } from "@/components/profile/ProfileSuspended";
 import { useProfileRecord } from "@/hooks/useProfileRecord";
-
-
-
 
 function PublicProfile() {
   const { username } = useParams({ strict: false }) as { username: string };
@@ -42,7 +35,6 @@ function PublicProfile() {
   if (suspended || profile.status === "suspended" || profile.status === "banned") {
     return <ProfileSuspended username={username} />;
   }
-
 
   // Shared identity: /@handle renders the same profile as /u/@handle.
   return <ProfileView profile={profile} free={!profile.verified} />;

@@ -72,7 +72,14 @@ function money(cents: number, currency: string): string {
   return `${currency} ${(cents / 100).toFixed(2)}`;
 }
 
-function text(x: number, y: number, size: number, font: "R" | "B", value: string, color = CHARCOAL) {
+function text(
+  x: number,
+  y: number,
+  size: number,
+  font: "R" | "B",
+  value: string,
+  color = CHARCOAL,
+) {
   return `BT ${color} rg /${font} ${size} Tf ${x} ${y} Td (${pdfText(value)}) Tj ET\n`;
 }
 

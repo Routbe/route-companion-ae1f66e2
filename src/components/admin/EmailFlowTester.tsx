@@ -36,7 +36,11 @@ export function EmailFlowTester({ defaultEmail = "" }: { defaultEmail?: string }
               ok: true,
               message: `Verstuurd naar ${to} via Brevo. Controleer de inbox (en spam).`,
             }
-          : { ok: false, message: ("error" in res ? res.error : null) ?? "Versturen mislukt — bekijk de serverlogs." },
+          : {
+              ok: false,
+              message:
+                ("error" in res ? res.error : null) ?? "Versturen mislukt — bekijk de serverlogs.",
+            },
       );
     } catch (error) {
       setResult({

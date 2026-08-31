@@ -9,8 +9,6 @@ type GoSearch = { i?: string; a?: string; w?: string };
 const safe = (v: unknown) =>
   typeof v === "string" && /^https?:\/\//i.test(v.trim()) ? v.trim().slice(0, 600) : undefined;
 
-
-
 /** Pick the right destination from the user agent, entirely client-side. */
 function pickTarget(ua: string, s: GoSearch): string | undefined {
   if (/iphone|ipad|ipod/i.test(ua) || (/mac/i.test(ua) && "ontouchend" in document)) {

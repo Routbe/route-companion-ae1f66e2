@@ -16,7 +16,9 @@ export function BadgesPanel() {
   const loadAccount = useServerFn(getMyAccount);
   const [catalogue, setCatalogue] = useState<BadgeDef[]>([]);
   const [unlocked, setUnlocked] = useState<Set<string>>(new Set());
-  const [grants, setGrants] = useState<Record<string, { awarded_at: string | null; serial_number?: number | null }>>({});
+  const [grants, setGrants] = useState<
+    Record<string, { awarded_at: string | null; serial_number?: number | null }>
+  >({});
   const [selected, setSelected] = useState<BadgeDialogEntry | null>(null);
   const [derived, setDerived] = useState<Set<string>>(new Set());
 
@@ -24,32 +26,33 @@ export function BadgesPanel() {
     if (!user) return;
     let cancelled = false;
     const load = () =>
-      void Promise.all([
-        fetchBadgeCatalogue(),
-        fetchUserBadges(user.id),
-        loadAccount(),
-      ]).then(([all, mine, me]) => {
-        if (cancelled) return;
-        setCatalogue(all);
-        setUnlocked(new Set(mine.map((b) => b.slug)));
-        setGrants(
-          Object.fromEntries(
-            mine.map((b) => [b.slug, { awarded_at: b.awarded_at, serial_number: b.serial_number }]),
-          ),
-        );
+      void Promise.all([fetchBadgeCatalogue(), fetchUserBadges(user.id), loadAccount()]).then(
+        ([all, mine, me]) => {
+          if (cancelled) return;
+          setCatalogue(all);
+          setUnlocked(new Set(mine.map((b) => b.slug)));
+          setGrants(
+            Object.fromEntries(
+              mine.map((b) => [
+                b.slug,
+                { awarded_at: b.awarded_at, serial_number: b.serial_number },
+              ]),
+            ),
+          );
 
-        // Live status badges are derived from the profile itself, so a paid or
-        // Bluesky-verified member never sees their own badge as locked.
-        const auto = new Set<string>();
-        if (me.isPaid || me.isEarlyBeliever) {
-          auto.add("early-believer");
-          auto.add("early_believer");
-        }
-        if (me.verified) auto.add("verified");
-        if (me.blueskyDid) auto.add("bluesky");
-        if (me.tier === "founder") auto.add("founder");
-        setDerived(auto);
-      });
+          // Live status badges are derived from the profile itself, so a paid or
+          // Bluesky-verified member never sees their own badge as locked.
+          const auto = new Set<string>();
+          if (me.isPaid || me.isEarlyBeliever) {
+            auto.add("early-believer");
+            auto.add("early_believer");
+          }
+          if (me.verified) auto.add("verified");
+          if (me.blueskyDid) auto.add("bluesky");
+          if (me.tier === "founder") auto.add("founder");
+          setDerived(auto);
+        },
+      );
 
     load();
 
@@ -112,25 +115,25 @@ export function BadgesPanel() {
                   has ? "border-foreground/30 bg-background" : "border-border opacity-60",
                 )}
               >
-              {has ? (
-                <Award className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
-              ) : (
-                <Lock
-                  className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground"
-                  aria-label={t("badges.locked")}
-                />
-              )}
-              <span className="min-w-0">
-                <span className="block text-sm font-medium">{label(b.slug, "name", b.name)}</span>
-                <span className="block text-[11px] text-muted-foreground">
-                  {label(b.slug, "description", b.description)}
-                </span>
-                {has && formatSerial(grants[b.slug]?.serial_number) ? (
-                  <span className="mt-0.5 block text-[11px] font-medium tabular-nums">
-                    {formatSerial(grants[b.slug]?.serial_number)}
+                {has ? (
+                  <Award className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
+                ) : (
+                  <Lock
+                    className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground"
+                    aria-label={t("badges.locked")}
+                  />
+                )}
+                <span className="min-w-0">
+                  <span className="block text-sm font-medium">{label(b.slug, "name", b.name)}</span>
+                  <span className="block text-[11px] text-muted-foreground">
+                    {label(b.slug, "description", b.description)}
                   </span>
-                ) : null}
-              </span>
+                  {has && formatSerial(grants[b.slug]?.serial_number) ? (
+                    <span className="mt-0.5 block text-[11px] font-medium tabular-nums">
+                      {formatSerial(grants[b.slug]?.serial_number)}
+                    </span>
+                  ) : null}
+                </span>
               </button>
             </li>
           );

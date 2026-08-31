@@ -198,9 +198,12 @@ export type SubdomainSettings = {
 };
 
 /** Bare active host for a tier — never includes a scheme or a path. */
-export function activeSubdomainFor(
-  input: { username: string | null; alias: string | null; tier: SubdomainTier; rootStatus: string },
-): string | null {
+export function activeSubdomainFor(input: {
+  username: string | null;
+  alias: string | null;
+  tier: SubdomainTier;
+  rootStatus: string;
+}): string | null {
   const handle = (input.username ?? input.alias ?? "").toLowerCase();
   const alias = (input.alias ?? input.username ?? "").toLowerCase();
   if (!handle && !alias) return null;
@@ -223,9 +226,7 @@ export async function readSubdomainSettings(userId: string): Promise<SubdomainSe
   const alias = (row?.["subdomain_alias"] as string | null) ?? username;
   const tier = ((row?.["subdomain_tier"] as string | null) ?? "free") as SubdomainTier;
   const rootStatus = ((row?.["root_subdomain_status"] as string | null) ?? "none") as
-    | "none"
-    | "pending_dns"
-    | "active";
+    "none" | "pending_dns" | "active";
 
   return {
     username,
@@ -283,9 +284,11 @@ export async function claimRootSubdomainFor(userId: string): Promise<{
   const row = rows[0];
   if (!row) throw new Error("Profiel niet gevonden.");
 
-  const handle = ((row["username"] as string | null) ??
+  const handle = (
+    (row["username"] as string | null) ??
     (row["subdomain_alias"] as string | null) ??
-    "").toLowerCase();
+    ""
+  ).toLowerCase();
   if (!handle) throw new Error("Claim eerst een handle voordat je een root-subdomein aanvraagt.");
 
   const status = (row["root_subdomain_status"] as string | null) ?? "none";

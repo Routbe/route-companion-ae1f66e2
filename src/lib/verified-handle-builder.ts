@@ -167,7 +167,8 @@ export function buildHandle(name: ParsedLegalName, config: HandleBuilderConfig):
       : surnameInitials(name.surnameParts);
 
   const firstPart = config.fullness === "first-short" ? (name.firstName[0] ?? "") : name.firstName;
-  const surnamePart = config.fullness === "surname-short" ? surnameShort : surnameFull(name.surnameParts);
+  const surnamePart =
+    config.fullness === "surname-short" ? surnameShort : surnameFull(name.surnameParts);
 
   const middlePieces: string[] = [];
   if (config.middle !== "omit" && name.middleNames.length > 0) {

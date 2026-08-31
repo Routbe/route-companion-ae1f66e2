@@ -88,7 +88,6 @@ export function ReferralPanel() {
     void copy();
   };
 
-
   return (
     <section className="space-y-3 rounded-2xl border border-border bg-card p-4 sm:p-5">
       <div className="flex items-baseline justify-between gap-2">
@@ -112,7 +111,11 @@ export function ReferralPanel() {
           onClick={copy}
           className="inline-flex items-center gap-1.5 rounded-xl border border-border px-3 py-2 text-sm font-medium"
         >
-          {copied ? <Check className="h-4 w-4" aria-hidden /> : <Copy className="h-4 w-4" aria-hidden />}
+          {copied ? (
+            <Check className="h-4 w-4" aria-hidden />
+          ) : (
+            <Copy className="h-4 w-4" aria-hidden />
+          )}
           {copied ? t("referral.copied") : t("referral.copy")}
         </button>
         <button
@@ -136,7 +139,10 @@ export function ReferralPanel() {
           </span>
         </div>
         <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
-          <div className="h-full rounded-full bg-foreground/70 transition-all" style={{ width: `${progress}%` }} />
+          <div
+            className="h-full rounded-full bg-foreground/70 transition-all"
+            style={{ width: `${progress}%` }}
+          />
         </div>
         {reward?.label ? (
           <p className="inline-flex items-center gap-1.5 text-sm text-emerald-600">
@@ -146,10 +152,13 @@ export function ReferralPanel() {
         ) : null}
         {milestone ? (
           <p className="text-xs text-muted-foreground">
-            Nog {milestone.remaining} {milestone.remaining === 1 ? "vriend" : "vrienden"} voor {milestone.label}.
+            Nog {milestone.remaining} {milestone.remaining === 1 ? "vriend" : "vrienden"} voor{" "}
+            {milestone.label}.
           </p>
         ) : (
-          <p className="text-xs text-muted-foreground">Alle mijlpalen behaald. Bedankt voor het delen.</p>
+          <p className="text-xs text-muted-foreground">
+            Alle mijlpalen behaald. Bedankt voor het delen.
+          </p>
         )}
         <ul className="space-y-1 text-xs text-muted-foreground">
           <li>{INVITE_TIERS.halfPrice} uitnodigingen → 50% korting op je verificatie</li>

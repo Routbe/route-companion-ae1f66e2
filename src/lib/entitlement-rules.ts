@@ -18,11 +18,8 @@ export type EntitlementProfileRow = {
 /** Paid / verified / early-believer AND in good standing. */
 export function isEntitledProfile(row: EntitlementProfileRow | null | undefined): boolean {
   if (!row) return false;
-  const hasTier =
-    row.is_paid === true || row.verified === true || row.is_early_believer === true;
-  return (
-    hasTier && row.status === "active" && row.is_banned !== true && row.is_suspended !== true
-  );
+  const hasTier = row.is_paid === true || row.verified === true || row.is_early_believer === true;
+  return hasTier && row.status === "active" && row.is_banned !== true && row.is_suspended !== true;
 }
 
 export type GatedFeature = "domains" | "bluesky";

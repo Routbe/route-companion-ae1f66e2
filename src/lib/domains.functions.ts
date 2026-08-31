@@ -37,9 +37,7 @@ export const verifyCustomDomain = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const { assertEntitled } = await import("./entitlement.server");
     await assertEntitled(context.userId); // deep-link / direct-RPC protection
-    const { getOwnedDomain, updateDomainStatus, checkDomainDns } = await import(
-      "./domains.server"
-    );
+    const { getOwnedDomain, updateDomainStatus, checkDomainDns } = await import("./domains.server");
     const row = await getOwnedDomain(data.id, context.userId);
     if (!row) throw new Error("Domain not found.");
 
@@ -77,9 +75,7 @@ export const setDefaultDomain = createServerFn({ method: "POST" })
  */
 export const setDomainShortLinks = createServerFn({ method: "POST" })
   .middleware([requireAuth])
-  .inputValidator((data) =>
-    z.object({ id: z.string().uuid(), enabled: z.boolean() }).parse(data),
-  )
+  .inputValidator((data) => z.object({ id: z.string().uuid(), enabled: z.boolean() }).parse(data))
   .handler(async ({ data, context }) => {
     const { assertEntitled } = await import("./entitlement.server");
     await assertEntitled(context.userId); // deep-link / direct-RPC protection

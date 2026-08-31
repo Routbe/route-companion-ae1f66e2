@@ -14,13 +14,7 @@ interface HandleValidationMessageProps extends StrictHandleOptions {
 }
 
 /** Losse banner voor een reeds bekende foutmelding. */
-export function HandleErrorBanner({
-  message,
-  className,
-}: {
-  message: string;
-  className?: string;
-}) {
+export function HandleErrorBanner({ message, className }: { message: string; className?: string }) {
   return (
     <div
       role="alert"

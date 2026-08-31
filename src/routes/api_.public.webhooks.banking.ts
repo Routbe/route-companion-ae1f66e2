@@ -37,7 +37,11 @@ function toMatchText(payload: unknown, raw: string): string {
       for (const [key, item] of Object.entries(value as Record<string, unknown>)) {
         if (typeof item === "number" && /amount|value/i.test(key)) {
           // Bank APIs send amounts as majors ("12.99") or minors (1299).
-          parts.push(Number.isInteger(item) && Math.abs(item) > 999 ? `EUR ${(item / 100).toFixed(2)}` : `EUR ${item.toFixed(2)}`);
+          parts.push(
+            Number.isInteger(item) && Math.abs(item) > 999
+              ? `EUR ${(item / 100).toFixed(2)}`
+              : `EUR ${item.toFixed(2)}`,
+          );
           continue;
         }
         if (typeof item === "string" && /amount|value/i.test(key) && /^[0-9.,]+$/.test(item)) {
@@ -65,7 +69,9 @@ export const Route = createFileRoute("/api_/public/webhooks/banking")({
           return new Response("Webhook not configured", { status: 503 });
         }
 
-        const bearer = (request.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "").trim();
+        const bearer = (request.headers.get("authorization") ?? "")
+          .replace(/^Bearer\s+/i, "")
+          .trim();
         const headerSecret = (request.headers.get("x-webhook-secret") ?? "").trim();
         const presented = bearer || headerSecret;
         if (!presented || !safeEqual(presented, secret)) {
@@ -75,7 +81,6 @@ export const Route = createFileRoute("/api_/public/webhooks/banking")({
 
         const raw = await request.text();
         if (raw.length > 100_000) return new Response("Payload too large", { status: 413 });
-
 
         const hmacSecret = process.env["BANKING_WEBHOOK_HMAC_SECRET"];
         if (hmacSecret) {

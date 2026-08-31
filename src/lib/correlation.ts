@@ -33,9 +33,15 @@ export function authClientLog(
   cid: string,
   fields: Record<string, unknown> = {},
 ): void {
-  // eslint-disable-next-line no-console
   console.log(
-    JSON.stringify({ scope: "auth-client", level: "info", event, cid, at: new Date().toISOString(), ...fields }),
+    JSON.stringify({
+      scope: "auth-client",
+      level: "info",
+      event,
+      cid,
+      at: new Date().toISOString(),
+      ...fields,
+    }),
   );
 }
 
@@ -46,6 +52,13 @@ export function authClientError(
   fields: Record<string, unknown> = {},
 ): void {
   console.error(
-    JSON.stringify({ scope: "auth-client", level: "error", event, cid, at: new Date().toISOString(), ...fields }),
+    JSON.stringify({
+      scope: "auth-client",
+      level: "error",
+      event,
+      cid,
+      at: new Date().toISOString(),
+      ...fields,
+    }),
   );
 }

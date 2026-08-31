@@ -21,7 +21,6 @@ export type AliasFailure =
   /** Free/unverified account: aliases are reserved for paid or verified members. */
   | "not_entitled";
 
-
 export type AliasResult =
   | { ok: true; alias: string; forward: string }
   | { ok: false; reason: AliasFailure; detail?: string };
@@ -148,7 +147,6 @@ export async function provisionAliasForUser(userId: string): Promise<AliasResult
     return { ok: false, reason: "not_entitled" };
   }
 
-
   let forward = (profile["forwarding_email"] as string | null) ?? null;
   if (forward && profile["forwarding_email_verified"] !== true) {
     // Double opt-in: never forward to an address the owner has not confirmed.
@@ -156,11 +154,11 @@ export async function provisionAliasForUser(userId: string): Promise<AliasResult
     return { ok: false, reason: "unconfirmed_forward" };
   }
   if (!forward) {
-    const userRows = (await sql`select email from public.users where id = ${userId} limit 1`) as Row[];
+    const userRows =
+      (await sql`select email from public.users where id = ${userId} limit 1`) as Row[];
     forward = (userRows[0]?.["email"] as string | null) ?? null;
   }
   if (!forward) return { ok: false, reason: "no_forward" };
-
 
   const result = await createAlias(profile["username"] as string, forward);
 

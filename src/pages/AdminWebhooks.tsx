@@ -4,12 +4,7 @@ import { AlertTriangle, CheckCircle2, Clock, Loader2, RefreshCw, Search } from "
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { listWebhookEvents } from "@/lib/monitoring.functions";
 import { useI18n } from "@/lib/i18n";
 import { formatDateTime } from "@/lib/format";
@@ -114,7 +109,10 @@ export default function AdminWebhooks() {
           </button>
         ))}
         <div className="relative ml-auto min-w-[200px] flex-1 sm:max-w-xs">
-          <Search className="pointer-events-none absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" aria-hidden />
+          <Search
+            className="pointer-events-none absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground"
+            aria-hidden
+          />
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}

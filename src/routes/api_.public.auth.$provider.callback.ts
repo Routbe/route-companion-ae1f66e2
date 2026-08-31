@@ -9,9 +9,8 @@ export const Route = createFileRoute("/api_/public/auth/$provider/callback")({
   server: {
     handlers: {
       GET: async ({ request, params }) => {
-        const { isSocialProvider, completeSocialCallback, SocialAuthError } = await import(
-          "@/lib/social-oauth.server"
-        );
+        const { isSocialProvider, completeSocialCallback, SocialAuthError } =
+          await import("@/lib/social-oauth.server");
         const provider = String(params.provider ?? "");
         if (!isSocialProvider(provider)) {
           return new Response("Unknown provider", { status: 404 });

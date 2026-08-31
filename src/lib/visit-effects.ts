@@ -20,7 +20,12 @@ export const VISIT_EFFECTS: { id: VisitEffect; label: string; icon: string; hint
   { id: "confetti", label: "Confetti Explosie", icon: "🎉", hint: "Lanceringen & feestjes" },
   { id: "fireworks", label: "Vuurwerk Show", icon: "🎆", hint: "Feestelijk" },
   { id: "balloons", label: "Zwevende Ballonnen", icon: "🎈", hint: "Verjaardagen & jubilea" },
-  { id: "floating_hearts", label: "Zwevende Hartjes", icon: "💖", hint: "Romantisch / maker liefde" },
+  {
+    id: "floating_hearts",
+    label: "Zwevende Hartjes",
+    icon: "💖",
+    hint: "Romantisch / maker liefde",
+  },
   { id: "sparkles", label: "Magische Fonkelingen", icon: "✨", hint: "Luxe & subtiel" },
   { id: "falling_stars", label: "Vallende Sterren", icon: "🌟", hint: "Kosmisch" },
   { id: "matrix_rain", label: "Matrix Code Rain", icon: "🌧️", hint: "Cyberpunk / dev" },
@@ -56,7 +61,7 @@ function piece(root: HTMLElement, css: string): HTMLSpanElement {
 }
 
 const rand = (min: number, max: number) => min + Math.random() * (max - min);
-const pick = <T,>(list: readonly T[]): T => list[Math.floor(Math.random() * list.length)] as T;
+const pick = <T>(list: readonly T[]): T => list[Math.floor(Math.random() * list.length)] as T;
 
 /**
  * Start het gekozen effect één keer. Retourneert een opruimfunctie zodat een
@@ -75,12 +80,7 @@ export function runVisitEffect(effect: VisitEffect, options?: { force?: boolean 
     root.remove();
   };
 
-  const animate = (
-    el: HTMLElement,
-    frames: Keyframe[],
-    duration: number,
-    delay = 0,
-  ) => {
+  const animate = (el: HTMLElement, frames: Keyframe[], duration: number, delay = 0) => {
     const anim = el.animate(frames, {
       duration,
       delay,
@@ -124,7 +124,11 @@ export function runVisitEffect(effect: VisitEffect, options?: { force?: boolean 
         el,
         [
           { transform: "translateY(0) translateX(0)", opacity: 0 },
-          { transform: `translateY(-55vh) translateX(${rand(-40, 40)}px)`, opacity: 1, offset: 0.3 },
+          {
+            transform: `translateY(-55vh) translateX(${rand(-40, 40)}px)`,
+            opacity: 1,
+            offset: 0.3,
+          },
           { transform: `translateY(-115vh) translateX(${rand(-80, 80)}px)`, opacity: 0 },
         ],
         rand(4200, 7000),
@@ -159,7 +163,8 @@ export function runVisitEffect(effect: VisitEffect, options?: { force?: boolean 
     case "fireworks":
       for (let i = 0; i < 5; i += 1) {
         window.setTimeout(
-          () => burst(rand(0.15, 0.85) * window.innerWidth, rand(0.15, 0.5) * window.innerHeight, 70),
+          () =>
+            burst(rand(0.15, 0.85) * window.innerWidth, rand(0.15, 0.5) * window.innerHeight, 70),
           i * 450,
         );
       }

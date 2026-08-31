@@ -77,7 +77,9 @@ function EmailPreview() {
     if (!testEmail.trim()) return;
     setSending(true);
     try {
-      const res = await sendFn({ data: { template: templateKey as never, email: testEmail.trim() } });
+      const res = await sendFn({
+        data: { template: templateKey as never, email: testEmail.trim() },
+      });
       if (res.success) {
         notifySuccess("Test-mail verzonden", { description: `Naar ${res.recipient}` });
       } else if ("rateLimited" in res && res.rateLimited) {
@@ -102,8 +104,8 @@ function EmailPreview() {
         <header className="space-y-1">
           <h1 className="font-display text-2xl text-foreground">E-mail preview</h1>
           <p className="text-sm text-muted-foreground">
-            Alle auth-templates met sample data — geen testaccount nodig. Test-mails
-            versturen is admin-only en rate-limited.
+            Alle auth-templates met sample data — geen testaccount nodig. Test-mails versturen is
+            admin-only en rate-limited.
           </p>
         </header>
 
@@ -169,9 +171,7 @@ function EmailPreview() {
                   <span className="text-[11px] text-muted-foreground">{key}</span>
                   <input
                     value={sample[key] ?? ""}
-                    onChange={(e) =>
-                      setSample((prev) => ({ ...prev, [key]: e.target.value }))
-                    }
+                    onChange={(e) => setSample((prev) => ({ ...prev, [key]: e.target.value }))}
                     className="w-full rounded-lg border border-border bg-background px-2 py-1 text-xs text-foreground"
                   />
                 </label>

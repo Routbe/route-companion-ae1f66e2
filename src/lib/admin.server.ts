@@ -222,26 +222,28 @@ export async function searchUsers(query: string): Promise<AdminUserRow[]> {
 
   const isUuid = /^[0-9a-f-]{36}$/i.test(term);
 
-  const rows = (isUuid
-    ? await sql`
+  const rows = (
+    isUuid
+      ? await sql`
         select p.id, p.display_name, p.username, p.verified, p.tier, u.email
           from public.profiles p left join public.users u on u.id = p.id
          where p.id = ${term}
          limit 20
       `
-    : term.includes("@")
-      ? await sql`
+      : term.includes("@")
+        ? await sql`
           select p.id, p.display_name, p.username, p.verified, p.tier, u.email
             from public.users u left join public.profiles p on p.id = u.id
            where u.email_normalized ilike ${`%${term.toLowerCase()}%`}
            limit 20
         `
-      : await sql`
+        : await sql`
           select p.id, p.display_name, p.username, p.verified, p.tier, u.email
             from public.profiles p left join public.users u on u.id = p.id
            where p.username ilike ${`%${term}%`}
            limit 20
-        `) as Row[];
+        `
+  ) as Row[];
 
   return rows.map((r) => ({
     userId: r["id"] as string,
@@ -317,7 +319,8 @@ export async function writeAudit(entry: {
   notes?: string | null;
 }) {
   try {
-    const rows = (await sql`select email from public.users where id = ${entry.adminId} limit 1`) as Row[];
+    const rows =
+      (await sql`select email from public.users where id = ${entry.adminId} limit 1`) as Row[];
     const adminEmail = (rows[0]?.["email"] as string | null) ?? null;
     await sql`
       insert into public.admin_audit_log (admin_id, admin_email, action, target_user_id, target_label, notes)
@@ -359,7 +362,10 @@ function toAuditEntry(r: Row): AuditEntry {
 }
 
 /** Newest admin actions first, optionally narrowed by admin, action or date range. */
-export async function fetchAuditLog(filters: AuditFilters = {}, limit = 500): Promise<AuditEntry[]> {
+export async function fetchAuditLog(
+  filters: AuditFilters = {},
+  limit = 500,
+): Promise<AuditEntry[]> {
   const to = filters.to ? new Date(filters.to) : null;
   if (to) to.setHours(23, 59, 59, 999);
 

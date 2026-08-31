@@ -186,12 +186,7 @@ export function MemberStatusPanel() {
         <Button type="button" variant="outline" className="h-10" onClick={() => void load()}>
           <RefreshCw className="mr-1.5 h-4 w-4" aria-hidden /> Vernieuwen
         </Button>
-        <Button
-          type="button"
-          className="h-10"
-          disabled={filtered.length === 0}
-          onClick={exportCsv}
-        >
+        <Button type="button" className="h-10" disabled={filtered.length === 0} onClick={exportCsv}>
           <Download className="mr-1.5 h-4 w-4" aria-hidden /> CSV export
         </Button>
       </div>
@@ -206,7 +201,12 @@ export function MemberStatusPanel() {
         <div role="alert" className="rounded-xl border border-destructive/40 bg-destructive/5 p-3">
           <p className="text-sm font-semibold">Laden mislukt</p>
           <p className="mt-0.5 text-xs text-muted-foreground">{error}</p>
-          <Button variant="outline" size="sm" className="mt-2 h-8 text-xs" onClick={() => void load()}>
+          <Button
+            variant="outline"
+            size="sm"
+            className="mt-2 h-8 text-xs"
+            onClick={() => void load()}
+          >
             Opnieuw proberen
           </Button>
         </div>
@@ -218,12 +218,24 @@ export function MemberStatusPanel() {
             <caption className="sr-only">Lidstatus, verificatie en toegekende badges</caption>
             <thead>
               <tr className="border-b border-border text-xs uppercase tracking-wide text-muted-foreground">
-                <th scope="col" className="py-2 pr-3 font-semibold">Lid</th>
-                <th scope="col" className="py-2 pr-3 font-semibold">Blue check</th>
-                <th scope="col" className="py-2 pr-3 font-semibold">Early Believer</th>
-                <th scope="col" className="py-2 pr-3 font-semibold">Betaald</th>
-                <th scope="col" className="py-2 pr-3 font-semibold">Badges</th>
-                <th scope="col" className="py-2 font-semibold">Historiek</th>
+                <th scope="col" className="py-2 pr-3 font-semibold">
+                  Lid
+                </th>
+                <th scope="col" className="py-2 pr-3 font-semibold">
+                  Blue check
+                </th>
+                <th scope="col" className="py-2 pr-3 font-semibold">
+                  Early Believer
+                </th>
+                <th scope="col" className="py-2 pr-3 font-semibold">
+                  Betaald
+                </th>
+                <th scope="col" className="py-2 pr-3 font-semibold">
+                  Badges
+                </th>
+                <th scope="col" className="py-2 font-semibold">
+                  Historiek
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -291,8 +303,8 @@ export function MemberStatusPanel() {
                         ) : (
                           events[r.id].map((ev) => (
                             <li key={ev.id} className="text-[11px] text-muted-foreground">
-                              {formatDateTime(ev.created_at, locale)} — {ev.badge_slug} {ev.action} (
-                              {ev.source})
+                              {formatDateTime(ev.created_at, locale)} — {ev.badge_slug} {ev.action}{" "}
+                              ({ev.source})
                             </li>
                           ))
                         )}

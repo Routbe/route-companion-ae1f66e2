@@ -74,7 +74,6 @@ export async function matchInboundPayment(text: string): Promise<MatchOutcome> {
   console.info("[sepa-match] inbound", { reference, amountCents, length: text.length });
   await recordInboundEvent(reference);
 
-
   let payment: PaymentRow | null = null;
   if (reference) {
     const { data } = await dbAdmin
@@ -159,7 +158,12 @@ export async function matchInboundPayment(text: string): Promise<MatchOutcome> {
 
     // Reference is right but the money is short — never auto-activate.
     await logReview(payment.user_id, reference, amountCents, expected, "amount_mismatch");
-    await alertAdmin("amount_mismatch", { reference, amountCents, expected, userId: payment.user_id });
+    await alertAdmin("amount_mismatch", {
+      reference,
+      amountCents,
+      expected,
+      userId: payment.user_id,
+    });
     return {
       level: 3,
       reference,
@@ -343,7 +347,8 @@ async function accountHolderName(userId: string): Promise<string | null> {
     return (
       ((row?.["verified_legal_name"] as string | null) ??
         (row?.["display_name"] as string | null) ??
-        (row?.["full_name"] as string | null)) || null
+        (row?.["full_name"] as string | null)) ||
+      null
     );
   } catch {
     return null;

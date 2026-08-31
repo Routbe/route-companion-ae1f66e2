@@ -9,13 +9,7 @@ import { resolveMediaEmbed } from "@/lib/media-embed-parser";
  * lazy-geladen player (YouTube nocookie, Spotify, SoundCloud, Apple Music,
  * Vimeo) of een PDF-previewkaart. `style` volgt de knopstijl van het profiel.
  */
-export function MediaEmbedCard({
-  value,
-  style,
-}: {
-  value: string;
-  style?: CSSProperties;
-}) {
+export function MediaEmbedCard({ value, style }: { value: string; style?: CSSProperties }) {
   const config = useMemo(() => parseMediaEmbedConfig(value), [value]);
   const embed = useMemo(() => resolveMediaEmbed(config.url), [config.url]);
   /** Players laden pas na de eerste interactie (lazy + geen autoplay-verrassing). */
@@ -23,8 +17,7 @@ export function MediaEmbedCard({
 
   if (!embed) return null;
 
-  const frameClass =
-    "w-full overflow-hidden rounded-2xl border border-zinc-200/80 shadow-sm";
+  const frameClass = "w-full overflow-hidden rounded-2xl border border-zinc-200/80 shadow-sm";
 
   if (embed.kind === "document") {
     return (

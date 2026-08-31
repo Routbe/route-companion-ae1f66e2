@@ -51,9 +51,7 @@ export function VerifiedBadgePopover({
         align="center"
         className="w-72 rounded-xl border p-4 text-left"
         style={
-          cardBg
-            ? { background: cardBg, borderColor: cardBorder, color: textColor }
-            : undefined
+          cardBg ? { background: cardBg, borderColor: cardBorder, color: textColor } : undefined
         }
       >
         <div className="flex items-start gap-2">

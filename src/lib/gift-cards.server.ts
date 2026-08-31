@@ -50,7 +50,9 @@ async function uniqueGiftCode(): Promise<string> {
   throw new Error("gift_code_generation_failed");
 }
 
-export async function createGiftOrder(input: GiftOrderInput): Promise<{ id: string; code: string }> {
+export async function createGiftOrder(
+  input: GiftOrderInput,
+): Promise<{ id: string; code: string }> {
   const amount = clampGiftAmount(input.amountCents);
   const physical = Boolean(input.physicalDelivery);
   const country = (input.ship?.country ?? "BE").trim().toUpperCase();
@@ -108,7 +110,10 @@ export async function startGiftCheckout(opts: {
 
   const res = await fetch("https://api.stripe.com/v1/checkout/sessions", {
     method: "POST",
-    headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/x-www-form-urlencoded" },
+    headers: {
+      Authorization: `Bearer ${key}`,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
     body,
   });
   const json = (await res.json()) as { url?: string; error?: { message?: string } };
@@ -140,7 +145,8 @@ export async function markGiftCardPaid(opts: {
   `) as Row[];
   const row = rows[0];
   if (!row) {
-    const exists = (await sql`select status from public.gift_cards where id = ${opts.giftId}`) as Row[];
+    const exists =
+      (await sql`select status from public.gift_cards where id = ${opts.giftId}`) as Row[];
     return exists.length > 0 ? "duplicate" : "not_found";
   }
 

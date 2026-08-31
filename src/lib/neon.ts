@@ -23,8 +23,7 @@ function getClient(): NeonQueryFunction<false, false> {
 }
 
 export const sql = new Proxy(function () {} as unknown as NeonQueryFunction<false, false>, {
-  apply: (_t, _this, args) =>
-    (getClient() as unknown as (...a: unknown[]) => unknown)(...args),
+  apply: (_t, _this, args) => (getClient() as unknown as (...a: unknown[]) => unknown)(...args),
   get: (_t, prop) => {
     const value = (getClient() as unknown as Record<string | symbol, unknown>)[prop];
     return typeof value === "function" ? value.bind(getClient()) : value;

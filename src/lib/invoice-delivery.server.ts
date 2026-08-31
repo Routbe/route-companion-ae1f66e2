@@ -201,7 +201,8 @@ export async function recordDelivery(entry: {
   emailed: boolean;
   error: string | null;
 }): Promise<void> {
-  const status = entry.emailed && entry.attached ? "delivered" : entry.emailed ? "no_invoice" : "failed";
+  const status =
+    entry.emailed && entry.attached ? "delivered" : entry.emailed ? "no_invoice" : "failed";
   try {
     await sql`
       insert into public.invoice_deliveries

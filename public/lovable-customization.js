@@ -73,14 +73,14 @@
     var css = ":root {";
     if (payload.heading) {
       if (payload.heading.url) loadFontLink("lovable-font-heading", payload.heading.url);
-      css += '\n  --font-heading: ' + payload.heading.family + ', sans-serif;';
+      css += "\n  --font-heading: " + payload.heading.family + ", sans-serif;";
       if (payload.heading.weight) {
         css += "\n  --font-heading-weight: " + payload.heading.weight + ";";
       }
     }
     if (payload.body) {
       if (payload.body.url) loadFontLink("lovable-font-body", payload.body.url);
-      css += '\n  --font-body: ' + payload.body.family + ', sans-serif;';
+      css += "\n  --font-body: " + payload.body.family + ", sans-serif;";
       if (payload.body.weight) {
         css += "\n  --font-body-weight: " + payload.body.weight + ";";
       }
@@ -114,10 +114,7 @@
   function notifyParent(data) {
     try {
       var origin;
-      if (
-        document.location.ancestorOrigins &&
-        document.location.ancestorOrigins[0]
-      ) {
+      if (document.location.ancestorOrigins && document.location.ancestorOrigins[0]) {
         origin = document.location.ancestorOrigins[0];
       } else if (document.referrer) {
         origin = new URL(document.referrer).origin;

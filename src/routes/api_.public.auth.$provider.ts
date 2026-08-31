@@ -13,9 +13,8 @@ export const Route = createFileRoute("/api_/public/auth/$provider")({
   server: {
     handlers: {
       GET: async ({ request, params }) => {
-        const { isSocialProvider, buildAuthorizeUrl, SocialAuthError } = await import(
-          "@/lib/social-oauth.server"
-        );
+        const { isSocialProvider, buildAuthorizeUrl, SocialAuthError } =
+          await import("@/lib/social-oauth.server");
         const provider = String(params.provider ?? "");
         if (!isSocialProvider(provider)) {
           return new Response("Unknown provider", { status: 404 });
@@ -33,9 +32,8 @@ export const Route = createFileRoute("/api_/public/auth/$provider")({
           // to the current member instead of opening a new session.
           let linkUserId: string | null = null;
           if (url.searchParams.get("link") === "1") {
-            const { readSession, readCookie, SESSION_COOKIE } = await import(
-              "@/lib/auth/session.server"
-            );
+            const { readSession, readCookie, SESSION_COOKIE } =
+              await import("@/lib/auth/session.server");
             const token = readCookie(request.headers.get("cookie"), SESSION_COOKIE);
             const sessionUser = await readSession(token).catch(() => null);
             linkUserId = sessionUser?.id ?? null;
@@ -56,7 +54,10 @@ export const Route = createFileRoute("/api_/public/auth/$provider")({
           console.error(`[social-auth] start failed for ${provider}: ${code}`);
           return new Response(null, {
             status: 302,
-            headers: { location: `/auth?error=${encodeURIComponent(code)}`, "cache-control": "no-store" },
+            headers: {
+              location: `/auth?error=${encodeURIComponent(code)}`,
+              "cache-control": "no-store",
+            },
           });
         }
       },

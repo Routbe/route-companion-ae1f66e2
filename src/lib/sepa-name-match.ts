@@ -182,15 +182,15 @@ export function matchPayerName(
   // Spacing-only differences ("Van den Berg" vs "Vandenberg") must not cost
   // anything: compare the glued forms as an extra candidate.
   const compact = editRatio(compactName(payerName), compactName(holderName));
-  const raw = Math.max(
-    overlap * (0.55 + 0.45 * coverage) * 0.85 + edit * 0.15,
-    edit,
-    compact,
-  );
+  const raw = Math.max(overlap * (0.55 + 0.45 * coverage) * 0.85 + edit * 0.15, edit, compact);
   const score = Math.round(raw * 100) / 100;
 
   const verdict: NameMatchVerdict =
-    score >= STRONG_NAME_THRESHOLD ? "strong" : score >= PARTIAL_NAME_THRESHOLD ? "partial" : "weak";
+    score >= STRONG_NAME_THRESHOLD
+      ? "strong"
+      : score >= PARTIAL_NAME_THRESHOLD
+        ? "partial"
+        : "weak";
 
   return { verdict, score, normalizedPayer: payer, normalizedHolder: holder };
 }

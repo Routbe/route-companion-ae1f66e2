@@ -19,7 +19,9 @@ export const getMyBadges = createServerFn({ method: "GET" })
 /** The member's badge grant/revoke history, newest first. */
 export const getMyBadgeActivity = createServerFn({ method: "GET" })
   .middleware([requireAuth])
-  .inputValidator((data: unknown) => z.object({ limit: z.number().int().min(1).max(50).optional() }).parse(data ?? {}))
+  .inputValidator((data: unknown) =>
+    z.object({ limit: z.number().int().min(1).max(50).optional() }).parse(data ?? {}),
+  )
   .handler(async ({ data, context }) => {
     const { fetchBadgeActivityDb } = await import("./badges.server");
     return fetchBadgeActivityDb(context.userId, data.limit ?? 12);

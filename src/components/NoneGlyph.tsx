@@ -23,10 +23,7 @@ export function NoneGlyph({
       )}
       aria-hidden
     >
-      <CircleOff
-        className={size === "sm" ? "h-4 w-4" : "h-4 w-4"}
-        strokeWidth={1.5}
-      />
+      <CircleOff className={size === "sm" ? "h-4 w-4" : "h-4 w-4"} strokeWidth={1.5} />
     </span>
   );
 }

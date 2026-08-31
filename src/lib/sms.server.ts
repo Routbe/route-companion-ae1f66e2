@@ -31,7 +31,10 @@ export function isSmsConfigured(): boolean {
  * Normaliseert naar E.164 zonder `+` (Brevo verwacht `32470123456`).
  * Geeft `null` bij een nummer dat onmogelijk geldig kan zijn.
  */
-export function normalizePhone(raw: string | null | undefined, defaultCountry = "32"): string | null {
+export function normalizePhone(
+  raw: string | null | undefined,
+  defaultCountry = "32",
+): string | null {
   if (!raw) return null;
   let value = raw.replace(/[\s().-]/g, "");
   if (value.startsWith("00")) value = `+${value.slice(2)}`;

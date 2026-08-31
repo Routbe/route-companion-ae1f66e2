@@ -36,15 +36,7 @@ export type AvatarFrameCategory = "minimal" | "cyber" | "royal" | "nature";
 
 /** Overlay-tekening bovenop de rand (klein, decoratief). */
 export type AvatarFrameOverlay =
-  | "laurel"
-  | "crown"
-  | "gear"
-  | "chain"
-  | "flower"
-  | "lace"
-  | "pixel"
-  | "hex"
-  | null;
+  "laurel" | "crown" | "gear" | "chain" | "flower" | "lace" | "pixel" | "hex" | null;
 
 export type AvatarFrameDef = {
   id: AvatarFrame;
@@ -84,7 +76,12 @@ export const AVATAR_FRAME_DEFS: AvatarFrameDef[] = [
   { id: "fire_glow", label: "Vuurgloed", category: "royal", animation: "rout-frame-flicker" },
 
   { id: "emerald_ivy", label: "Smaragd klimop", category: "nature", overlay: "flower" },
-  { id: "nordic_frost", label: "Noordse vorst", category: "nature", animation: "rout-frame-shimmer" },
+  {
+    id: "nordic_frost",
+    label: "Noordse vorst",
+    category: "nature",
+    animation: "rout-frame-shimmer",
+  },
   { id: "floral_bloom", label: "Bloesem", category: "nature", overlay: "flower" },
   { id: "dark_void", label: "Dark void", category: "nature" },
   { id: "blood_moon", label: "Blood moon", category: "nature", animation: "rout-frame-pulse" },
@@ -181,8 +178,7 @@ export function avatarFrameStyle(
       });
     case "cosmic_halo":
       return ring(4, {
-        background:
-          "conic-gradient(from 180deg,#312e81,#8b5cf6,#22d3ee,#f472b6,#312e81)",
+        background: "conic-gradient(from 180deg,#312e81,#8b5cf6,#22d3ee,#f472b6,#312e81)",
         boxShadow: "0 10px 34px -16px rgba(139,92,246,0.9)",
       });
     case "fire_glow":
@@ -246,8 +242,7 @@ export function avatarFrameStyle(
       });
     case "chrome_steel":
       return ring(4, {
-        background:
-          "linear-gradient(180deg,#f8fafc,#94a3b8 35%,#475569 55%,#e2e8f0 75%,#94a3b8)",
+        background: "linear-gradient(180deg,#f8fafc,#94a3b8 35%,#475569 55%,#e2e8f0 75%,#94a3b8)",
         boxShadow: "0 8px 24px -14px rgba(71,85,105,0.9)",
       });
     case "pixel_retro":
@@ -260,8 +255,7 @@ export function avatarFrameStyle(
       };
     case "hologram":
       return ring(4, {
-        background:
-          "linear-gradient(115deg,#a5f3fc,#c4b5fd 30%,#fbcfe8 55%,#bbf7d0 80%,#a5f3fc)",
+        background: "linear-gradient(115deg,#a5f3fc,#c4b5fd 30%,#fbcfe8 55%,#bbf7d0 80%,#a5f3fc)",
         backgroundSize: "220% 220%",
         boxShadow: "0 8px 28px -14px rgba(165,243,252,0.9)",
       });
@@ -274,7 +268,6 @@ export function avatarFrameStyle(
       return { padding: 0, borderRadius: 999 };
   }
 }
-
 
 // ---------------------------------------------------------------------------
 // Fallback voor trage toestellen
@@ -337,9 +330,15 @@ export function prefersLightFrames(): boolean {
     connection?: { saveData?: boolean; effectiveType?: string };
   };
   if (nav.connection?.saveData) return true;
-  if (nav.connection?.effectiveType && /^(slow-)?2g$/.test(nav.connection.effectiveType)) return true;
-  if (typeof nav.hardwareConcurrency === "number" && nav.hardwareConcurrency > 0 && nav.hardwareConcurrency <= 2)
+  if (nav.connection?.effectiveType && /^(slow-)?2g$/.test(nav.connection.effectiveType))
     return true;
-  if (typeof nav.deviceMemory === "number" && nav.deviceMemory > 0 && nav.deviceMemory <= 2) return true;
+  if (
+    typeof nav.hardwareConcurrency === "number" &&
+    nav.hardwareConcurrency > 0 &&
+    nav.hardwareConcurrency <= 2
+  )
+    return true;
+  if (typeof nav.deviceMemory === "number" && nav.deviceMemory > 0 && nav.deviceMemory <= 2)
+    return true;
   return window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
 }

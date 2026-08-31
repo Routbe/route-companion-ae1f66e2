@@ -69,9 +69,7 @@ function parseJson<T>(raw: string | undefined | null, fallback: T): T {
 }
 
 const cleanStrings = (arr: unknown, max: number): string[] =>
-  Array.isArray(arr)
-    ? arr.filter((s): s is string => typeof s === "string").slice(0, max)
-    : [];
+  Array.isArray(arr) ? arr.filter((s): s is string => typeof s === "string").slice(0, max) : [];
 
 export function parsePollConfig(raw: string | undefined | null): PollConfig {
   const c = parseJson<PollConfig>(raw, DEFAULT_POLL);
@@ -134,4 +132,8 @@ export function mapExternalUrl(address: string): string {
 export type InteractionKind = "poll" | "faq" | "map" | "custom_button" | "product";
 
 export const isInteractionBlock = (kind: string): kind is InteractionKind =>
-  kind === "poll" || kind === "faq" || kind === "map" || kind === "custom_button" || kind === "product";
+  kind === "poll" ||
+  kind === "faq" ||
+  kind === "map" ||
+  kind === "custom_button" ||
+  kind === "product";

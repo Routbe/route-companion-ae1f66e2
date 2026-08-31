@@ -14,7 +14,10 @@ export const MAX_CONTRIBUTION_CENTS = 100_000;
 
 export const MIN_ONE_TIME_CENTS = 100;
 
-export function minContributionCents(plan: DonationPlan, minDonationCents = MIN_ONE_TIME_CENTS): number {
+export function minContributionCents(
+  plan: DonationPlan,
+  minDonationCents = MIN_ONE_TIME_CENTS,
+): number {
   if (plan === "monthly") return Math.max(minDonationCents, MIN_MONTHLY_CENTS);
   if (plan === "yearly") return Math.max(minDonationCents * 12, MIN_YEARLY_CENTS);
   if (plan === "one_time") return Math.max(1, minDonationCents);

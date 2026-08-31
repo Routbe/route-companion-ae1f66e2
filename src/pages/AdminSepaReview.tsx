@@ -5,12 +5,7 @@ import { AppLayout } from "@/components/layout/AppLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { decideSepaReviewRow, listSepaReviewQueue } from "@/lib/sepa-review.functions";
 import { useI18n } from "@/lib/i18n";
 import { downloadCsv, toCsv } from "@/lib/csv";
@@ -254,7 +249,9 @@ export default function AdminSepaReview() {
                   <td className="px-3 py-2">
                     {row.holder_name ?? row.member_name ?? "—"}
                     {row.member_email ? (
-                      <span className="block text-xs text-muted-foreground">{row.member_email}</span>
+                      <span className="block text-xs text-muted-foreground">
+                        {row.member_email}
+                      </span>
                     ) : null}
                   </td>
                   <td className="px-3 py-2">

@@ -4,7 +4,12 @@ import { canAccessFeature, isEntitledProfile } from "./entitlement-rules";
 describe("isEntitledProfile", () => {
   it("blocks a free, unverified account", () => {
     expect(
-      isEntitledProfile({ is_paid: false, verified: false, is_early_believer: false, status: "active" }),
+      isEntitledProfile({
+        is_paid: false,
+        verified: false,
+        is_early_believer: false,
+        status: "active",
+      }),
     ).toBe(false);
   });
 

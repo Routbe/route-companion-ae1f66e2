@@ -66,7 +66,6 @@ export function useNavigate() {
   );
 }
 
-
 export function useParams<T extends Record<string, string | undefined>>(): T {
   return useTanstackParams({ strict: false } as never) as T;
 }

@@ -164,7 +164,9 @@ export function SaveQRButton({ qrType, qrValue, config, disabled, nameHint }: Pr
                 placeholder={suggestion}
               />
             </div>
-            <p className="text-xs text-muted-foreground truncate">{t("save.value")}: {qrValue}</p>
+            <p className="text-xs text-muted-foreground truncate">
+              {t("save.value")}: {qrValue}
+            </p>
           </div>
           <DialogFooter>
             <Button variant="ghost" onClick={() => setOpen(false)}>

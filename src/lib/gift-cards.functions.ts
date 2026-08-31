@@ -54,7 +54,9 @@ export const startGiftCardPurchase = createServerFn({ method: "POST" })
 
 /** Publieke 3D-weergave van één bon (alleen veilige velden). */
 export const getPublicGiftCard = createServerFn({ method: "GET" })
-  .inputValidator((data: unknown) => z.object({ code: z.string().trim().min(6).max(24) }).parse(data))
+  .inputValidator((data: unknown) =>
+    z.object({ code: z.string().trim().min(6).max(24) }).parse(data),
+  )
   .handler(async ({ data }) => {
     const { fetchPublicGiftCard } = await import("./gift-cards.server");
     return { card: await fetchPublicGiftCard(data.code) };

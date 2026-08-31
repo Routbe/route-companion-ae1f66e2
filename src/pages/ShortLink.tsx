@@ -9,7 +9,6 @@ type Status = "resolving" | "not_found" | "disabled" | "expired" | "suspended" |
 
 type ResolveShortLinkRow = { id: string; status: string; target_url: string | null };
 
-
 function device(): string {
   const ua = navigator.userAgent.toLowerCase();
   if (/ipad|tablet|kindle|playbook|silk/.test(ua)) return "tablet";
@@ -46,7 +45,14 @@ export function ShortLinkResolver({ slug: raw }: { slug: string }) {
     let active = true;
 
     void (async () => {
-      const { data, error } = await (db as unknown as { rpc: (fn: string, args: unknown) => Promise<{ data: unknown; error: { message: string } | null }> }).rpc("resolve_short_link", { _slug: slug });
+      const { data, error } = await (
+        db as unknown as {
+          rpc: (
+            fn: string,
+            args: unknown,
+          ) => Promise<{ data: unknown; error: { message: string } | null }>;
+        }
+      ).rpc("resolve_short_link", { _slug: slug });
       if (!active) return;
       const row = Array.isArray(data) ? (data[0] as ResolveShortLinkRow | undefined) : null;
 
@@ -60,13 +66,16 @@ export function ShortLinkResolver({ slug: raw }: { slug: string }) {
       }
 
       // Count the visit, but never let logging delay the redirect.
-      void (db as unknown as { rpc: (fn: string, args: unknown) => Promise<unknown> }).rpc("log_qr_scan", {
-        _tracked_qr_id: row.id,
-        _device: device(),
-        _country: null,
-        _browser: parseAgent(navigator.userAgent).browser,
-        _os: parseAgent(navigator.userAgent).os,
-      });
+      void (db as unknown as { rpc: (fn: string, args: unknown) => Promise<unknown> }).rpc(
+        "log_qr_scan",
+        {
+          _tracked_qr_id: row.id,
+          _device: device(),
+          _country: null,
+          _browser: parseAgent(navigator.userAgent).browser,
+          _os: parseAgent(navigator.userAgent).os,
+        },
+      );
 
       window.location.replace(row.target_url);
     })();

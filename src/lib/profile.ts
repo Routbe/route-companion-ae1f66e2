@@ -7,8 +7,6 @@ import type { PublicSocialLink } from "./social-verify";
 import { verifiedHandleError } from "./verified-handle";
 import { sanitizeHandleInput } from "@/lib/validations/sanitizeHandle";
 
-
-
 export interface ProfileBlock {
   id: string;
   kind: string;
@@ -39,7 +37,6 @@ export const PROMO_COPY_PRESETS = [
 ] as const;
 
 export const isPromoBlock = (kind: string) => kind === "promo";
-
 
 export interface ProfileRecord {
   id: string;
@@ -112,7 +109,13 @@ export const DONATION_PLANS: {
     cents: 100,
     interval: null,
   },
-  { id: "monthly", label: "€1.00 / month", note: "Minimum — set your own", cents: 100, interval: "month" },
+  {
+    id: "monthly",
+    label: "€1.00 / month",
+    note: "Minimum — set your own",
+    cents: 100,
+    interval: "month",
+  },
   {
     id: "yearly",
     label: "€12.00 / year",
@@ -120,7 +123,6 @@ export const DONATION_PLANS: {
     cents: 1200,
     interval: "year",
   },
-
 ];
 
 /** Verification tiers — price in cents, one-off. */
@@ -161,7 +163,6 @@ export const VERIFICATION_TIERS: {
     ],
   },
 ];
-
 
 /**
  * Official SEPA bank details for the manual bank-transfer route.
@@ -246,7 +247,6 @@ export const isReservedHandle = (h: string) => RESERVED_HANDLES.includes(h);
  */
 export const profilePath = (username: string, verified?: boolean) =>
   verified ? `/${username}` : `/u/${username}`;
-
 
 /** Block catalogue used by the “+ Add block” drawer, grouped in folders. */
 export const BLOCK_KINDS: {
@@ -745,7 +745,6 @@ export const BLOCK_KINDS: {
     category: "layout",
     placeholder: "",
   },
-
 ];
 
 /**
@@ -762,13 +761,36 @@ export const BLOCK_TABS: {
     id: "standard",
     label: "⚡ Standaard & Embeds",
     description: "Smart links, universele embeds en opmaak",
-    kinds: ["link", "website", "media_embed", "media_gallery", "text", "spacer", "youtube", "spotify", "soundcloud"],
+    kinds: [
+      "link",
+      "website",
+      "media_embed",
+      "media_gallery",
+      "text",
+      "spacer",
+      "youtube",
+      "spotify",
+      "soundcloud",
+    ],
   },
   {
     id: "sovereign",
     label: "🌐 Soeverein & Sociaal",
     description: "Fediverse, socials en eigen kanalen",
-    kinds: ["eyou", "wsocial", "bluesky", "mastodon", "matrix", "signal", "pixelfed", "substack", "instagram", "tiktok", "x", "github"],
+    kinds: [
+      "eyou",
+      "wsocial",
+      "bluesky",
+      "mastodon",
+      "matrix",
+      "signal",
+      "pixelfed",
+      "substack",
+      "instagram",
+      "tiktok",
+      "x",
+      "github",
+    ],
   },
   {
     id: "microapps",
@@ -787,16 +809,24 @@ export const BLOCK_TABS: {
       "vcard",
       "newsletter",
     ],
-
   },
   {
     id: "commerce",
     label: "💳 Commerce & Donaties",
     description: "Tips, donaties en productshowcases",
-    kinds: ["kofi", "bmac", "patreon", "opencollective", "paypal", "stripe", "tikkie", "shop", "promo"],
+    kinds: [
+      "kofi",
+      "bmac",
+      "patreon",
+      "opencollective",
+      "paypal",
+      "stripe",
+      "tikkie",
+      "shop",
+      "promo",
+    ],
   },
 ];
-
 
 export const BLOCK_CATEGORIES = [
   { id: "featured", label: "Soeverein & Fediverse" },
@@ -1125,7 +1155,6 @@ export const isWidgetBlock = (kind: string) =>
   kind === "faq_accordion" ||
   kind === "map_embed" ||
   kind === "event_list";
-
 
 export const newBlockId = () =>
   `b_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;

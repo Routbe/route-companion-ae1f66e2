@@ -9,8 +9,6 @@ import { LegalChips, type LegalChip } from "@/components/LegalChips";
 import { ShieldCheck } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 
-
-
 const badgeClass =
   "inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-muted/60 px-2.5 py-1 font-mono text-[11px] text-muted-foreground";
 
@@ -168,8 +166,8 @@ function PrivacyPage() {
               </li>
               <li>
                 <span className={strong}>{t("privacy.section.dynamic.li4.strong")}</span>{" "}
-                {t("privacy.section.dynamic.li4.a")}
-                (<span className="font-mono text-xs">rout.id</span> /{" "}
+                {t("privacy.section.dynamic.li4.a")}(
+                <span className="font-mono text-xs">rout.id</span> /{" "}
                 <span className="font-mono text-xs">rout.be</span>){" "}
                 {t("privacy.section.dynamic.li4.b")}{" "}
                 <span className={strong}>{t("privacy.section.dynamic.li4.strong2")}</span>

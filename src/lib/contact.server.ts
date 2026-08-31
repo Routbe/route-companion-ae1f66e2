@@ -120,7 +120,6 @@ export function contactTemplateIds(locale: ContactLocale) {
   };
 }
 
-
 /** Plain-text summary used by the admin log view and the kChat message. */
 export function adminSubject(payload: ContactPayload): string {
   return `Contact: ${payload.subject} — ${payload.name} (${payload.locale.toUpperCase()})`;

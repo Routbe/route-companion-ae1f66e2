@@ -4,12 +4,7 @@ import { Download, Loader2, Mail, RefreshCw, Search } from "lucide-react";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { listContactSubmissions } from "@/lib/contact-admin.functions";
 import { useI18n } from "@/lib/i18n";
 import { formatDateTime } from "@/lib/format";
@@ -256,7 +251,9 @@ export default function AdminContact() {
                 </p>
               ) : null}
               <Button asChild variant="outline" className="w-full">
-                <a href={`mailto:${selected.email}?subject=${encodeURIComponent(`Re: ${selected.subject}`)}`}>
+                <a
+                  href={`mailto:${selected.email}?subject=${encodeURIComponent(`Re: ${selected.subject}`)}`}
+                >
                   <Mail className="mr-2 h-4 w-4" aria-hidden /> {t("admin.contact.reply")}
                 </a>
               </Button>

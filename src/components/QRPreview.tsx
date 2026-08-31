@@ -2,12 +2,7 @@ import { useRef, useState, useEffect, useLayoutEffect, useCallback, useMemo } fr
 import { Button } from "@/components/ui/button";
 import { Copy, Check, RefreshCw, Loader2, ChevronDown, X } from "lucide-react";
 import { captionHref, captionSvg, prettyCaption, truncateCaption } from "@/lib/qr-caption";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { buildExportFilename } from "@/lib/export-filename";
@@ -761,7 +756,10 @@ export function QRPreview({
         if (isVector) {
           triggerBlob(new Blob([composed.svg], { type: "image/svg+xml" }), "svg");
         } else {
-          triggerBlob(await rasterise(composed.svg, composed.width, composed.height), resolvedFormat);
+          triggerBlob(
+            await rasterise(composed.svg, composed.width, composed.height),
+            resolvedFormat,
+          );
         }
         toast({
           title: "Downloaded!",
@@ -1157,9 +1155,6 @@ export function QRPreview({
     }
   }, [toast, displayValue]);
 
-
-
-
   return (
     <div ref={containerRef} className="flex flex-col items-center gap-6 w-full">
       {/* QR Code Display — always rendered on a real white sheet (even in dark
@@ -1276,7 +1271,11 @@ export function QRPreview({
                       {captionDisplay}
                     </a>
                   ) : (
-                    <span tabIndex={0} aria-label={captionValue} className="rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                    <span
+                      tabIndex={0}
+                      aria-label={captionValue}
+                      className="rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    >
                       {captionDisplay}
                     </span>
                   )}
@@ -1288,13 +1287,7 @@ export function QRPreview({
             </TooltipProvider>
           </p>
         )}
-
-
       </div>
-
-
-
-
 
       {/* Live scan-safety readout */}
       <ScanSafety

@@ -102,7 +102,6 @@ export function normalizeHandleForStorage(raw: string): string {
     .slice(0, 30);
 }
 
-
 /** True for a handle of exactly 3 or 4 characters, i.e. the protected range. */
 export function isShortHandle(handle: string): boolean {
   const len = normalizeHandleInput(handle).length;
@@ -192,5 +191,3 @@ export function validateHandle(handle: string, isVipGranted: boolean): CheckHand
 
   return { allowed: true, reason: "ok", message: "Handle is beschikbaar!" };
 }
-
-

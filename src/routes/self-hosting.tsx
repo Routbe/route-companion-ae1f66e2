@@ -5,9 +5,15 @@ export const Route = createFileRoute("/self-hosting")({
   head: () => ({
     meta: [
       { title: "Self-hosting ROUT" },
-      { name: "description", content: "Draai ROUT op je eigen infrastructuur: installatie, configuratie en updates." },
+      {
+        name: "description",
+        content: "Draai ROUT op je eigen infrastructuur: installatie, configuratie en updates.",
+      },
       { property: "og:title", content: "Self-hosting ROUT" },
-      { property: "og:description", content: "Draai ROUT op je eigen infrastructuur: installatie, configuratie en updates." },
+      {
+        property: "og:description",
+        content: "Draai ROUT op je eigen infrastructuur: installatie, configuratie en updates.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

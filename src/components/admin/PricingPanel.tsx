@@ -67,8 +67,7 @@ export function PricingPanel() {
         if (!cancelled) setBunqHealth(res);
       })
       .catch(() => {
-        if (!cancelled)
-          setBunqHealth({ ok: false, message: "Status onbekend", configured: true });
+        if (!cancelled) setBunqHealth({ ok: false, message: "Status onbekend", configured: true });
       });
     return () => {
       cancelled = true;
@@ -140,7 +139,11 @@ export function PricingPanel() {
       >
         <span
           className={`h-2 w-2 rounded-full ${
-            bunqHealth === null ? "bg-muted-foreground" : bunqHealth.ok ? "bg-emerald-500" : "bg-destructive"
+            bunqHealth === null
+              ? "bg-muted-foreground"
+              : bunqHealth.ok
+                ? "bg-emerald-500"
+                : "bg-destructive"
           }`}
           aria-hidden
         />
@@ -161,7 +164,6 @@ export function PricingPanel() {
           minimale bijdrage.
         </p>
       </div>
-
 
       {loading ? (
         <p className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -187,9 +189,7 @@ export function PricingPanel() {
                       setForm((f) => ({
                         ...f,
                         [field.key]:
-                          e.target.value === ""
-                            ? 0
-                            : Math.round(Number(e.target.value) * 100),
+                          e.target.value === "" ? 0 : Math.round(Number(e.target.value) * 100),
                       }))
                     }
                     className="input-field h-9 w-36 rounded-xl text-xs"

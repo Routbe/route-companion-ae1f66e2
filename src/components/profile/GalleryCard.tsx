@@ -1,10 +1,6 @@
 import { useState, type CSSProperties } from "react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import {
-  galleryLinkHref,
-  type GalleryConfig,
-  type GalleryItem,
-} from "@/lib/gallery";
+import { galleryLinkHref, type GalleryConfig, type GalleryItem } from "@/lib/gallery";
 import { cn } from "@/lib/utils";
 
 /** Lazy-loaded foto met blur-up placeholder. */

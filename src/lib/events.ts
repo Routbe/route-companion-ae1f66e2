@@ -43,7 +43,8 @@ export const DEFAULT_EVENT_LIST: EventListConfig = {
 const str = (v: unknown, fallback = ""): string => (typeof v === "string" ? v : fallback);
 
 export function parseEventListConfig(raw: string | undefined | null): EventListConfig {
-  if (!raw || !raw.trim().startsWith("{")) return { ...DEFAULT_EVENT_LIST, items: [{ ...EMPTY_EVENT }] };
+  if (!raw || !raw.trim().startsWith("{"))
+    return { ...DEFAULT_EVENT_LIST, items: [{ ...EMPTY_EVENT }] };
   try {
     const p = JSON.parse(raw) as Partial<EventListConfig>;
     const items = (Array.isArray(p.items) ? p.items : [])
@@ -94,7 +95,20 @@ export function visibleEvents(config: EventListConfig, now: Date = new Date()): 
     .sort((a, b) => `${a.date}${a.time}`.localeCompare(`${b.date}${b.time}`));
 }
 
-const MONTHS_NL = ["JAN", "FEB", "MRT", "APR", "MEI", "JUN", "JUL", "AUG", "SEP", "OKT", "NOV", "DEC"];
+const MONTHS_NL = [
+  "JAN",
+  "FEB",
+  "MRT",
+  "APR",
+  "MEI",
+  "JUN",
+  "JUL",
+  "AUG",
+  "SEP",
+  "OKT",
+  "NOV",
+  "DEC",
+];
 
 /** Datumbadge: bovenaan de maand, onderaan de dag. */
 export function eventDateBadge(date: string): { month: string; day: string } {

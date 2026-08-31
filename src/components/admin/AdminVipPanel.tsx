@@ -486,9 +486,7 @@ export function AdminVipPanel() {
 
       {/* ---------------- bulk grant ---------------- */}
       <details className="rounded-xl border border-border p-3">
-        <summary className="cursor-pointer text-sm font-medium">
-          Bulk grant (CSV or paste)
-        </summary>
+        <summary className="cursor-pointer text-sm font-medium">Bulk grant (CSV or paste)</summary>
         <form onSubmit={onBulk} className="mt-3 space-y-3">
           <p className="text-xs text-muted-foreground">
             One grant per line: <code>handle, email-or-handle-or-id, reason</code>. Max 100 lines.
@@ -499,7 +497,9 @@ export function AdminVipPanel() {
             onChange={(e) => setBulkInput(e.target.value)}
             rows={6}
             className="font-mono text-xs"
-            placeholder={"kim, kim@example.com, launch partner\nrout, ada@example.com, brand reserve"}
+            placeholder={
+              "kim, kim@example.com, launch partner\nrout, ada@example.com, brand reserve"
+            }
           />
           <div className="flex flex-wrap items-end gap-2">
             <div className="min-w-[220px] flex-1 space-y-1.5">

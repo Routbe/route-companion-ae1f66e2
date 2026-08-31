@@ -41,9 +41,7 @@ async function ownerFor(handle: string) {
   };
 }
 
-export async function captureLead(
-  input: LeadInput,
-): Promise<{ ok: boolean; message: string }> {
+export async function captureLead(input: LeadInput): Promise<{ ok: boolean; message: string }> {
   const owner = await ownerFor(input.handle);
   if (!owner) return { ok: false, message: "Dit profiel heeft geen actief contactformulier." };
 

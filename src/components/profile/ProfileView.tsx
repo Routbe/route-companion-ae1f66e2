@@ -126,40 +126,40 @@ export function ProfileView({
   const memberSince = monthYear(profile.created_at ?? null, locale || "nl");
 
   const socialRow = (profile.social_links ?? []).length > 0 && (
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
-            {(profile.social_links ?? []).map((link) => {
-              const followers = formatFollowers(link.followerCount);
-              const username = (link as { username?: string | null }).username ?? null;
-              return (
-                <a
-                  key={link.platform}
-                  href={link.url}
-                  target="_blank"
-                  rel="me noopener noreferrer"
-                  title={`${PLATFORM_LABEL[link.platform]} — geverifieerd`}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-medium transition-opacity hover:opacity-80"
-                  style={{ border: `1px solid ${t.border}`, color: t.muted }}
-                >
-                  {username ? (
-                    <>
-                      <SocialPlatformIcon source={link.url} className="h-3.5 w-3.5 text-current" />
-                      <span>@{username.replace(/^@/, "")}</span>
-                      <BadgeCheck className="h-3 w-3 text-emerald-500" aria-hidden />
-                    </>
-                  ) : (
-                    <span className="relative inline-flex">
-                      <SocialPlatformIcon source={link.url} className="h-3.5 w-3.5 text-current" />
-                      <BadgeCheck
-                        className="absolute -right-1 -top-1 z-10 h-2.5 w-2.5 text-emerald-500"
-                        aria-hidden
-                      />
-                    </span>
-                  )}
-                  {followers && <span>{followers} volgers</span>}
-                </a>
-              );
-            })}
-          </div>
+    <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+      {(profile.social_links ?? []).map((link) => {
+        const followers = formatFollowers(link.followerCount);
+        const username = (link as { username?: string | null }).username ?? null;
+        return (
+          <a
+            key={link.platform}
+            href={link.url}
+            target="_blank"
+            rel="me noopener noreferrer"
+            title={`${PLATFORM_LABEL[link.platform]} — geverifieerd`}
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-medium transition-opacity hover:opacity-80"
+            style={{ border: `1px solid ${t.border}`, color: t.muted }}
+          >
+            {username ? (
+              <>
+                <SocialPlatformIcon source={link.url} className="h-3.5 w-3.5 text-current" />
+                <span>@{username.replace(/^@/, "")}</span>
+                <BadgeCheck className="h-3 w-3 text-emerald-500" aria-hidden />
+              </>
+            ) : (
+              <span className="relative inline-flex">
+                <SocialPlatformIcon source={link.url} className="h-3.5 w-3.5 text-current" />
+                <BadgeCheck
+                  className="absolute -right-1 -top-1 z-10 h-2.5 w-2.5 text-emerald-500"
+                  aria-hidden
+                />
+              </span>
+            )}
+            {followers && <span>{followers} volgers</span>}
+          </a>
+        );
+      })}
+    </div>
   );
 
   useProfileFavicon(profile.favicon_url ?? profile.avatar_url);
@@ -218,11 +218,17 @@ export function ProfileView({
           className="mt-4 flex items-center gap-1.5 break-words text-center font-display text-2xl"
           style={prefs.customDesign ? { fontFamily: fonts.heading } : undefined}
         >
-          <span style={prefs.customDesign && prefs.titleColor ? { color: prefs.titleColor } : nameStyle}>{profile.display_name || `@${profile.username}`}</span>
+          <span
+            style={prefs.customDesign && prefs.titleColor ? { color: prefs.titleColor } : nameStyle}
+          >
+            {profile.display_name || `@${profile.username}`}
+          </span>
           {showBadge && (
             <ProfileBadge
               type={badgeType}
-              legalName={free ? null : (profile.verified_legal_name ?? profile.display_name ?? null)}
+              legalName={
+                free ? null : (profile.verified_legal_name ?? profile.display_name ?? null)
+              }
               nameFormat={prefs.badgeNameFormat}
               verifiedAt={profile.verified_at ?? null}
               size={earlyBeliever ? "md" : "sm"}
@@ -254,9 +260,7 @@ export function ProfileView({
             De subtitel is een subtiele link naar het live profiel. */}
         <a
           href={
-            free
-              ? `https://rout.be/u/${profile.username}`
-              : `https://rout.be/${profile.username}`
+            free ? `https://rout.be/u/${profile.username}` : `https://rout.be/${profile.username}`
           }
           target="_blank"
           rel="noopener noreferrer"
@@ -327,39 +331,38 @@ export function ProfileView({
 
         {/* vCard: bezoekers bewaren het profiel meteen in hun adresboek. */}
         {prefs.showVcardButton && (
-        <button
-          type="button"
+          <button
+            type="button"
 
-          onClick={() =>
-            downloadVCard({
-              handle: profile.username ?? "",
-              displayName: profile.display_name,
-              tagline: profile.tagline,
-              bio: shownBio,
-              avatarUrl: profile.avatar_url,
-              email: aliasEmail,
-              profileUrl:
-                typeof window === "undefined"
-                  ? `https://rout.be/${profile.username ?? ""}`
-                  : window.location.href,
-              links: blocks
-                .filter((b) => /^https?:\/\//.test(blockHref(b)))
-                .map((b) => ({ label: b.kind, url: blockHref(b) })),
-            })
-          }
-          className="group mt-3 inline-flex items-center gap-2 rounded-full py-1.5 pl-1.5 pr-4 text-xs font-medium shadow-sm transition-all hover:-translate-y-px hover:shadow-md"
-          style={{ border: `1px solid ${t.border}`, color: t.text }}
-        >
-          <span
-            className="flex h-6 w-6 items-center justify-center rounded-full transition-transform group-hover:scale-105"
-            style={{ backgroundColor: t.border, color: t.text }}
+            onClick={() =>
+              downloadVCard({
+                handle: profile.username ?? "",
+                displayName: profile.display_name,
+                tagline: profile.tagline,
+                bio: shownBio,
+                avatarUrl: profile.avatar_url,
+                email: aliasEmail,
+                profileUrl:
+                  typeof window === "undefined"
+                    ? `https://rout.be/${profile.username ?? ""}`
+                    : window.location.href,
+                links: blocks
+                  .filter((b) => /^https?:\/\//.test(blockHref(b)))
+                  .map((b) => ({ label: b.kind, url: blockHref(b) })),
+              })
+            }
+            className="group mt-3 inline-flex items-center gap-2 rounded-full py-1.5 pl-1.5 pr-4 text-xs font-medium shadow-sm transition-all hover:-translate-y-px hover:shadow-md"
+            style={{ border: `1px solid ${t.border}`, color: t.text }}
           >
-            <UserPlus className="h-3.5 w-3.5" aria-hidden />
-          </span>
-          {prefs.vcardLabel?.trim() || "Contact opslaan"}
-        </button>
+            <span
+              className="flex h-6 w-6 items-center justify-center rounded-full transition-transform group-hover:scale-105"
+              style={{ backgroundColor: t.border, color: t.text }}
+            >
+              <UserPlus className="h-3.5 w-3.5" aria-hidden />
+            </span>
+            {prefs.vcardLabel?.trim() || "Contact opslaan"}
+          </button>
         )}
-
 
         <BadgeShowcase userId={profile.id} theme={t} />
 
@@ -369,8 +372,6 @@ export function ProfileView({
             Mode 1 = icoon + gebruikersnaam met vinkje ernaast; mode 2 = alleen
             het icoon met een micro-vinkje over de rechterbovenhoek. */}
         {prefs.socialPosition === "top" && socialRow}
-
-
 
         <div className={`mt-8 grid w-full gap-3 ${wide ? "sm:grid-cols-2" : "grid-cols-1"}`}>
           {blocks.length === 0 && (
@@ -401,11 +402,7 @@ export function ProfileView({
               />
             ) : isWidgetBlock(b.kind) || isBookingUrl(blockHref(b)) ? (
               b.kind === "media_gallery" ? (
-                <GalleryCard
-                  key={b.id}
-                  config={parseGalleryConfig(b.value)}
-                  style={buttonStyle}
-                />
+                <GalleryCard key={b.id} config={parseGalleryConfig(b.value)} style={buttonStyle} />
               ) : b.kind === "media_embed" ? (
                 <MediaEmbedCard key={b.id} value={b.value} style={buttonStyle} />
               ) : b.kind === "contact_form" ? (
@@ -432,7 +429,6 @@ export function ProfileView({
                 <FaqCard key={b.id} config={parseFaqConfig(b.value)} style={buttonStyle} />
               ) : b.kind === "map_embed" ? (
                 <MapCard key={b.id} config={parseMapConfig(b.value)} style={buttonStyle} />
-
               ) : b.kind === "booking_request" ? (
                 <BookingCard
                   key={b.id}
@@ -448,29 +444,24 @@ export function ProfileView({
                   style={buttonStyle}
                 />
               ) : (
-                <BookingBlock
-                  key={b.id}
-                  href={blockHref(b)}
-                  label={b.label}
-                  style={buttonStyle}
-                />
+                <BookingBlock key={b.id} href={blockHref(b)} label={b.label} style={buttonStyle} />
               )
             ) : (
-            <a
-              key={b.id}
-              href={blockHref(b)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex min-h-12 w-full items-center gap-3 px-4 py-3 text-sm font-medium transition-opacity hover:opacity-80"
-              style={buttonStyle}
-            >
-              <SocialPlatformIcon
-                source={blockHref(b) || b.kind}
-                className="h-4 w-4 text-current"
-              />
-              <span className="min-w-0 flex-1 truncate text-center">{b.label}</span>
-              <span className="h-4 w-4 shrink-0" aria-hidden />
-            </a>
+              <a
+                key={b.id}
+                href={blockHref(b)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex min-h-12 w-full items-center gap-3 px-4 py-3 text-sm font-medium transition-opacity hover:opacity-80"
+                style={buttonStyle}
+              >
+                <SocialPlatformIcon
+                  source={blockHref(b) || b.kind}
+                  className="h-4 w-4 text-current"
+                />
+                <span className="min-w-0 flex-1 truncate text-center">{b.label}</span>
+                <span className="h-4 w-4 shrink-0" aria-hidden />
+              </a>
             ),
           )}
         </div>
@@ -494,7 +485,6 @@ export function ProfileView({
             </a>
           )}
         </footer>
-
       </div>
     </main>
   );

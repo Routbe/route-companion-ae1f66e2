@@ -78,10 +78,7 @@ export default function MyData() {
     if (confirmText !== t("mydata.delete.confirmWord")) return;
     setDeleting(true);
     try {
-      const { data: mine } = await db
-        .from("tracked_qrs")
-        .select("id")
-        .eq("user_id", user.id);
+      const { data: mine } = await db.from("tracked_qrs").select("id").eq("user_id", user.id);
       const ids = (mine ?? []).map((r) => r.id);
       if (ids.length) await db.from("qr_scans").delete().in("tracked_qr_id", ids);
 
@@ -135,11 +132,13 @@ export default function MyData() {
         <h2 className="flex items-center gap-2 text-lg font-medium">
           <Download className="h-4 w-4" /> {t("mydata.export.title")}
         </h2>
-        <p className="text-sm text-muted-foreground">
-          {t("mydata.export.body")}
-        </p>
+        <p className="text-sm text-muted-foreground">{t("mydata.export.body")}</p>
         <Button onClick={exportData} disabled={exporting} className="h-11 w-full gap-1.5 sm:w-auto">
-          {exporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+          {exporting ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Download className="h-4 w-4" />
+          )}
           {t("mydata.export.cta")}
         </Button>
       </section>

@@ -83,7 +83,6 @@ function adminAddress(): string {
   return process.env["CONTACT_ADMIN_EMAIL"] ?? process.env["ADMIN_EMAIL"] ?? "hallo@rout.be";
 }
 
-
 export function isMailConfigured(): boolean {
   return brevoKey() !== null;
 }
@@ -201,8 +200,6 @@ function summariseParams(params?: Record<string, unknown>): Record<string, strin
   }
   return out;
 }
-
-
 
 /**
  * Fire-and-forget admin alert (Template #11) telling the team exactly which

@@ -89,7 +89,11 @@ export function DonationPanel({
             Ontvangen fooien
           </p>
           <p className="text-lg font-medium">
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : euro(summary?.totalCents ?? 0)}
+            {loading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              euro(summary?.totalCents ?? 0)
+            )}
           </p>
         </div>
         <div className="rounded-xl border border-border p-3">
@@ -97,7 +101,6 @@ export function DonationPanel({
           <p className="text-lg font-medium">{loading ? "—" : (summary?.count ?? 0)}</p>
         </div>
       </div>
-
 
       {(summary?.recent.length ?? 0) > 0 && (
         <ul className="mt-3 space-y-2">

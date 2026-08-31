@@ -12,7 +12,6 @@ const bunqCheckoutSchema = z.object({
   clientRequestId: z.string().trim().min(8).max(64).optional(),
 });
 
-
 /**
  * bunq-checkout: maakt een pending verificatiebetaling met ROUT-referentie en
  * vraagt bij bunq altijd een bunq.me-betaalverzoek aan — ongeacht land of
@@ -192,4 +191,3 @@ export const getBunqApiHealth = createServerFn({ method: "GET" })
     const result = await checkBunqApiStatus();
     return { ...result, configured: true };
   });
-

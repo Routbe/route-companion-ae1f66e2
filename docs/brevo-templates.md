@@ -11,18 +11,18 @@ template id = category base + language offset
 category fallback = category base + 9
 ```
 
-| Language | Offset |
-| --- | --- |
-| nl | +0 |
-| en | +1 |
-| fr | +2 |
-| de | +3 |
-| es | +4 |
-| it | +5 |
-| pt | +6 |
-| pl | +7 |
-| zh | +8 |
-| _category fallback_ | +9 |
+| Language            | Offset |
+| ------------------- | ------ |
+| nl                  | +0     |
+| en                  | +1     |
+| fr                  | +2     |
+| de                  | +3     |
+| es                  | +4     |
+| it                  | +5     |
+| pt                  | +6     |
+| pl                  | +7     |
+| zh                  | +8     |
+| _category fallback_ | +9     |
 
 ## Delivery cascade
 
@@ -35,29 +35,29 @@ Every downgrade triggers the admin alert template #11.
 
 ## Resolved template IDs
 
-| Category | Base | nl | en | fr | de | es | it | pt | pl | zh | Fallback |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| system | 1 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
-| login | 12 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 |
-| confirmation | 12 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 |
-| recovery | 12 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 |
-| email_change | 12 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 |
-| reauthentication | 12 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 |
-| invite | 12 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 |
-| deletion | 12 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 |
-| form | 22 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 |
-| payment_confirmation | 32 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 |
-| welcome | 122 | 122 | 123 | 124 | 125 | 126 | 127 | 128 | 129 | 130 | 131 |
-| provisioning | 132 | 132 | 133 | 134 | 135 | 136 | 137 | 138 | 139 | 140 | 141 |
-| renewal | 52 | 52 | 53 | 54 | 55 | 56 | 57 | 58 | 59 | 60 | 61 |
-| cancellation | 72 | 72 | 73 | 74 | 75 | 76 | 77 | 78 | 79 | 80 | 81 |
-| refund | 82 | 82 | 83 | 84 | 85 | 86 | 87 | 88 | 89 | 90 | 91 |
-| payment | 62 | 62 | 63 | 64 | 65 | 66 | 67 | 68 | 69 | 70 | 71 |
-| payment_issue | 42 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50 | 51 |
-| transfer | 92 | 92 | 93 | 94 | 95 | 96 | 97 | 98 | 99 | 100 | 101 |
-| security | 102 | 102 | 103 | 104 | 105 | 106 | 107 | 108 | 109 | 110 | 111 |
-| node_expiry | 142 | 142 | 143 | 144 | 145 | 146 | 147 | 148 | 149 | 150 | 151 |
-| merge | 112 | 112 | 113 | 114 | 115 | 116 | 117 | 118 | 119 | 120 | 121 |
+| Category             | Base | nl  | en  | fr  | de  | es  | it  | pt  | pl  | zh  | Fallback |
+| -------------------- | ---- | --- | --- | --- | --- | --- | --- | --- | --- | --- | -------- |
+| system               | 1    | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | 10       |
+| login                | 12   | 12  | 13  | 14  | 15  | 16  | 17  | 18  | 19  | 20  | 21       |
+| confirmation         | 12   | 12  | 13  | 14  | 15  | 16  | 17  | 18  | 19  | 20  | 21       |
+| recovery             | 12   | 12  | 13  | 14  | 15  | 16  | 17  | 18  | 19  | 20  | 21       |
+| email_change         | 12   | 12  | 13  | 14  | 15  | 16  | 17  | 18  | 19  | 20  | 21       |
+| reauthentication     | 12   | 12  | 13  | 14  | 15  | 16  | 17  | 18  | 19  | 20  | 21       |
+| invite               | 12   | 12  | 13  | 14  | 15  | 16  | 17  | 18  | 19  | 20  | 21       |
+| deletion             | 12   | 12  | 13  | 14  | 15  | 16  | 17  | 18  | 19  | 20  | 21       |
+| form                 | 22   | 22  | 23  | 24  | 25  | 26  | 27  | 28  | 29  | 30  | 31       |
+| payment_confirmation | 32   | 32  | 33  | 34  | 35  | 36  | 37  | 38  | 39  | 40  | 41       |
+| welcome              | 122  | 122 | 123 | 124 | 125 | 126 | 127 | 128 | 129 | 130 | 131      |
+| provisioning         | 132  | 132 | 133 | 134 | 135 | 136 | 137 | 138 | 139 | 140 | 141      |
+| renewal              | 52   | 52  | 53  | 54  | 55  | 56  | 57  | 58  | 59  | 60  | 61       |
+| cancellation         | 72   | 72  | 73  | 74  | 75  | 76  | 77  | 78  | 79  | 80  | 81       |
+| refund               | 82   | 82  | 83  | 84  | 85  | 86  | 87  | 88  | 89  | 90  | 91       |
+| payment              | 62   | 62  | 63  | 64  | 65  | 66  | 67  | 68  | 69  | 70  | 71       |
+| payment_issue        | 42   | 42  | 43  | 44  | 45  | 46  | 47  | 48  | 49  | 50  | 51       |
+| transfer             | 92   | 92  | 93  | 94  | 95  | 96  | 97  | 98  | 99  | 100 | 101      |
+| security             | 102  | 102 | 103 | 104 | 105 | 106 | 107 | 108 | 109 | 110 | 111      |
+| node_expiry          | 142  | 142 | 143 | 144 | 145 | 146 | 147 | 148 | 149 | 150 | 151      |
+| merge                | 112  | 112 | 113 | 114 | 115 | 116 | 117 | 118 | 119 | 120 | 121      |
 
 ## Categories, senders and params
 
@@ -195,77 +195,77 @@ Every downgrade triggers the admin alert template #11.
 
 ## Environment overrides
 
-| Variable | Effect |
-| --- | --- |
-| `BREVO_API_KEY` | Required. Without it no mail is sent. |
-| `BREVO_SENDER_EMAIL` / `BREVO_SENDER_NAME` | Visible sender. |
-| `BREVO_REPLY_TO_EMAIL` | Reply-to address. |
-| `CONTACT_ADMIN_EMAIL` | Recipient of admin alerts. |
-| `BREVO_TEMPLATE_SYSTEM_<LANG>` | Overrides one language of `system`. |
-| `BREVO_TEMPLATE_SYSTEM` | Overrides all languages of `system`. |
-| `BREVO_TEMPLATE_SYSTEM_FALLBACK` | Overrides the category fallback. |
-| `BREVO_TEMPLATE_LOGIN_<LANG>` | Overrides one language of `login`. |
-| `BREVO_TEMPLATE_LOGIN` | Overrides all languages of `login`. |
-| `BREVO_TEMPLATE_LOGIN_FALLBACK` | Overrides the category fallback. |
-| `BREVO_TEMPLATE_CONFIRMATION_<LANG>` | Overrides one language of `confirmation`. |
-| `BREVO_TEMPLATE_CONFIRMATION` | Overrides all languages of `confirmation`. |
-| `BREVO_TEMPLATE_CONFIRMATION_FALLBACK` | Overrides the category fallback. |
-| `BREVO_TEMPLATE_RECOVERY_<LANG>` | Overrides one language of `recovery`. |
-| `BREVO_TEMPLATE_RECOVERY` | Overrides all languages of `recovery`. |
-| `BREVO_TEMPLATE_RECOVERY_FALLBACK` | Overrides the category fallback. |
-| `BREVO_TEMPLATE_EMAIL_CHANGE_<LANG>` | Overrides one language of `email_change`. |
-| `BREVO_TEMPLATE_EMAIL_CHANGE` | Overrides all languages of `email_change`. |
-| `BREVO_TEMPLATE_EMAIL_CHANGE_FALLBACK` | Overrides the category fallback. |
-| `BREVO_TEMPLATE_REAUTHENTICATION_<LANG>` | Overrides one language of `reauthentication`. |
-| `BREVO_TEMPLATE_REAUTHENTICATION` | Overrides all languages of `reauthentication`. |
-| `BREVO_TEMPLATE_REAUTHENTICATION_FALLBACK` | Overrides the category fallback. |
-| `BREVO_TEMPLATE_INVITE_<LANG>` | Overrides one language of `invite`. |
-| `BREVO_TEMPLATE_INVITE` | Overrides all languages of `invite`. |
-| `BREVO_TEMPLATE_INVITE_FALLBACK` | Overrides the category fallback. |
-| `BREVO_TEMPLATE_DELETION_<LANG>` | Overrides one language of `deletion`. |
-| `BREVO_TEMPLATE_DELETION` | Overrides all languages of `deletion`. |
-| `BREVO_TEMPLATE_DELETION_FALLBACK` | Overrides the category fallback. |
-| `BREVO_TEMPLATE_FORM_<LANG>` | Overrides one language of `form`. |
-| `BREVO_TEMPLATE_FORM` | Overrides all languages of `form`. |
-| `BREVO_TEMPLATE_FORM_FALLBACK` | Overrides the category fallback. |
-| `BREVO_TEMPLATE_PAYMENT_CONFIRMATION_<LANG>` | Overrides one language of `payment_confirmation`. |
-| `BREVO_TEMPLATE_PAYMENT_CONFIRMATION` | Overrides all languages of `payment_confirmation`. |
-| `BREVO_TEMPLATE_PAYMENT_CONFIRMATION_FALLBACK` | Overrides the category fallback. |
-| `BREVO_TEMPLATE_WELCOME_<LANG>` | Overrides one language of `welcome`. |
-| `BREVO_TEMPLATE_WELCOME` | Overrides all languages of `welcome`. |
-| `BREVO_TEMPLATE_WELCOME_FALLBACK` | Overrides the category fallback. |
-| `BREVO_TEMPLATE_PROVISIONING_<LANG>` | Overrides one language of `provisioning`. |
-| `BREVO_TEMPLATE_PROVISIONING` | Overrides all languages of `provisioning`. |
-| `BREVO_TEMPLATE_PROVISIONING_FALLBACK` | Overrides the category fallback. |
-| `BREVO_TEMPLATE_RENEWAL_<LANG>` | Overrides one language of `renewal`. |
-| `BREVO_TEMPLATE_RENEWAL` | Overrides all languages of `renewal`. |
-| `BREVO_TEMPLATE_RENEWAL_FALLBACK` | Overrides the category fallback. |
-| `BREVO_TEMPLATE_CANCELLATION_<LANG>` | Overrides one language of `cancellation`. |
-| `BREVO_TEMPLATE_CANCELLATION` | Overrides all languages of `cancellation`. |
-| `BREVO_TEMPLATE_CANCELLATION_FALLBACK` | Overrides the category fallback. |
-| `BREVO_TEMPLATE_REFUND_<LANG>` | Overrides one language of `refund`. |
-| `BREVO_TEMPLATE_REFUND` | Overrides all languages of `refund`. |
-| `BREVO_TEMPLATE_REFUND_FALLBACK` | Overrides the category fallback. |
-| `BREVO_TEMPLATE_PAYMENT_<LANG>` | Overrides one language of `payment`. |
-| `BREVO_TEMPLATE_PAYMENT` | Overrides all languages of `payment`. |
-| `BREVO_TEMPLATE_PAYMENT_FALLBACK` | Overrides the category fallback. |
-| `BREVO_TEMPLATE_PAYMENT_ISSUE_<LANG>` | Overrides one language of `payment_issue`. |
-| `BREVO_TEMPLATE_PAYMENT_ISSUE` | Overrides all languages of `payment_issue`. |
-| `BREVO_TEMPLATE_PAYMENT_ISSUE_FALLBACK` | Overrides the category fallback. |
-| `BREVO_TEMPLATE_TRANSFER_<LANG>` | Overrides one language of `transfer`. |
-| `BREVO_TEMPLATE_TRANSFER` | Overrides all languages of `transfer`. |
-| `BREVO_TEMPLATE_TRANSFER_FALLBACK` | Overrides the category fallback. |
-| `BREVO_TEMPLATE_SECURITY_<LANG>` | Overrides one language of `security`. |
-| `BREVO_TEMPLATE_SECURITY` | Overrides all languages of `security`. |
-| `BREVO_TEMPLATE_SECURITY_FALLBACK` | Overrides the category fallback. |
-| `BREVO_TEMPLATE_NODE_EXPIRY_<LANG>` | Overrides one language of `node_expiry`. |
-| `BREVO_TEMPLATE_NODE_EXPIRY` | Overrides all languages of `node_expiry`. |
-| `BREVO_TEMPLATE_NODE_EXPIRY_FALLBACK` | Overrides the category fallback. |
-| `BREVO_TEMPLATE_MERGE_<LANG>` | Overrides one language of `merge`. |
-| `BREVO_TEMPLATE_MERGE` | Overrides all languages of `merge`. |
-| `BREVO_TEMPLATE_MERGE_FALLBACK` | Overrides the category fallback. |
-| `BREVO_TEMPLATE_ADMIN_ALERT` | Admin alert template (default #11). |
-| `BREVO_TEMPLATE_GLOBAL_FALLBACK` | Global reserve template (default #21). |
+| Variable                                       | Effect                                             |
+| ---------------------------------------------- | -------------------------------------------------- |
+| `BREVO_API_KEY`                                | Required. Without it no mail is sent.              |
+| `BREVO_SENDER_EMAIL` / `BREVO_SENDER_NAME`     | Visible sender.                                    |
+| `BREVO_REPLY_TO_EMAIL`                         | Reply-to address.                                  |
+| `CONTACT_ADMIN_EMAIL`                          | Recipient of admin alerts.                         |
+| `BREVO_TEMPLATE_SYSTEM_<LANG>`                 | Overrides one language of `system`.                |
+| `BREVO_TEMPLATE_SYSTEM`                        | Overrides all languages of `system`.               |
+| `BREVO_TEMPLATE_SYSTEM_FALLBACK`               | Overrides the category fallback.                   |
+| `BREVO_TEMPLATE_LOGIN_<LANG>`                  | Overrides one language of `login`.                 |
+| `BREVO_TEMPLATE_LOGIN`                         | Overrides all languages of `login`.                |
+| `BREVO_TEMPLATE_LOGIN_FALLBACK`                | Overrides the category fallback.                   |
+| `BREVO_TEMPLATE_CONFIRMATION_<LANG>`           | Overrides one language of `confirmation`.          |
+| `BREVO_TEMPLATE_CONFIRMATION`                  | Overrides all languages of `confirmation`.         |
+| `BREVO_TEMPLATE_CONFIRMATION_FALLBACK`         | Overrides the category fallback.                   |
+| `BREVO_TEMPLATE_RECOVERY_<LANG>`               | Overrides one language of `recovery`.              |
+| `BREVO_TEMPLATE_RECOVERY`                      | Overrides all languages of `recovery`.             |
+| `BREVO_TEMPLATE_RECOVERY_FALLBACK`             | Overrides the category fallback.                   |
+| `BREVO_TEMPLATE_EMAIL_CHANGE_<LANG>`           | Overrides one language of `email_change`.          |
+| `BREVO_TEMPLATE_EMAIL_CHANGE`                  | Overrides all languages of `email_change`.         |
+| `BREVO_TEMPLATE_EMAIL_CHANGE_FALLBACK`         | Overrides the category fallback.                   |
+| `BREVO_TEMPLATE_REAUTHENTICATION_<LANG>`       | Overrides one language of `reauthentication`.      |
+| `BREVO_TEMPLATE_REAUTHENTICATION`              | Overrides all languages of `reauthentication`.     |
+| `BREVO_TEMPLATE_REAUTHENTICATION_FALLBACK`     | Overrides the category fallback.                   |
+| `BREVO_TEMPLATE_INVITE_<LANG>`                 | Overrides one language of `invite`.                |
+| `BREVO_TEMPLATE_INVITE`                        | Overrides all languages of `invite`.               |
+| `BREVO_TEMPLATE_INVITE_FALLBACK`               | Overrides the category fallback.                   |
+| `BREVO_TEMPLATE_DELETION_<LANG>`               | Overrides one language of `deletion`.              |
+| `BREVO_TEMPLATE_DELETION`                      | Overrides all languages of `deletion`.             |
+| `BREVO_TEMPLATE_DELETION_FALLBACK`             | Overrides the category fallback.                   |
+| `BREVO_TEMPLATE_FORM_<LANG>`                   | Overrides one language of `form`.                  |
+| `BREVO_TEMPLATE_FORM`                          | Overrides all languages of `form`.                 |
+| `BREVO_TEMPLATE_FORM_FALLBACK`                 | Overrides the category fallback.                   |
+| `BREVO_TEMPLATE_PAYMENT_CONFIRMATION_<LANG>`   | Overrides one language of `payment_confirmation`.  |
+| `BREVO_TEMPLATE_PAYMENT_CONFIRMATION`          | Overrides all languages of `payment_confirmation`. |
+| `BREVO_TEMPLATE_PAYMENT_CONFIRMATION_FALLBACK` | Overrides the category fallback.                   |
+| `BREVO_TEMPLATE_WELCOME_<LANG>`                | Overrides one language of `welcome`.               |
+| `BREVO_TEMPLATE_WELCOME`                       | Overrides all languages of `welcome`.              |
+| `BREVO_TEMPLATE_WELCOME_FALLBACK`              | Overrides the category fallback.                   |
+| `BREVO_TEMPLATE_PROVISIONING_<LANG>`           | Overrides one language of `provisioning`.          |
+| `BREVO_TEMPLATE_PROVISIONING`                  | Overrides all languages of `provisioning`.         |
+| `BREVO_TEMPLATE_PROVISIONING_FALLBACK`         | Overrides the category fallback.                   |
+| `BREVO_TEMPLATE_RENEWAL_<LANG>`                | Overrides one language of `renewal`.               |
+| `BREVO_TEMPLATE_RENEWAL`                       | Overrides all languages of `renewal`.              |
+| `BREVO_TEMPLATE_RENEWAL_FALLBACK`              | Overrides the category fallback.                   |
+| `BREVO_TEMPLATE_CANCELLATION_<LANG>`           | Overrides one language of `cancellation`.          |
+| `BREVO_TEMPLATE_CANCELLATION`                  | Overrides all languages of `cancellation`.         |
+| `BREVO_TEMPLATE_CANCELLATION_FALLBACK`         | Overrides the category fallback.                   |
+| `BREVO_TEMPLATE_REFUND_<LANG>`                 | Overrides one language of `refund`.                |
+| `BREVO_TEMPLATE_REFUND`                        | Overrides all languages of `refund`.               |
+| `BREVO_TEMPLATE_REFUND_FALLBACK`               | Overrides the category fallback.                   |
+| `BREVO_TEMPLATE_PAYMENT_<LANG>`                | Overrides one language of `payment`.               |
+| `BREVO_TEMPLATE_PAYMENT`                       | Overrides all languages of `payment`.              |
+| `BREVO_TEMPLATE_PAYMENT_FALLBACK`              | Overrides the category fallback.                   |
+| `BREVO_TEMPLATE_PAYMENT_ISSUE_<LANG>`          | Overrides one language of `payment_issue`.         |
+| `BREVO_TEMPLATE_PAYMENT_ISSUE`                 | Overrides all languages of `payment_issue`.        |
+| `BREVO_TEMPLATE_PAYMENT_ISSUE_FALLBACK`        | Overrides the category fallback.                   |
+| `BREVO_TEMPLATE_TRANSFER_<LANG>`               | Overrides one language of `transfer`.              |
+| `BREVO_TEMPLATE_TRANSFER`                      | Overrides all languages of `transfer`.             |
+| `BREVO_TEMPLATE_TRANSFER_FALLBACK`             | Overrides the category fallback.                   |
+| `BREVO_TEMPLATE_SECURITY_<LANG>`               | Overrides one language of `security`.              |
+| `BREVO_TEMPLATE_SECURITY`                      | Overrides all languages of `security`.             |
+| `BREVO_TEMPLATE_SECURITY_FALLBACK`             | Overrides the category fallback.                   |
+| `BREVO_TEMPLATE_NODE_EXPIRY_<LANG>`            | Overrides one language of `node_expiry`.           |
+| `BREVO_TEMPLATE_NODE_EXPIRY`                   | Overrides all languages of `node_expiry`.          |
+| `BREVO_TEMPLATE_NODE_EXPIRY_FALLBACK`          | Overrides the category fallback.                   |
+| `BREVO_TEMPLATE_MERGE_<LANG>`                  | Overrides one language of `merge`.                 |
+| `BREVO_TEMPLATE_MERGE`                         | Overrides all languages of `merge`.                |
+| `BREVO_TEMPLATE_MERGE_FALLBACK`                | Overrides the category fallback.                   |
+| `BREVO_TEMPLATE_ADMIN_ALERT`                   | Admin alert template (default #11).                |
+| `BREVO_TEMPLATE_GLOBAL_FALLBACK`               | Global reserve template (default #21).             |
 
 ## Audit result
 

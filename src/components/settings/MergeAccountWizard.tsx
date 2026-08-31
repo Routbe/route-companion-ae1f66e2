@@ -23,9 +23,11 @@ export function MergeAccountWizard() {
 
   // Step A
   const [primaryPassword, setPrimaryPassword] = useState("");
-  const [ticket, setTicket] = useState<{ pin: string; qrPayload: string; expiresAt: string } | null>(
-    null,
-  );
+  const [ticket, setTicket] = useState<{
+    pin: string;
+    qrPayload: string;
+    expiresAt: string;
+  } | null>(null);
   const [busyA, setBusyA] = useState(false);
 
   // Steps B–D

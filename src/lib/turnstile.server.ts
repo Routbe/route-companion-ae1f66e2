@@ -37,7 +37,11 @@ export async function verifyTurnstile(
     });
     const json = (await res.json()) as { success?: boolean; "error-codes"?: string[] };
     if (json.success) return { ok: true, skipped: false };
-    return { ok: false, skipped: false, reason: (json["error-codes"] ?? []).join(",") || "rejected" };
+    return {
+      ok: false,
+      skipped: false,
+      reason: (json["error-codes"] ?? []).join(",") || "rejected",
+    };
   } catch {
     // Netwerkfout bij Cloudflare mag een echte gebruiker niet buitensluiten.
     return { ok: true, skipped: true, reason: "verifier_unreachable" };

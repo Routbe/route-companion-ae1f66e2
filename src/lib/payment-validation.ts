@@ -13,9 +13,7 @@ export function isValidRoutingNumber(raw: string): boolean {
   const digits = (raw ?? "").replace(/\D/g, "");
   if (digits.length !== 9 || /^0+$/.test(digits)) return false;
   const weights = [3, 7, 1, 3, 7, 1, 3, 7, 1];
-  const sum = digits
-    .split("")
-    .reduce((acc, d, i) => acc + Number(d) * (weights[i] as number), 0);
+  const sum = digits.split("").reduce((acc, d, i) => acc + Number(d) * (weights[i] as number), 0);
   return sum % 10 === 0;
 }
 

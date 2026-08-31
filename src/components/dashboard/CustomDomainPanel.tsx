@@ -96,8 +96,9 @@ export function CustomDomainPanel() {
           <Globe className="h-4 w-4" aria-hidden /> Eigen domein
         </p>
         <p className="mt-1 text-xs text-muted-foreground">
-          Wijs een subdomein met een CNAME naar <code className="font-mono">{DOMAIN_CNAME_TARGET}</code>.
-          Na verificatie toont dat domein je profiel.
+          Wijs een subdomein met een CNAME naar{" "}
+          <code className="font-mono">{DOMAIN_CNAME_TARGET}</code>. Na verificatie toont dat domein
+          je profiel.
         </p>
       </div>
 
@@ -126,7 +127,10 @@ export function CustomDomainPanel() {
               className="flex flex-wrap items-center gap-2 rounded-lg border border-border p-2.5 text-sm"
             >
               <span className="min-w-0 flex-1 truncate font-mono text-xs">{row.domain}</span>
-              <Badge variant={row.status === "verified" ? "default" : "secondary"} className="gap-1">
+              <Badge
+                variant={row.status === "verified" ? "default" : "secondary"}
+                className="gap-1"
+              >
                 {row.status === "verified" ? (
                   <CheckCircle2 className="h-3 w-3" aria-hidden />
                 ) : (

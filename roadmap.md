@@ -1,6 +1,7 @@
 # ROUT roadmap
 
 ## In progress
+
 - [x] Claim-root UX, Brevo status, admin audit log, DNS cron (grotendeels al aanwezig)
 - [x] Homepage showcase: dual-tier switcher + mobiele compactie
 - [x] Admin metrics fix (unieke pending verificaties, totaal profielen)
@@ -14,6 +15,7 @@
 - [x] Veiligheidscheck + tsgo
 
 ## Adminportaal (nieuw)
+
 - [x] db/28: admin_permissions, user_feature_blocks, legal_first_name/legal_last_name
 - [x] Deelrechten (verifiëren, namen, promo's, toestel-data, blokkades, admins)
 - [x] Admin kan voornaam/achternaam invullen + gebruikersnaam voornaam.achternaam
@@ -24,6 +26,7 @@
 - [ ] Promomail-bezorging verifiëren in productie (Brevo)
 
 ## Social handles & media gallery (nieuw)
+
 - [x] Unit tests smart-paste parser (`src/lib/social-handles.test.ts`)
 - [x] Realtime publieke linkpreview in handle-invoer
 - [x] Platformspecifieke inline validatie (Instagram/GitHub/X)
@@ -31,6 +34,7 @@
 - [x] Native `media_gallery` component (Studio editor, upload/URL-modal, GalleryCard) — db/35_gallery_media.sql moet nog op Neon uitgevoerd worden
 
 ## Component-catalogus & nieuwe blokken (nieuw)
+
 - [ ] Smart Add-component modal: 4 curated tabs (Standaard/Embeds, Soeverein/Sociaal, Micro-apps, Commerce) + URL-paste detectie
 - [ ] Universal media embed engine (`media_embed`): parser (YouTube/Spotify/SoundCloud/Apple Music/Vimeo/PDF), Studio modal met aspect ratio, MediaEmbedCard renderer
 - [ ] Native interactie-componenten: contact_form (lead_captures + Brevo), live_poll (IP-hash dedup), faq_accordion, map_embed — + SQL-migratie

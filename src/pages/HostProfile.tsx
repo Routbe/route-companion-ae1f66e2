@@ -1,10 +1,6 @@
 import { useEffect } from "react";
 import { Loader2 } from "lucide-react";
-import {
-  ProfileLookupError,
-  ProfileMissing,
-  ProfileView,
-} from "@/components/profile/ProfileView";
+import { ProfileLookupError, ProfileMissing, ProfileView } from "@/components/profile/ProfileView";
 import { ProfileSuspended } from "@/components/profile/ProfileSuspended";
 import { useProfileRecord } from "@/hooks/useProfileRecord";
 

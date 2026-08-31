@@ -56,11 +56,7 @@ export function formatDateTime(
 }
 
 /** Euro amounts are stored in cents everywhere in ROUT. */
-export function formatCurrency(
-  cents: number,
-  locale: Locale | string,
-  currency = "EUR",
-): string {
+export function formatCurrency(cents: number, locale: Locale | string, currency = "EUR"): string {
   const amount = (Number.isFinite(cents) ? cents : 0) / 100;
   return new Intl.NumberFormat(intlLocale(locale), {
     style: "currency",
@@ -70,7 +66,5 @@ export function formatCurrency(
 }
 
 export function formatNumber(value: number, locale: Locale | string): string {
-  return new Intl.NumberFormat(intlLocale(locale)).format(
-    Number.isFinite(value) ? value : 0,
-  );
+  return new Intl.NumberFormat(intlLocale(locale)).format(Number.isFinite(value) ? value : 0);
 }

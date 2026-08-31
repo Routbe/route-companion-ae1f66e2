@@ -68,4 +68,3 @@ describe("checkVersion1Canvas", () => {
     expect(check.reason).toMatch(/Version 10/);
   });
 });
-

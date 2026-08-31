@@ -266,7 +266,11 @@ export function authEmailAction(raw: unknown): AuthEmailAction {
 
 export function authEmailCopy(action: AuthEmailAction, locale: NotificationLocale): AuthCopy {
   const base = COPY[action][locale] ?? COPY[action].nl;
-  return { ...base, codeLabel: CODE_LABEL[locale] ?? CODE_LABEL.nl, footer: FOOTER[locale] ?? FOOTER.nl };
+  return {
+    ...base,
+    codeLabel: CODE_LABEL[locale] ?? CODE_LABEL.nl,
+    footer: FOOTER[locale] ?? FOOTER.nl,
+  };
 }
 
 /** ROUT-branded auth e-mail: white body, monospace wordmark, one clear CTA. */

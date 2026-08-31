@@ -17,16 +17,15 @@ export function UserIdentityLines({
   alias: string | null;
 }) {
   const handle = (username ?? "").replace(/^@/, "").toLowerCase();
-  const aliasHandle = (alias ?? "").replace(/^@?u\//, "").replace(/^@/, "").toLowerCase();
+  const aliasHandle = (alias ?? "")
+    .replace(/^@?u\//, "")
+    .replace(/^@/, "")
+    .toLowerCase();
 
   const isVerified = verified && handle.length > 0;
   const label = isVerified ? `@${handle}` : `@u/${aliasHandle || handle || "—"}`;
-  const url = isVerified
-    ? `rout.be/${handle}`
-    : `rout.be/u/${aliasHandle || handle || "…"}`;
-  const email = isVerified
-    ? `${handle}@rout.be`
-    : `${aliasHandle || handle || "…"}@u.rout.be`;
+  const url = isVerified ? `rout.be/${handle}` : `rout.be/u/${aliasHandle || handle || "…"}`;
+  const email = isVerified ? `${handle}@rout.be` : `${aliasHandle || handle || "…"}@u.rout.be`;
 
   return (
     <div className="space-y-0.5">

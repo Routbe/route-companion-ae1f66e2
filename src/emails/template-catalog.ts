@@ -147,17 +147,7 @@ export const TEMPLATE_CATALOG: CatalogEntry[] = [
       "src/lib/notifications.server.ts → notifyUser('password_changed')",
       "src/lib/notifications.server.ts → notifyUser('new_device_login')",
     ],
-    params: [
-      "TITLE",
-      "BODY",
-      "CTA",
-      "LINK",
-      "DATE",
-      "IP",
-      "REASON",
-      "DEVICE",
-      "LOCATION",
-    ],
+    params: ["TITLE", "BODY", "CTA", "LINK", "DATE", "IP", "REASON", "DEVICE", "LOCATION"],
   },
   {
     category: "node_expiry",
@@ -174,7 +164,6 @@ export const TEMPLATE_CATALOG: CatalogEntry[] = [
     params: ["TITLE", "BODY", "CTA", "LINK", "CODE", "EXPIRES_AT", "PRIMARY_HANDLE"],
   },
 ];
-
 
 /** Mails that intentionally bypass templates and use inline HTML instead. */
 export const INLINE_ONLY_SENDERS = [

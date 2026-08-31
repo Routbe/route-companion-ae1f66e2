@@ -81,7 +81,8 @@ export async function subscribeToNewsletter(params: {
     }),
   });
 
-  const detail = res.ok || res.status === 204 ? "" : (await res.text().catch(() => "")).slice(0, 200);
+  const detail =
+    res.ok || res.status === 204 ? "" : (await res.text().catch(() => "")).slice(0, 200);
   const synced = res.ok || res.status === 204 || detail.includes("duplicate_parameter");
 
   await sql`
@@ -98,4 +99,3 @@ export async function subscribeToNewsletter(params: {
   }
   return { ok: true, message: existed ? "Je stond al ingeschreven." : "Je bent ingeschreven." };
 }
-

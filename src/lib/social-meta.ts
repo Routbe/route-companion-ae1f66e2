@@ -86,10 +86,10 @@ export function profileSocialMeta(input: {
   const title = input.metaTitle?.trim() || `${name} (@${input.handle}) — ROUT`;
   const description = input.frozen
     ? SOCIAL_CARDS[input.locale].description
-    : (input.metaDescription?.trim() ||
-        input.tagline?.trim() ||
-        input.bio?.trim()?.slice(0, 160) ||
-        SOCIAL_CARDS[input.locale].description);
+    : input.metaDescription?.trim() ||
+      input.tagline?.trim() ||
+      input.bio?.trim()?.slice(0, 160) ||
+      SOCIAL_CARDS[input.locale].description;
   // Eigen upload > dynamisch gegenereerde ROUT-kaart (nooit de kale avatar).
   const image =
     input.ogImageUrl?.trim() ||

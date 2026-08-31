@@ -69,7 +69,6 @@ export const findUsers = createServerFn({ method: "POST" })
     return searchUsers(data.query);
   });
 
-
 /** Manual handle assignment and VIP badge toggle — bypasses normal handle limits. */
 export const overrideUserProfile = createServerFn({ method: "POST" })
   .middleware([requireAuth])
@@ -719,7 +718,6 @@ export const logExportEvent = createServerFn({ method: "POST" })
 
     return { ok: true as const };
   });
-
 
 /** Role probe for the VIP console — admin or security only. */
 export const myVipConsoleRole = createServerFn({ method: "GET" })

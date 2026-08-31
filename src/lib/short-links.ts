@@ -20,7 +20,6 @@ import {
   slugLengthForAttempt,
 } from "@/lib/base36";
 
-
 export type QrKind = "qr" | "link" | "both";
 
 type ResolveShortLinkRow = { status: string };
@@ -94,7 +93,9 @@ export function validateSlug(input: string): { slug: string | null; error: strin
 }
 
 export async function isSlugAvailable(slug: string): Promise<boolean> {
-  const { data } = await (db as unknown as { rpc: (fn: string, args: unknown) => Promise<{ data: unknown }> }).rpc("resolve_short_link", { _slug: slug });
+  const { data } = await (
+    db as unknown as { rpc: (fn: string, args: unknown) => Promise<{ data: unknown }> }
+  ).rpc("resolve_short_link", { _slug: slug });
   const row = Array.isArray(data) ? (data[0] as ResolveShortLinkRow | undefined) : null;
   // Any status other than not_found means the slug is already taken.
   return !row || row.status === "not_found";
@@ -117,7 +118,6 @@ export async function allocateSlug(base: number = BASE36_SLUG_LENGTH): Promise<s
   return null;
 }
 
-
 export function appOrigin(): string {
   return typeof window === "undefined" ? "" : window.location.origin;
 }
@@ -132,11 +132,7 @@ export function shortLinkBase(domain?: string | null, domainEnabled = true): str
   return appOrigin();
 }
 
-export function shortLinkUrl(
-  slug: string,
-  domain?: string | null,
-  domainEnabled = true,
-): string {
+export function shortLinkUrl(slug: string, domain?: string | null, domainEnabled = true): string {
   return `${shortLinkBase(domain, domainEnabled)}${SHORT_LINK_PATH_PREFIX}/${slug}`;
 }
 

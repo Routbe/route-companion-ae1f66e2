@@ -22,10 +22,12 @@ export const MASTODON_ERROR_CODES = [
 export type MastodonErrorCode = (typeof MASTODON_ERROR_CODES)[number];
 
 const MESSAGES: Record<MastodonErrorCode, string> = {
-  not_configured: "Aanmelden via de Fediverse is tijdelijk niet beschikbaar. Probeer het later opnieuw.",
+  not_configured:
+    "Aanmelden via de Fediverse is tijdelijk niet beschikbaar. Probeer het later opnieuw.",
   invalid_instance: "Dat lijkt geen Fediverse-domein — probeer mastodon.social of je eigen server.",
   instance_unreachable: "Die server reageerde niet. Controleer het domein en probeer opnieuw.",
-  instance_rejected: "Die server accepteerde ROUT niet. Mogelijk is het geen Mastodon-compatibele server.",
+  instance_rejected:
+    "Die server accepteerde ROUT niet. Mogelijk is het geen Mastodon-compatibele server.",
   state_invalid: "Deze aanmeldlink is niet geldig. Begin opnieuw.",
   state_expired: "Deze aanmeldpoging is verlopen. Begin opnieuw.",
   code_rejected: "Je server keurde de aanmelding af. Probeer opnieuw.",

@@ -27,12 +27,35 @@ const MAX_BYTES = 331;
 
 /** EPC069-12 allows only this Latin subset; anything else is transliterated. */
 const TRANSLITERATE: Record<string, string> = {
-  à: "a", á: "a", â: "a", ä: "a", ã: "a", å: "a",
-  è: "e", é: "e", ê: "e", ë: "e",
-  ì: "i", í: "i", î: "i", ï: "i",
-  ò: "o", ó: "o", ô: "o", ö: "o", õ: "o",
-  ù: "u", ú: "u", û: "u", ü: "u",
-  ç: "c", ñ: "n", ß: "ss", æ: "ae", ø: "o", œ: "oe",
+  à: "a",
+  á: "a",
+  â: "a",
+  ä: "a",
+  ã: "a",
+  å: "a",
+  è: "e",
+  é: "e",
+  ê: "e",
+  ë: "e",
+  ì: "i",
+  í: "i",
+  î: "i",
+  ï: "i",
+  ò: "o",
+  ó: "o",
+  ô: "o",
+  ö: "o",
+  õ: "o",
+  ù: "u",
+  ú: "u",
+  û: "u",
+  ü: "u",
+  ç: "c",
+  ñ: "n",
+  ß: "ss",
+  æ: "ae",
+  ø: "o",
+  œ: "oe",
 };
 
 function epcText(value: string, max: number): string {
@@ -47,7 +70,10 @@ function epcText(value: string, max: number): string {
     // Allowed EPC character set: A-Z a-z 0-9 and / - ? : ( ) . , ' + space
     out += /[A-Za-z0-9/\-?:()., '+]/.test(char) ? char : " ";
   }
-  return out.replace(/\s{2,}/g, " ").trim().slice(0, max);
+  return out
+    .replace(/\s{2,}/g, " ")
+    .trim()
+    .slice(0, max);
 }
 
 /** `EUR12.34` — EPC requires a dot decimal separator and at most 2 decimals. */

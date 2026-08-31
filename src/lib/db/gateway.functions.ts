@@ -11,7 +11,9 @@ import type { QueryDescriptor, QueryResult, RpcDescriptor } from "./types";
 
 async function currentUserId(): Promise<string | null> {
   const { readSession, readCookie, SESSION_COOKIE } = await import("@/lib/auth/session.server");
-  const user = await readSession(readCookie(getRequestHeader("cookie"), SESSION_COOKIE)).catch(() => null);
+  const user = await readSession(readCookie(getRequestHeader("cookie"), SESSION_COOKIE)).catch(
+    () => null,
+  );
   return user?.id ?? null;
 }
 
@@ -23,7 +25,12 @@ export const runDbQuery = createServerFn({ method: "POST" })
     const userId = await currentUserId();
     const decision = await authorizeQuery(data, userId);
     if (!decision.ok) {
-      return { data: data.rowMode ? null : [], error: { message: decision.message }, count: null, status: 403 };
+      return {
+        data: data.rowMode ? null : [],
+        error: { message: decision.message },
+        count: null,
+        status: 403,
+      };
     }
     return await executeDescriptor(decision.descriptor);
   });

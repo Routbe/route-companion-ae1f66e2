@@ -3,7 +3,6 @@ import { sql } from "@/lib/neon";
 import { isReservedHandle, normalizeHandle } from "@/lib/profile";
 import { normalizeHandleForStorage } from "@/lib/handle-rules";
 
-
 /**
  * Neon-backed data layer for the Profile Hub Studio.
  *
@@ -236,20 +235,22 @@ export async function readStudioAnalytics(userId: string, days: number | null) {
     select count(*)::int as scans from public.qr_scans where tracked_qr_id = any(${ids}::uuid[])
   `) as Row[];
 
-  const series = (days
-    ? await sql`
+  const series = (
+    days
+      ? await sql`
         select to_char(date_trunc('day', scanned_at), 'YYYY-MM-DD') as date, count(*)::int as scans
           from public.qr_scans
          where tracked_qr_id = any(${ids}::uuid[])
            and scanned_at >= now() - make_interval(days => ${days})
          group by 1 order by 1
       `
-    : await sql`
+      : await sql`
         select to_char(date_trunc('day', scanned_at), 'YYYY-MM-DD') as date, count(*)::int as scans
           from public.qr_scans
          where tracked_qr_id = any(${ids}::uuid[])
          group by 1 order by 1
-      `) as Row[];
+      `
+  ) as Row[];
 
   return {
     qrs: ids.length,

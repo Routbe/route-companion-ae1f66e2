@@ -41,7 +41,6 @@ export function captionHref(text: string): string | null {
   return `https://${value}`;
 }
 
-
 const escapeXml = (s: string) =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
@@ -61,19 +60,17 @@ export interface CaptionSvgOpts {
 }
 
 /** Compose the QR plus a caption band into one standalone SVG document. */
-export function captionSvg({
-  qrHref,
-  size,
-  text,
-  color,
-  bg,
-  fontFamily,
-}: CaptionSvgOpts): { svg: string; width: number; height: number } {
+export function captionSvg({ qrHref, size, text, color, bg, fontFamily }: CaptionSvgOpts): {
+  svg: string;
+  width: number;
+  height: number;
+} {
   const band = Math.round(size * CAPTION_BAND_RATIO);
   const height = size + band;
   const fontSize = Math.round(band * 0.42);
   const family = fontFamily ?? "ui-sans-serif, system-ui, sans-serif";
-  const paper = bg && bg !== "transparent" ? `<rect width="${size}" height="${height}" fill="${bg}" />` : "";
+  const paper =
+    bg && bg !== "transparent" ? `<rect width="${size}" height="${height}" fill="${bg}" />` : "";
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${height}" width="${size}" height="${height}">${paper}<image href="${qrHref}" x="0" y="0" width="${size}" height="${size}" preserveAspectRatio="xMidYMid meet" /><text x="${size / 2}" y="${size + band * 0.62}" text-anchor="middle" fill="${color}" font-family="${family}" font-size="${fontSize}" font-weight="600" letter-spacing="${Math.round(fontSize * 0.04)}">${escapeXml(text)}</text></svg>`;
   return { svg, width: size, height };
 }

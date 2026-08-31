@@ -12,12 +12,8 @@ export const Route = createFileRoute("/$username/$slug")({
   server: {
     handlers: {
       GET: async ({ request, params, next }) => {
-        const {
-          resolveShortLink,
-          redirectResponse,
-          rateLimitedResponse,
-          pausedResponse,
-        } = await import("@/lib/short-link-redirect.server");
+        const { resolveShortLink, redirectResponse, rateLimitedResponse, pausedResponse } =
+          await import("@/lib/short-link-redirect.server");
         const { RateLimitError } = await import("@/lib/rate-limit.server");
         const handle = params.username.replace(/^@/, "").toLowerCase();
         try {

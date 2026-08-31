@@ -179,7 +179,8 @@ export async function setUserLegalName(opts: {
     const taken = (await sql`
       select id from public.profiles where username = ${handle} and id <> ${opts.userId} limit 1
     `) as Row[];
-    if (taken.length) return { ok: false as const, error: "Die gebruikersnaam is al bezet.", suggestions };
+    if (taken.length)
+      return { ok: false as const, error: "Die gebruikersnaam is al bezet.", suggestions };
     // Geverifieerde accounts dragen de naamstructuur; vrije aliassen niet.
     const verifiedRows = (await sql`
       select coalesce(verified, false) as verified from public.profiles where id = ${opts.userId} limit 1
@@ -427,7 +428,7 @@ export async function setUserVerified(opts: {
     update public.profiles
        set verified = ${opts.verified},
            verified_at = ${opts.verified ? new Date().toISOString() : null},
-           verified_legal_name = ${opts.verified ? legalName : (row["verified_legal_name"] as string | null) ?? null},
+           verified_legal_name = ${opts.verified ? legalName : ((row["verified_legal_name"] as string | null) ?? null)},
            status = case when ${opts.verified} then 'active' else status end,
            updated_at = now()
      where id = ${opts.userId}
@@ -471,13 +472,12 @@ export async function setUserVerified(opts: {
       if (!promotedHandle) {
         return {
           ok: false as const,
-          error: "Alle handles op basis van deze naam zijn al in gebruik — kies handmatig een handle.",
+          error:
+            "Alle handles op basis van deze naam zijn al in gebruik — kies handmatig een handle.",
         };
       }
     }
   }
-
-
 
   await writeAudit({
     adminId: opts.adminId,
@@ -491,7 +491,7 @@ export async function setUserVerified(opts: {
   const notifyEmail = (row["email"] as string | null) ?? null;
   const notifyLanguage = (row["preferred_language"] as string | null) ?? "nl";
   if (notifyEmail) {
-    const handle = promotedHandle ?? ((row["username"] as string | null) ?? "");
+    const handle = promotedHandle ?? (row["username"] as string | null) ?? "";
     const origin = (process.env["PUBLIC_SITE_URL"] ?? "https://rout.be").replace(/\/$/, "");
     if (opts.verified) {
       await sendVerificationApproved({

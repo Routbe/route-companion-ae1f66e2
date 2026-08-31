@@ -28,7 +28,6 @@ export interface ContactSubmitResult {
   detail?: string;
 }
 
-
 export const submitContactMessage = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => contactSchema.parse(data))
   .handler(async ({ data }): Promise<ContactSubmitResult> => {
@@ -65,7 +64,6 @@ export const submitContactMessage = createServerFn({ method: "POST" })
       }
     }
 
-
     const rpc = (
       dbAdmin as unknown as {
         rpc: (
@@ -76,10 +74,14 @@ export const submitContactMessage = createServerFn({ method: "POST" })
     ).rpc;
 
     if (senderHash) {
-      const { data: recent, error: rateError } = await rpc.call(dbAdmin, "contact_submissions_recent_count", {
-        _sender_hash: senderHash,
-        _window_minutes: 10,
-      });
+      const { data: recent, error: rateError } = await rpc.call(
+        dbAdmin,
+        "contact_submissions_recent_count",
+        {
+          _sender_hash: senderHash,
+          _window_minutes: 10,
+        },
+      );
       if (rateError) {
         console.error("[contact] rate-limit lookup failed:", rateError.message);
       } else if ((recent ?? 0) >= 5) {
@@ -218,4 +220,3 @@ export const submitContactMessage = createServerFn({ method: "POST" })
 
     return { ok: true, delivered, stored };
   });
-

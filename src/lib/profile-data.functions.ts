@@ -26,6 +26,9 @@ export const saveProfileSettings = createServerFn({ method: "POST" })
       await writeProfileSettings(context.userId, data);
       return { ok: true as const };
     } catch (error) {
-      return { ok: false as const, message: error instanceof Error ? error.message : "save_failed" };
+      return {
+        ok: false as const,
+        message: error instanceof Error ? error.message : "save_failed",
+      };
     }
   });

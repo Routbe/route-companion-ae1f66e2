@@ -40,10 +40,7 @@ export function base36Capacity(length: number): number {
  * naamruimte gebruikt is, schuiven we een teken op zodat botsingen zeldzaam
  * blijven en codes nooit "opraken".
  */
-export function baseSlugLengthForUsage(
-  used: number,
-  length: number = BASE36_SLUG_LENGTH,
-): number {
+export function baseSlugLengthForUsage(used: number, length: number = BASE36_SLUG_LENGTH): number {
   let l = length;
   while (l < BASE36_MAX_SLUG_LENGTH && used / base36Capacity(l) > NAMESPACE_SATURATION) {
     l += 1;
@@ -55,11 +52,9 @@ export function baseSlugLengthForUsage(
  * Lengte voor poging `attempt` (0-based): eerst 4 pogingen op de basislengte
  * (1 + 3 retries), dan +1 teken, en uiteindelijk +2 — begrensd op 6.
  */
-export function slugLengthForAttempt(
-  attempt: number,
-  base: number = BASE36_SLUG_LENGTH,
-): number {
-  const step = attempt <= BASE36_COLLISION_RETRIES ? 0 : attempt <= BASE36_COLLISION_RETRIES + 2 ? 1 : 2;
+export function slugLengthForAttempt(attempt: number, base: number = BASE36_SLUG_LENGTH): number {
+  const step =
+    attempt <= BASE36_COLLISION_RETRIES ? 0 : attempt <= BASE36_COLLISION_RETRIES + 2 ? 1 : 2;
   return Math.min(base + step, BASE36_MAX_SLUG_LENGTH);
 }
 
@@ -67,7 +62,6 @@ export function slugLengthForAttempt(
 export const SLUG_ALLOCATION_ATTEMPTS = BASE36_COLLISION_RETRIES + 5;
 
 const BASE36_RE = /^[0-9A-Z]{2,32}$/;
-
 
 /**
  * Cryptografisch willekeurige Base36-slug in hoofdletters.
@@ -116,8 +110,5 @@ export function qrPayloadForSlug(slug: string, origin = "https://rout.be"): stri
 
 /** True zolang de payload binnen een Version 1-M QR past. */
 export function fitsVersion1(payload: string): boolean {
-  return (
-    payload.length <= QR_V1_ALPHANUMERIC_CAPACITY &&
-    /^[0-9A-Z$%*+\-./: ]+$/.test(payload)
-  );
+  return payload.length <= QR_V1_ALPHANUMERIC_CAPACITY && /^[0-9A-Z$%*+\-./: ]+$/.test(payload);
 }

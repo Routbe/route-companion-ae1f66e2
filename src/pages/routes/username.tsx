@@ -2,11 +2,7 @@ import { useEffect } from "react";
 import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute, useParams } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
-import {
-  ProfileLookupError,
-  ProfileMissing,
-  ProfileView,
-} from "@/components/profile/ProfileView";
+import { ProfileLookupError, ProfileMissing, ProfileView } from "@/components/profile/ProfileView";
 import { ProfileSuspended } from "@/components/profile/ProfileSuspended";
 import { ProfileFrozen } from "@/components/profile/ProfileFrozen";
 import { useProfileRecord } from "@/hooks/useProfileRecord";
@@ -20,7 +16,6 @@ import { ShortLinkResolver } from "@/pages/ShortLink";
  * Unverified handles keep living under `/u/<handle>` so the root namespace
  * never collides with product routes.
  */
-
 
 function CleanProfile() {
   const { username } = useParams({ from: "/$username" });

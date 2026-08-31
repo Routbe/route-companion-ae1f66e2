@@ -7,8 +7,6 @@ import { LegalActionBar } from "@/components/LegalActionBar";
 import { TrustSealGrid } from "@/components/ui/trust-badges";
 import { Cpu, Globe, KeyRound, Scale, ShieldCheck } from "lucide-react";
 
-
-
 const chips: LegalChip[] = [
   { id: "client-side", label: "Local Execution" },
   { id: "eea", label: "EEA Routing" },

@@ -34,12 +34,8 @@ export const startVerification = createServerFn({ method: "POST" })
     const legal = await saveLegalName(context.userId, data.legalName);
     if (!legal.ok) return { ok: false as const, reason: legal.reason };
 
-    const {
-      stripeKey,
-      createCheckoutSession,
-      normalizeDonationPlan,
-      trustedCheckoutOrigin,
-    } = await import("./verification.server");
+    const { stripeKey, createCheckoutSession, normalizeDonationPlan, trustedCheckoutOrigin } =
+      await import("./verification.server");
     const { clampContribution } = await import("./contributions");
     const { dbAdmin } = await import("@/lib/db/admin.server");
 
@@ -109,10 +105,7 @@ export const startVerification = createServerFn({ method: "POST" })
       console.error("[verification] stripe checkout failed", {
         message: err instanceof Error ? err.message.slice(0, 300) : "checkout_failed",
       });
-      await dbAdmin
-        .from("verification_payments")
-        .update({ status: "failed" })
-        .eq("id", payment.id);
+      await dbAdmin.from("verification_payments").update({ status: "failed" }).eq("id", payment.id);
       return { ok: false as const, reason: "checkout_failed" as const };
     }
   });
@@ -318,9 +311,7 @@ export const startCardPaymentIntent = createServerFn({ method: "POST" })
 export const confirmCardPaymentIntent = createServerFn({ method: "POST" })
   .middleware([requireAuth])
   .inputValidator((data: unknown) =>
-    z
-      .object({ intentId: z.string().min(6).max(120), paymentId: z.string().uuid() })
-      .parse(data),
+    z.object({ intentId: z.string().min(6).max(120), paymentId: z.string().uuid() }).parse(data),
   )
   .handler(async ({ data, context }) => {
     const { finalizeCardPayment } = await import("./verification.server");
@@ -339,9 +330,7 @@ export const confirmCardPaymentIntent = createServerFn({ method: "POST" })
  */
 export const resumeCardPaymentIntent = createServerFn({ method: "POST" })
   .middleware([requireAuth])
-  .inputValidator((data: unknown) =>
-    z.object({ intentId: z.string().min(6).max(120) }).parse(data),
-  )
+  .inputValidator((data: unknown) => z.object({ intentId: z.string().min(6).max(120) }).parse(data))
   .handler(async ({ data, context }) => {
     const { finalizeCardPayment, paymentIdForIntent } = await import("./verification.server");
     const paymentId = await paymentIdForIntent(data.intentId);
@@ -352,10 +341,6 @@ export const resumeCardPaymentIntent = createServerFn({ method: "POST" })
       userId: context.userId,
     });
   });
-
-
-
-
 
 /**
  * Bank-transfer route: registers a pending payment with a human-readable
@@ -380,8 +365,7 @@ export const startSepaVerification = createServerFn({ method: "POST" })
       return { ok: false as const, reason: "email_unconfirmed" as const };
     }
 
-    const { normalizeDonationPlan, saveLegalName } =
-      await import("./verification.server");
+    const { normalizeDonationPlan, saveLegalName } = await import("./verification.server");
     const legal = await saveLegalName(context.userId, data.legalName);
     if (!legal.ok) return { ok: false as const, reason: legal.reason };
 
@@ -448,7 +432,10 @@ export const getVerificationState = createServerFn({ method: "GET" })
       data = repaired.data;
     }
 
-    const { data: roles } = await context.db.from("user_roles").select("role").eq("user_id", context.userId);
+    const { data: roles } = await context.db
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", context.userId);
 
     return {
       username: data.username ?? null,
@@ -516,11 +503,10 @@ export const getPaymentConfig = createServerFn({ method: "GET" }).handler(async 
   stripePublishableKey: process.env["STRIPE_PUBLISHABLE_KEY"] ?? null,
   bunqReady: Boolean(
     process.env["BUNQ_API_KEY"] &&
-      process.env["BUNQ_PRIVATE_KEY"] &&
-      process.env["BUNQ_PUBLIC_KEY"],
+    process.env["BUNQ_PRIVATE_KEY"] &&
+    process.env["BUNQ_PUBLIC_KEY"],
   ),
 }));
-
 
 /**
  * Live betaalstatus voor asynchrone methodes (Bancontact/iDEAL-redirect,

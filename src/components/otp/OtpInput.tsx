@@ -106,7 +106,9 @@ export function OtpInput({
     }
 
     if (
-      ["Tab", "Enter", "Escape", "Meta", "Control", "Alt", "Shift", "Home", "End"].includes(e.key) ||
+      ["Tab", "Enter", "Escape", "Meta", "Control", "Alt", "Shift", "Home", "End"].includes(
+        e.key,
+      ) ||
       e.key.startsWith("Arrow") ||
       e.metaKey ||
       e.ctrlKey

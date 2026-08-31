@@ -54,7 +54,6 @@ export const Route = createFileRoute("/api_/public/brand-logo")({
           }
         }
         return new Response("Not found", { status: 404 });
-
       },
     },
   },

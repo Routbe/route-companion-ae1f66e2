@@ -74,7 +74,10 @@ const auth = {
           metadata: input.user_metadata ?? {},
           ...(input.email_confirm ? { emailConfirmed: true } : {}),
         });
-        return { data: { user: toAdminUser(user as unknown as Record<string, unknown>) }, error: null };
+        return {
+          data: { user: toAdminUser(user as unknown as Record<string, unknown>) },
+          error: null,
+        };
       } catch (error) {
         return {
           data: { user: null },
@@ -165,7 +168,6 @@ const auth = {
         };
       }
     },
-
   },
 };
 
@@ -182,7 +184,9 @@ const storage = {
       async list() {
         return { data: [], error: null };
       },
-      async download(_path: string): Promise<{ data: Blob | null; error: { message: string } | null }> {
+      async download(
+        _path: string,
+      ): Promise<{ data: Blob | null; error: { message: string } | null }> {
         return { data: null, error: { message: STORAGE_MESSAGE } };
       },
       async upload(_path: string, _file: unknown, _options?: unknown) {

@@ -28,8 +28,6 @@ const LINKS = [
 
 type HubSearch = Record<string, string | undefined>;
 
-
-
 const normalize = (param: string, value: string) => {
   if (param === "wa") return `https://wa.me/${value.replace(/[^\d]/g, "")}`;
   return /^https?:\/\//i.test(value) ? value : `https://${value}`;
@@ -51,7 +49,9 @@ function HubPage() {
     <div className="min-h-screen bg-background flex flex-col items-center px-5 py-14">
       <main className="w-full max-w-sm">
         <header className="text-center mb-8">
-          <h1 className="font-display text-3xl text-foreground">{search.n || t("hub.defaultName")}</h1>
+          <h1 className="font-display text-3xl text-foreground">
+            {search.n || t("hub.defaultName")}
+          </h1>
           {search.t && <p className="text-sm text-muted-foreground mt-2">{search.t}</p>}
         </header>
 

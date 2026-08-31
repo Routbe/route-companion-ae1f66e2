@@ -19,7 +19,6 @@ interface BunqPaymentCardProps {
   onRetry?: () => void;
 }
 
-
 /**
  * bunq-betalingskaart: bovenaan de officiële bunq-QR en de directe
  * betaalknop, daaronder de handmatige IBAN/ROUT-referentie als stille
@@ -75,7 +74,6 @@ export function BunqPaymentCard({
   }
 
   return (
-
     <div className="space-y-3 rounded-xl border border-border bg-muted p-3">
       {/* Statusindicator — 'paid' is hierboven al afgehandeld. */}
       <div
@@ -84,7 +82,6 @@ export function BunqPaymentCard({
       >
         <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden /> {t("pay.bunq.waiting")}
       </div>
-
 
       {/* Officiële bunq-betaallink */}
       <div className="flex flex-col items-center gap-3 rounded-lg border border-border bg-background p-4">

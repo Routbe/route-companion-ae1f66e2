@@ -30,21 +30,23 @@ export function BadgeActivityPanel() {
     let cancelled = false;
 
     const load = () =>
-      void (db as unknown as {
-        from: (t: string) => {
-          select: (c: string) => {
-            eq: (
-              c: string,
-              v: string,
-            ) => {
-              order: (
+      void (
+        db as unknown as {
+          from: (t: string) => {
+            select: (c: string) => {
+              eq: (
                 c: string,
-                o: { ascending: boolean },
-              ) => { limit: (n: number) => Promise<{ data: unknown }> };
+                v: string,
+              ) => {
+                order: (
+                  c: string,
+                  o: { ascending: boolean },
+                ) => { limit: (n: number) => Promise<{ data: unknown }> };
+              };
             };
           };
-        };
-      })
+        }
+      )
         .from("badge_events")
         .select("id, badge_slug, action, source, serial_number, created_at")
         .eq("user_id", user.id)
@@ -63,7 +65,12 @@ export function BadgeActivityPanel() {
       .channel(`badge-activity-${user.id}`)
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "badge_events", filter: `user_id=eq.${user.id}` },
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "badge_events",
+          filter: `user_id=eq.${user.id}`,
+        },
         () => load(),
       )
       .subscribe();

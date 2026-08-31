@@ -29,15 +29,27 @@ export default function Studio() {
     >
       {loading || !user ? (
         <div className="flex min-h-[40vh] items-center justify-center">
-          <div className="relative h-24 w-24"><BrandLoader label="Studio laden…" /></div>
+          <div className="relative h-24 w-24">
+            <BrandLoader label="Studio laden…" />
+          </div>
         </div>
       ) : (
         <div className="flex flex-1 flex-col space-y-6 pb-8">
           <div className="flex flex-wrap gap-2 rounded-xl border border-border/60 bg-muted/30 p-1">
-            {([
-              { id: "verified" as ProfileVariant, label: "Geverifieerd profiel", hint: "rout.be/handle", Icon: BadgeCheck },
-              { id: "alias" as ProfileVariant, label: "Gratis aliasprofiel", hint: "rout.be/u/handle", Icon: Sparkles },
-            ]).map(({ id, label, hint, Icon }) => (
+            {[
+              {
+                id: "verified" as ProfileVariant,
+                label: "Geverifieerd profiel",
+                hint: "rout.be/handle",
+                Icon: BadgeCheck,
+              },
+              {
+                id: "alias" as ProfileVariant,
+                label: "Gratis aliasprofiel",
+                hint: "rout.be/u/handle",
+                Icon: Sparkles,
+              },
+            ].map(({ id, label, hint, Icon }) => (
               <button
                 key={id}
                 type="button"

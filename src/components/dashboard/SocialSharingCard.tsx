@@ -26,10 +26,7 @@ export function SocialSharingCard({
   handle: string | null;
   displayName: string;
   prefs: ProfileDisplayPrefs;
-  setPref: <K extends keyof ProfileDisplayPrefs>(
-    key: K,
-    value: ProfileDisplayPrefs[K],
-  ) => void;
+  setPref: <K extends keyof ProfileDisplayPrefs>(key: K, value: ProfileDisplayPrefs[K]) => void;
 }) {
   const [bioTab, setBioTab] = useState<BioLocale>("nl");
   const clean = (handle ?? "").replace(/^@+/, "").trim();
@@ -156,8 +153,8 @@ export function SocialSharingCard({
           className="input-field rounded-xl"
         />
         <p className="text-xs text-muted-foreground">
-          Bezoekers krijgen automatisch hun eigen taal en kunnen wisselen met de
-          taalpil op je profiel.
+          Bezoekers krijgen automatisch hun eigen taal en kunnen wisselen met de taalpil op je
+          profiel.
         </p>
       </div>
     </section>

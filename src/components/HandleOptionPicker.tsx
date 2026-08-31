@@ -60,7 +60,10 @@ export function HandleOptionPicker({
             disabled={regenerating || locked}
             className="mt-3 inline-flex items-center gap-1.5 text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground disabled:opacity-50"
           >
-            <RefreshCw className={`h-3.5 w-3.5 ${regenerating ? "animate-spin" : ""}`} aria-hidden />
+            <RefreshCw
+              className={`h-3.5 w-3.5 ${regenerating ? "animate-spin" : ""}`}
+              aria-hidden
+            />
             {t("handlePicker.retry")}
           </button>
         ) : null}

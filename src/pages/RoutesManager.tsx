@@ -59,7 +59,8 @@ export default function RoutesManager() {
                 href={styledProfilePath(handle, urlStyle)}
                 className="inline-flex items-center gap-1.5 border border-border bg-card px-3 py-2 font-mono text-sm text-foreground hover:bg-muted"
               >
-                {styledProfileLabel(handle, urlStyle)} <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+                {styledProfileLabel(handle, urlStyle)}{" "}
+                <ExternalLink className="h-3.5 w-3.5" aria-hidden />
               </a>
               <span className="inline-flex items-center gap-1.5 border border-border bg-card px-3 py-2 font-mono text-sm text-muted-foreground">
                 <Mail className="h-3.5 w-3.5" aria-hidden /> {handle}@rout.be
@@ -67,9 +68,7 @@ export default function RoutesManager() {
             </div>
           ) : (
             <div className="mt-4 flex flex-wrap items-center gap-3">
-              <p className="text-sm text-muted-foreground">
-                You have not claimed a handle yet.
-              </p>
+              <p className="text-sm text-muted-foreground">You have not claimed a handle yet.</p>
               <Button asChild className="h-10 rounded-lg">
                 <Link to="/claim">Claim your handle</Link>
               </Button>

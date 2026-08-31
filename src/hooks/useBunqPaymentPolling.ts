@@ -30,10 +30,7 @@ export interface BunqPollResult {
  * krijgt het scherm een duidelijke time-outstaat met een retry-knop. Elke timer
  * wordt opgeruimd bij unmount, bij succes en bij de time-out.
  */
-export function useBunqPaymentPolling(
-  tab: BunqTabRef | null,
-  onPaid?: () => void,
-): BunqPollResult {
+export function useBunqPaymentPolling(tab: BunqTabRef | null, onPaid?: () => void): BunqPollResult {
   const [status, setStatus] = useState<BunqPollStatus>("idle");
   const [attempt, setAttempt] = useState(0);
   const onPaidRef = useRef(onPaid);

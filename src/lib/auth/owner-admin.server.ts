@@ -81,9 +81,11 @@ export async function ensureBootstrapAdmin(): Promise<boolean> {
 
     const target =
       ownerRows[0] ??
-      ((await sql`
+      (
+        (await sql`
         select id from public.users order by created_at asc limit 1
-      `) as { id: string }[])[0];
+      `) as { id: string }[]
+      )[0];
 
     if (!target) return false;
     await grantAdmin(String(target.id));

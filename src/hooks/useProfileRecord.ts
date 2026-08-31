@@ -109,6 +109,5 @@ export function useProfileRecord(username: string, options?: { free?: boolean })
     };
   }, [username, attempt, free]);
 
-
   return { profile, suspended, loading, error, retry };
 }

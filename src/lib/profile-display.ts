@@ -23,7 +23,11 @@ export {
 import { normalizeAvatarFrame, type AvatarFrame } from "./avatar-frames";
 import { normalizeVisitEffect, type VisitEffect } from "./visit-effects";
 import { normalizeFavorites, type ProfileFavorite } from "./favorites";
-import { DEFAULT_DESIGN_PREFS, normalizeDesignPrefs, type ProfileDesignPrefs } from "./profile-design";
+import {
+  DEFAULT_DESIGN_PREFS,
+  normalizeDesignPrefs,
+  type ProfileDesignPrefs,
+} from "./profile-design";
 /** Design Studio (presets, wallpaper, knoppen, typografie, footer). */
 export * from "./profile-design";
 /** Favorieten (film, serie, boek, …) — definities leven in `@/lib/favorites`. */
@@ -159,7 +163,6 @@ export const NAME_ACCENTS: { id: NameAccent; label: string }[] = [
   { id: "chrome", label: "Dark chrome" },
 ];
 
-
 export const BADGE_TYPES: { id: BadgeType; label: string; note: string }[] = [
   {
     id: "verified",
@@ -268,7 +271,6 @@ export function parseDisplayPrefs(raw: unknown): ProfileDisplayPrefs {
   };
 }
 
-
 /** CSS voor de bannerkaart boven het profiel. `null` = geen banner tonen. */
 export function bannerStyleOf(
   prefs: ProfileDisplayPrefs,
@@ -323,7 +325,6 @@ export function nameAccentStyle(
       return { color: theme.text };
   }
 }
-
 
 /**
  * Gratis leden dragen altijd het "Made with ROUT"-watermerk; geverifieerde /
@@ -467,9 +468,7 @@ export function bioForLocale(
   fallback: string | null | undefined,
   locale: string,
 ): string | null {
-  const wanted = (BIO_LOCALES as readonly string[]).includes(locale)
-    ? (locale as BioLocale)
-    : null;
+  const wanted = (BIO_LOCALES as readonly string[]).includes(locale) ? (locale as BioLocale) : null;
   if (wanted && prefs[BIO_KEY[wanted]]) return prefs[BIO_KEY[wanted]];
   const first = availableBioLocales(prefs)[0];
   if (first) return prefs[BIO_KEY[first]];

@@ -68,7 +68,8 @@ async function accountHolderName(userId: string): Promise<string | null> {
     return (
       ((row?.["verified_legal_name"] as string | null) ??
         (row?.["display_name"] as string | null) ??
-        (row?.["full_name"] as string | null)) || null
+        (row?.["full_name"] as string | null)) ||
+      null
     );
   } catch {
     return null;

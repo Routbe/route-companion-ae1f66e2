@@ -59,8 +59,13 @@ export async function retryDelivery(paymentId: string): Promise<{ ok: boolean; m
   const lines = isRenewal
     ? [{ label: "Terugkerende bijdrage", amountCents: donationCents }]
     : [
-        { label: `ROUT verificatie — ${(payment["tier"] as string) ?? "standaard"}`, amountCents: baseCents },
-        ...(donationCents > 0 ? [{ label: "Vrijwillige bijdrage", amountCents: donationCents }] : []),
+        {
+          label: `ROUT verificatie — ${(payment["tier"] as string) ?? "standaard"}`,
+          amountCents: baseCents,
+        },
+        ...(donationCents > 0
+          ? [{ label: "Vrijwillige bijdrage", amountCents: donationCents }]
+          : []),
       ];
 
   const { deliverPaymentInvoice } = await import("./invoice-delivery.server");

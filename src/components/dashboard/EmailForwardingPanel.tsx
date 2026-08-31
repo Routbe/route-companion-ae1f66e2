@@ -169,8 +169,7 @@ export function EmailForwardingPanel() {
     } else if (result.ok) {
       setFallback({ url: result.confirmUrl ?? "", error: result.deliveryError ?? null });
       toast.error("The confirmation e-mail could not be sent yet.");
-    }
-    else toast.error("Could not re-send the confirmation.");
+    } else toast.error("Could not re-send the confirmation.");
   };
 
   return (
@@ -249,8 +248,7 @@ export function EmailForwardingPanel() {
         />
         {pending && !emailChanged && (
           <p className="text-[11px] text-muted-foreground">
-            Waiting for confirmation — forwarding is paused until the link in that inbox is
-            opened.{" "}
+            Waiting for confirmation — forwarding is paused until the link in that inbox is opened.{" "}
             <button
               type="button"
               className="underline underline-offset-2"

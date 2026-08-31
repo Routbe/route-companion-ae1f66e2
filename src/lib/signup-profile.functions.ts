@@ -36,7 +36,7 @@ export const syncOAuthAvatar = createServerFn({ method: "POST" })
     const rows = (await sql`
       select avatar_url from public.profiles where id = ${context.userId} limit 1
     `) as Row[];
-    if ((rows[0]?.["avatar_url"] as string | null | undefined)) {
+    if (rows[0]?.["avatar_url"] as string | null | undefined) {
       return { ok: true as const, applied: false as const };
     }
 

@@ -34,7 +34,6 @@ export type NotificationKind =
   | "node_expiry_final"
   | "merge_verification";
 
-
 interface Copy {
   subject: string;
   title: string;
@@ -435,7 +434,13 @@ export const NOTIFICATION_SEVERITY: Record<NotificationKind, "info" | "success" 
  */
 export const NOTIFICATION_EMAIL_CATEGORY: Record<
   NotificationKind,
-  "payment" | "payment_confirmation" | "payment_issue" | "transfer" | "security" | "merge" | "node_expiry"
+  | "payment"
+  | "payment_confirmation"
+  | "payment_issue"
+  | "transfer"
+  | "security"
+  | "merge"
+  | "node_expiry"
 > = {
   payment_processing: "payment_confirmation",
   payment_succeeded: "payment",
@@ -454,7 +459,6 @@ export const NOTIFICATION_EMAIL_CATEGORY: Record<
   node_expiry_final: "node_expiry",
   merge_verification: "merge",
 };
-
 
 /** Shared ROUT e-mail shell — inline styles only, white body, no external CSS. */
 export function renderNotificationEmail(copy: Copy, dashboardUrl: string): string {

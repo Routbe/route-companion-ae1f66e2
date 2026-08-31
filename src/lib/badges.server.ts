@@ -81,7 +81,10 @@ export type BadgeActivityRow = {
 };
 
 /** Most recent badge grants/revocations for the member's activity log. */
-export async function fetchBadgeActivityDb(userId: string, limit = 12): Promise<BadgeActivityRow[]> {
+export async function fetchBadgeActivityDb(
+  userId: string,
+  limit = 12,
+): Promise<BadgeActivityRow[]> {
   try {
     const rows = (await sql`
       select id, badge_slug, action, source, serial_number, created_at

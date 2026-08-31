@@ -134,7 +134,6 @@ const Index = () => {
     if (requested === "profile_hub" || requested === "social") setQrType("social");
   }, []);
 
-
   const [frameId, setFrameId] = useState<string | null>(null);
   const [frameLabel, setFrameLabel] = useState("");
   const [frameFont, setFrameFont] = useState("sans");
@@ -365,227 +364,225 @@ const Index = () => {
           <div
             className="preview-sheet sketch-frame mx-auto w-full max-w-md rounded-3xl border border-border p-4 sm:p-6"
 
-              style={{
-                boxShadow:
-                  "0 14px 8px 0 rgba(64, 64, 64, 0.04), 0 6px 6px 0 rgba(64, 64, 64, 0.07), 0 2px 3px 0 rgba(64, 64, 64, 0.08)",
-              }}
-            >
-              <div className="flex items-baseline justify-between mb-4">
-                <h2 className="font-display text-[26px] leading-none text-foreground sketch-underline">
-                  {t("preview.title")}
-                </h2>
-                <span className="eyebrow">Nº 01</span>
-              </div>
-              <ErrorBoundary label="QR Generator" inline>
-                <QRPreview
-                  qrType={qrType}
-                  value={currentValue}
-                  onValueChange={setCurrentValue}
-                  wifiSSID={wifiSSID}
-                  onWifiSSIDChange={setWifiSSID}
-                  wifiPassword={wifiPassword}
-                  onWifiPasswordChange={setWifiPassword}
-                  wifiEncryption={wifiEncryption}
-                  onWifiEncryptionChange={setWifiEncryption}
-                  emailAddress={emailAddress}
-                  onEmailAddressChange={setEmailAddress}
-                  emailSubject={emailSubject}
-                  onEmailSubjectChange={setEmailSubject}
-                  emailBody={emailBody}
-                  onEmailBodyChange={setEmailBody}
-                  smsPhone={smsPhone}
-                  onSmsPhoneChange={setSmsPhone}
-                  smsMessage={smsMessage}
-                  onSmsMessageChange={setSmsMessage}
-                  whatsappPhone={whatsappPhone}
-                  onWhatsappPhoneChange={setWhatsappPhone}
-                  whatsappMessage={whatsappMessage}
-                  onWhatsappMessageChange={setWhatsappMessage}
-                  paymentValues={activePaymentValues}
-                  onPaymentFieldChange={setPaymentField}
-                  richValues={activeRichValues}
-                  onRichFieldChange={setRichField}
-                  qrValue={finalQrValue}
-                  fgColor={fgColor}
-                  bgColor={bgColor}
-                  bgGradient={bgGradient}
-                  frameStyle={frameStyle}
-                  logo={logo}
-                  bodyShape={bodyShape}
-                  dotStyle={dotStyle}
-                  outerCornerStyle={outerCornerStyle}
-                  innerCornerStyle={innerCornerStyle}
-                  logoSize={logoSize}
-                  logoMargin={logoMargin}
-                  hideBackgroundDots={hideBackgroundDots}
-                  downloadSize={qrSize}
-                  downloadFormat={qrFormat}
-                  downloadMargin={qrMargin}
-                  filename={filename}
-                  frameId={frameId}
-                  frameLabel={frameLabel}
-                  frameFont={frameFont}
-                  frameTweaks={frameTweaks}
-                  captionEnabled={captionEnabled}
-                  captionText={captionText}
-                  printMm={sizeUnit === "in" ? Math.round(physicalSize * 25.4) : physicalSize}
-                  onAutoFixContrast={() => {
-                    // Snap to a guaranteed-safe pair (21:1) before exporting.
-                    setFgColor("#000000");
-                    setBgColor("#FFFFFF");
-                    setBgGradient(null);
-                  }}
-                />
-              </ErrorBoundary>
+            style={{
+              boxShadow:
+                "0 14px 8px 0 rgba(64, 64, 64, 0.04), 0 6px 6px 0 rgba(64, 64, 64, 0.07), 0 2px 3px 0 rgba(64, 64, 64, 0.08)",
+            }}
+          >
+            <div className="flex items-baseline justify-between mb-4">
+              <h2 className="font-display text-[26px] leading-none text-foreground sketch-underline">
+                {t("preview.title")}
+              </h2>
+              <span className="eyebrow">Nº 01</span>
             </div>
-
-            <div className="w-full max-w-md mt-4 flex justify-end">
-              <SaveQRButton
+            <ErrorBoundary label="QR Generator" inline>
+              <QRPreview
                 qrType={qrType}
-                qrValue={qrValue}
-                disabled={!qrValue}
-                config={{
-                  fgColor,
-                  bgColor,
-                  bgGradient,
-                  frameStyle,
-                  bodyShape,
-                  qrSize,
-                  qrFormat,
-                  qrMargin,
+                value={currentValue}
+                onValueChange={setCurrentValue}
+                wifiSSID={wifiSSID}
+                onWifiSSIDChange={setWifiSSID}
+                wifiPassword={wifiPassword}
+                onWifiPasswordChange={setWifiPassword}
+                wifiEncryption={wifiEncryption}
+                onWifiEncryptionChange={setWifiEncryption}
+                emailAddress={emailAddress}
+                onEmailAddressChange={setEmailAddress}
+                emailSubject={emailSubject}
+                onEmailSubjectChange={setEmailSubject}
+                emailBody={emailBody}
+                onEmailBodyChange={setEmailBody}
+                smsPhone={smsPhone}
+                onSmsPhoneChange={setSmsPhone}
+                smsMessage={smsMessage}
+                onSmsMessageChange={setSmsMessage}
+                whatsappPhone={whatsappPhone}
+                onWhatsappPhoneChange={setWhatsappPhone}
+                whatsappMessage={whatsappMessage}
+                onWhatsappMessageChange={setWhatsappMessage}
+                paymentValues={activePaymentValues}
+                onPaymentFieldChange={setPaymentField}
+                richValues={activeRichValues}
+                onRichFieldChange={setRichField}
+                qrValue={finalQrValue}
+                fgColor={fgColor}
+                bgColor={bgColor}
+                bgGradient={bgGradient}
+                frameStyle={frameStyle}
+                logo={logo}
+                bodyShape={bodyShape}
+                dotStyle={dotStyle}
+                outerCornerStyle={outerCornerStyle}
+                innerCornerStyle={innerCornerStyle}
+                logoSize={logoSize}
+                logoMargin={logoMargin}
+                hideBackgroundDots={hideBackgroundDots}
+                downloadSize={qrSize}
+                downloadFormat={qrFormat}
+                downloadMargin={qrMargin}
+                filename={filename}
+                frameId={frameId}
+                frameLabel={frameLabel}
+                frameFont={frameFont}
+                frameTweaks={frameTweaks}
+                captionEnabled={captionEnabled}
+                captionText={captionText}
+                printMm={sizeUnit === "in" ? Math.round(physicalSize * 25.4) : physicalSize}
+                onAutoFixContrast={() => {
+                  // Snap to a guaranteed-safe pair (21:1) before exporting.
+                  setFgColor("#000000");
+                  setBgColor("#FFFFFF");
+                  setBgGradient(null);
                 }}
               />
-            </div>
+            </ErrorBoundary>
+          </div>
 
-            <div className="w-full max-w-md mt-6">
-              <div className="flex items-center justify-between mb-3">
-                <span className="eyebrow">Protocol</span>
-                <div className="flex items-center gap-2">
-                  <div className="inline-flex items-center rounded-full border border-border bg-card p-1">
-                    {(["static", "dynamic"] as const).map((m) => (
-                      <button
-                        key={m}
-                        onClick={() => setQrMode(m)}
-                        className={cn(
-                          "px-4 py-1.5 rounded-full text-xs font-medium tracking-wide uppercase transition-colors",
-                          qrMode === m
-                            ? "bg-foreground text-background"
-                            : "text-muted-foreground hover:text-foreground",
-                        )}
-                      >
-                        {t(`protocol.${m}`)}
-                      </button>
-                    ))}
-                  </div>
-                  <InfoHint label="About static and dynamic codes">
-                    {t("protocol.staticHint")} {t("protocol.dynamicHint")}
-                  </InfoHint>
+          <div className="w-full max-w-md mt-4 flex justify-end">
+            <SaveQRButton
+              qrType={qrType}
+              qrValue={qrValue}
+              disabled={!qrValue}
+              config={{
+                fgColor,
+                bgColor,
+                bgGradient,
+                frameStyle,
+                bodyShape,
+                qrSize,
+                qrFormat,
+                qrMargin,
+              }}
+            />
+          </div>
+
+          <div className="w-full max-w-md mt-6">
+            <div className="flex items-center justify-between mb-3">
+              <span className="eyebrow">Protocol</span>
+              <div className="flex items-center gap-2">
+                <div className="inline-flex items-center rounded-full border border-border bg-card p-1">
+                  {(["static", "dynamic"] as const).map((m) => (
+                    <button
+                      key={m}
+                      onClick={() => setQrMode(m)}
+                      className={cn(
+                        "px-4 py-1.5 rounded-full text-xs font-medium tracking-wide uppercase transition-colors",
+                        qrMode === m
+                          ? "bg-foreground text-background"
+                          : "text-muted-foreground hover:text-foreground",
+                      )}
+                    >
+                      {t(`protocol.${m}`)}
+                    </button>
+                  ))}
                 </div>
+                <InfoHint label="About static and dynamic codes">
+                  {t("protocol.staticHint")} {t("protocol.dynamicHint")}
+                </InfoHint>
               </div>
             </div>
+          </div>
 
-            {qrMode === "static" && (
-              <div className="w-full max-w-md mt-4">
-                <button
-                  type="button"
-                  onClick={() => setQrMode("dynamic")}
-                  className="w-full rounded-2xl border border-dashed border-border bg-card/60 p-4 text-left transition-colors hover:bg-card"
-                >
-                  <span className="flex items-center gap-2 text-sm font-medium text-foreground">
-                    <Link2 className="h-4 w-4" /> {t("home.shortlink.cta.title")}
-                  </span>
-                  <span className="mt-1 block text-xs text-muted-foreground">
-                    {t("home.shortlink.cta.description")}
-                  </span>
-                </button>
-              </div>
-            )}
+          {qrMode === "static" && (
+            <div className="w-full max-w-md mt-4">
+              <button
+                type="button"
+                onClick={() => setQrMode("dynamic")}
+                className="w-full rounded-2xl border border-dashed border-border bg-card/60 p-4 text-left transition-colors hover:bg-card"
+              >
+                <span className="flex items-center gap-2 text-sm font-medium text-foreground">
+                  <Link2 className="h-4 w-4" /> {t("home.shortlink.cta.title")}
+                </span>
+                <span className="mt-1 block text-xs text-muted-foreground">
+                  {t("home.shortlink.cta.description")}
+                </span>
+              </button>
+            </div>
+          )}
 
-            {qrMode === "dynamic" && (
-              <div className="w-full max-w-md mt-4">
-                <TrackingPanel
-                  qrType={qrType}
-                  targetUrl={trackableTarget}
-                  tracked={trackedQr}
-                  onTrackedChange={setTrackedQr}
-                />
-              </div>
-            )}
-          </main>
+          {qrMode === "dynamic" && (
+            <div className="w-full max-w-md mt-4">
+              <TrackingPanel
+                qrType={qrType}
+                targetUrl={trackableTarget}
+                tracked={trackedQr}
+                onTrackedChange={setTrackedQr}
+              />
+            </div>
+          )}
+        </main>
 
         {/* Right column — styling tools (independent scroll on desktop) */}
         <aside className="min-w-0 border-t border-border/60 bg-background px-4 pb-8 pt-6 sm:px-6 lg:h-full lg:overflow-y-auto lg:border-l lg:border-t-0 lg:px-6 lg:pt-8 [scrollbar-width:thin]">
-
-            <QRStyleTabs
-              qrType={qrType}
-              value={currentValue}
-              onValueChange={setCurrentValue}
-              wifiSSID={wifiSSID}
-              onWifiSSIDChange={setWifiSSID}
-              wifiPassword={wifiPassword}
-              onWifiPasswordChange={setWifiPassword}
-              wifiEncryption={wifiEncryption}
-              onWifiEncryptionChange={setWifiEncryption}
-              emailAddress={emailAddress}
-              onEmailAddressChange={setEmailAddress}
-              emailSubject={emailSubject}
-              onEmailSubjectChange={setEmailSubject}
-              emailBody={emailBody}
-              onEmailBodyChange={setEmailBody}
-              smsPhone={smsPhone}
-              onSmsPhoneChange={setSmsPhone}
-              smsMessage={smsMessage}
-              onSmsMessageChange={setSmsMessage}
-              frameStyle={frameStyle}
-              onFrameStyleChange={setFrameStyle}
-              fgColor={fgColor}
-              onFgColorChange={setFgColor}
-              bgColor={bgColor}
-              onBgColorChange={setBgColor}
-              bgGradient={bgGradient}
-              onBgGradientChange={setBgGradient}
-              logo={logo}
-              onLogoChange={setLogo}
-              bodyShape={bodyShape}
-              onBodyShapeChange={setBodyShape}
-              qrSize={qrSize}
-              onQrSizeChange={setQrSize}
-              physicalSize={physicalSize}
-              onPhysicalSizeChange={setPhysicalSize}
-              dpi={dpi}
-              onDpiChange={setDpi}
-              sizeUnit={sizeUnit}
-              onSizeUnitChange={setSizeUnit}
-              qrFormat={qrFormat}
-              onQrFormatChange={setQrFormat}
-              qrMargin={qrMargin}
-              onQrMarginChange={setQrMargin}
-              filename={filename}
-              onFilenameChange={handleFilenameChange}
-              dotStyle={dotStyle}
-              onDotStyleChange={setDotStyle}
-              outerCornerStyle={outerCornerStyle}
-              onOuterCornerStyleChange={setOuterCornerStyle}
-              innerCornerStyle={innerCornerStyle}
-              onInnerCornerStyleChange={setInnerCornerStyle}
-              logoSize={logoSize}
-              onLogoSizeChange={setLogoSize}
-              logoMargin={logoMargin}
-              onLogoMarginChange={setLogoMargin}
-              hideBackgroundDots={hideBackgroundDots}
-              onHideBackgroundDotsChange={setHideBackgroundDots}
-              frameId={frameId}
-              onFrameIdChange={setFrameId}
-              frameLabel={frameLabel}
-              onFrameLabelChange={setFrameLabel}
-              frameFont={frameFont}
-              onFrameFontChange={setFrameFont}
-              frameTweaks={frameTweaks}
-              onFrameTweaksChange={setFrameTweaks}
-            />
+          <QRStyleTabs
+            qrType={qrType}
+            value={currentValue}
+            onValueChange={setCurrentValue}
+            wifiSSID={wifiSSID}
+            onWifiSSIDChange={setWifiSSID}
+            wifiPassword={wifiPassword}
+            onWifiPasswordChange={setWifiPassword}
+            wifiEncryption={wifiEncryption}
+            onWifiEncryptionChange={setWifiEncryption}
+            emailAddress={emailAddress}
+            onEmailAddressChange={setEmailAddress}
+            emailSubject={emailSubject}
+            onEmailSubjectChange={setEmailSubject}
+            emailBody={emailBody}
+            onEmailBodyChange={setEmailBody}
+            smsPhone={smsPhone}
+            onSmsPhoneChange={setSmsPhone}
+            smsMessage={smsMessage}
+            onSmsMessageChange={setSmsMessage}
+            frameStyle={frameStyle}
+            onFrameStyleChange={setFrameStyle}
+            fgColor={fgColor}
+            onFgColorChange={setFgColor}
+            bgColor={bgColor}
+            onBgColorChange={setBgColor}
+            bgGradient={bgGradient}
+            onBgGradientChange={setBgGradient}
+            logo={logo}
+            onLogoChange={setLogo}
+            bodyShape={bodyShape}
+            onBodyShapeChange={setBodyShape}
+            qrSize={qrSize}
+            onQrSizeChange={setQrSize}
+            physicalSize={physicalSize}
+            onPhysicalSizeChange={setPhysicalSize}
+            dpi={dpi}
+            onDpiChange={setDpi}
+            sizeUnit={sizeUnit}
+            onSizeUnitChange={setSizeUnit}
+            qrFormat={qrFormat}
+            onQrFormatChange={setQrFormat}
+            qrMargin={qrMargin}
+            onQrMarginChange={setQrMargin}
+            filename={filename}
+            onFilenameChange={handleFilenameChange}
+            dotStyle={dotStyle}
+            onDotStyleChange={setDotStyle}
+            outerCornerStyle={outerCornerStyle}
+            onOuterCornerStyleChange={setOuterCornerStyle}
+            innerCornerStyle={innerCornerStyle}
+            onInnerCornerStyleChange={setInnerCornerStyle}
+            logoSize={logoSize}
+            onLogoSizeChange={setLogoSize}
+            logoMargin={logoMargin}
+            onLogoMarginChange={setLogoMargin}
+            hideBackgroundDots={hideBackgroundDots}
+            onHideBackgroundDotsChange={setHideBackgroundDots}
+            frameId={frameId}
+            onFrameIdChange={setFrameId}
+            frameLabel={frameLabel}
+            onFrameLabelChange={setFrameLabel}
+            frameFont={frameFont}
+            onFrameFontChange={setFrameFont}
+            frameTweaks={frameTweaks}
+            onFrameTweaksChange={setFrameTweaks}
+          />
         </aside>
       </div>
-
 
       <TrustBar />
 

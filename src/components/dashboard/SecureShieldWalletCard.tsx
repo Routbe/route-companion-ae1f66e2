@@ -5,20 +5,14 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { useAuth } from "@/hooks/useAuth";
-import {
-  getWallet,
-  startWalletTopupCheckout,
-  updateWalletAutoTopup,
-} from "@/lib/wallet.functions";
+import { getWallet, startWalletTopupCheckout, updateWalletAutoTopup } from "@/lib/wallet.functions";
 
 type WalletData = Awaited<ReturnType<typeof getWallet>>;
 
 const TOPUPS = [300, 500, 1000, 2500];
 
 function euro(cents: number): string {
-  return new Intl.NumberFormat("nl-BE", { style: "currency", currency: "EUR" }).format(
-    cents / 100,
-  );
+  return new Intl.NumberFormat("nl-BE", { style: "currency", currency: "EUR" }).format(cents / 100);
 }
 
 /** SecureShield™ prepaid tegoed: saldo, opwaarderen en automatische bijvulling. */
@@ -91,8 +85,8 @@ export function SecureShieldWalletCard() {
             SecureShield™ Relay
           </h2>
           <p className="mt-1 text-xs text-muted-foreground">
-            Je prepaid tegoed dekt de relaykost van {euro(9)} per maand. Zonder saldo pauzeert
-            de mailrelay automatisch.
+            Je prepaid tegoed dekt de relaykost van {euro(9)} per maand. Zonder saldo pauzeert de
+            mailrelay automatisch.
           </p>
         </div>
       </div>
