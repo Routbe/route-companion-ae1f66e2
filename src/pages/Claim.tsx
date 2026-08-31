@@ -14,7 +14,7 @@ import {
 } from "@/lib/bootstrap.functions";
 import { claimHandle, getMyHandle, getVerifiedHandleOptions } from "@/lib/claim.functions";
 import { Turnstile } from "@/components/Turnstile";
-import { handleLengthMessage } from "@/lib/handle-rules";
+import { digitCount, FREE_HANDLE_MIN_DIGITS, handleLengthMessage } from "@/lib/handle-rules";
 import { hasValidDigitSuffix } from "@/lib/handle-suggestions";
 import { HandleOptionPicker, type HandleOption } from "@/components/HandleOptionPicker";
 import { notifyError, notifySuccess } from "@/lib/notify";
@@ -148,6 +148,10 @@ export default function Claim() {
 
     const lengthIssue = handleLengthMessage(value);
     if (lengthIssue) return setState({ checking: false, ok: false, reason: lengthIssue });
+    // Gratis leden delen de drukke ruimte: minstens 5 tekens én 2 cijfers.
+    if (!verified && digitCount(value) < FREE_HANDLE_MIN_DIGITS) {
+      return setState({ checking: false, ok: false, reason: t("claim.free.digits") });
+    }
     if (!hasValidDigitSuffix(value)) {
       return setState({
         checking: false,
@@ -332,7 +336,7 @@ export default function Claim() {
                     ? t("claim.checking")
                     : state.ok === true
                       ? t("claim.available", { handle: preview })
-                      : (state.reason ?? t("claim.hint"))}
+                      : (state.reason ?? t("claim.free.rule"))}
                 </p>
 
                 {emailSuggestions.length > 0 && (
