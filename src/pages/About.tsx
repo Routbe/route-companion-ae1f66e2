@@ -10,6 +10,8 @@ import {
   Sparkles,
 } from "lucide-react";
 import { Link } from "@/lib/router-compat";
+import { HumanLinkedIcon } from "@/components/profile/HumanLinkedIcon";
+import { FleurDeLisIcon } from "@/components/profile/EarlyBelieverBadge";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { BUNNY_PATH } from "@/lib/site";
 import { useI18n } from "@/lib/i18n";
@@ -134,8 +136,12 @@ function downloadVcard() {
 function RoutProfileCard() {
   const { t } = useI18n();
   const badges = useMemo(
-    () => [t("about.profileCard.badge.verifiedPro"), t("about.profileCard.badge.sovereignCore"), t("about.profileCard.badge.openSource")],
-    [t]
+    () => [
+      t("about.profileCard.badge.verifiedPro"),
+      t("about.profileCard.badge.sovereignCore"),
+      t("about.profileCard.badge.openSource"),
+    ],
+    [t],
   );
 
   return (
@@ -164,7 +170,10 @@ function RoutProfileCard() {
           </div>
           <p className="mt-4 inline-flex items-center gap-1.5 font-serif text-lg font-medium text-foreground">
             ROUT
-            <BadgeCheck className="h-4 w-4 text-primary" aria-label={t("about.profileCard.verifiedAriaLabel")} />
+            <BadgeCheck
+              className="h-4 w-4 text-primary"
+              aria-label={t("about.profileCard.verifiedAriaLabel")}
+            />
           </p>
           <a
             href="https://rout.be"
@@ -174,9 +183,7 @@ function RoutProfileCard() {
           >
             rout.be/rout
           </a>
-          <p className="mt-1 text-[11px] text-muted-foreground">
-            {t("about.profileCard.tagline")}
-          </p>
+          <p className="mt-1 text-[11px] text-muted-foreground">{t("about.profileCard.tagline")}</p>
           <div className="mt-4 flex flex-wrap justify-center gap-1.5">
             {badges.map((badge) => (
               <span
@@ -258,7 +265,9 @@ function ComparisonMatrix() {
               {t(row.others)}
             </div>
             <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-xs font-medium text-emerald-900 dark:text-emerald-200">
-              <span className="mb-1 block text-[10px] uppercase tracking-wide">{t("about.comparison.header.rout")}</span>
+              <span className="mb-1 block text-[10px] uppercase tracking-wide">
+                {t("about.comparison.header.rout")}
+              </span>
               {t(row.rout)}
             </div>
           </div>
@@ -308,9 +317,7 @@ function HandleClaim() {
           <ArrowRight className="h-4 w-4" aria-hidden />
         </button>
       </div>
-      <p className="mt-2 px-2 text-xs text-muted-foreground">
-        {t("about.handleClaim.hint")}
-      </p>
+      <p className="mt-2 px-2 text-xs text-muted-foreground">{t("about.handleClaim.hint")}</p>
     </form>
   );
 }
@@ -328,7 +335,7 @@ export default function About() {
         body: t(feature.body),
         points: feature.points.map((point) => t(point)),
       })),
-    [t]
+    [t],
   );
 
   return (
@@ -347,7 +354,8 @@ export default function About() {
             <HandleClaim />
             <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-xs text-muted-foreground">
               <span className="inline-flex items-center gap-1.5">
-                <ShieldCheck className="h-3.5 w-3.5" aria-hidden /> {t("about.hero.badge.noDataHarvest")}
+                <ShieldCheck className="h-3.5 w-3.5" aria-hidden />{" "}
+                {t("about.hero.badge.noDataHarvest")}
               </span>
               <span className="inline-flex items-center gap-1.5">
                 <Palette className="h-3.5 w-3.5" aria-hidden /> {t("about.hero.badge.themes")}
@@ -390,6 +398,65 @@ export default function About() {
           ))}
         </section>
 
+        {/* Merktekens: exact dezelfde iconen als op een publiek profiel. */}
+        <section className={`mt-16 ${CARD}`}>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+            {t("verify.eyebrow")}
+          </p>
+          <h2 className="mt-2 font-serif text-xl font-semibold text-foreground sm:text-2xl">
+            {t("verify.title")}
+          </h2>
+          <p className="mt-2 max-w-3xl text-[15px] leading-relaxed text-muted-foreground">
+            {t("verify.intro")}
+          </p>
+          <div className="mt-6 grid gap-4 sm:grid-cols-3">
+            {[
+              {
+                key: "blue",
+                mark: <BadgeCheck className="h-5 w-5 text-[#1d9bf0]" aria-hidden />,
+                title: t("verify.badge.blue.title"),
+                body: t("verify.badge.blue.body"),
+                where: t("verify.badge.blue.where"),
+              },
+              {
+                key: "shield",
+                mark: <HumanLinkedIcon className="h-5 w-5 text-foreground/80" aria-hidden />,
+                title: t("verify.badge.shield.title"),
+                body: t("verify.badge.shield.body"),
+                where: t("verify.badge.shield.where"),
+              },
+              {
+                key: "early",
+                mark: <FleurDeLisIcon className="h-5 w-5 text-amber-500" />,
+                title: t("verify.badge.early.title"),
+                body: t("verify.badge.early.body"),
+                where: t("verify.badge.early.where"),
+              },
+            ].map((mark) => (
+              <article
+                key={mark.key}
+                className="rounded-2xl border border-border bg-background/60 p-5"
+              >
+                <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card">
+                  {mark.mark}
+                </span>
+                <h3 className="mt-3 font-serif text-lg font-semibold text-foreground">
+                  {mark.title}
+                </h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{mark.body}</p>
+                <p className="mt-2 font-mono text-[11px] text-muted-foreground">{mark.where}</p>
+              </article>
+            ))}
+          </div>
+          <Link
+            to="/verify"
+            className="mt-6 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-border px-5 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+          >
+            {t("about.finalCta.secondaryButton")}
+            <ArrowRight className="h-4 w-4" aria-hidden />
+          </Link>
+        </section>
+
         <section className={`mt-16 ${CARD}`}>
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
             {t("about.why.eyebrow")}
@@ -414,9 +481,7 @@ export default function About() {
           <h2 className="font-serif text-xl font-semibold sm:text-2xl">
             {t("about.claimCta.title")}
           </h2>
-          <p className="mx-auto mt-2 max-w-lg text-sm opacity-80">
-            {t("about.claimCta.body")}
-          </p>
+          <p className="mx-auto mt-2 max-w-lg text-sm opacity-80">{t("about.claimCta.body")}</p>
           <Link
             to="/auth"
             className="mt-6 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-background px-6 text-sm font-medium text-foreground transition-opacity hover:opacity-90"
