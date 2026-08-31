@@ -172,10 +172,8 @@ export async function saveAliasDomains(userId: string, selected: AppDomain[]): P
   }
 
   for (const domain of wanted) {
-    // eslint-disable-next-line no-await-in-loop
     const sync = await syncAlias(domain, handle, profile.forwardTo!);
     try {
-      // eslint-disable-next-line no-await-in-loop
       await sql`
         insert into public.email_aliases (user_id, handle, domain, forward_to, status, sync_error, updated_at)
         values (${userId}, ${handle}, ${domain}, ${profile.forwardTo}, ${sync.status}, ${sync.error}, now())

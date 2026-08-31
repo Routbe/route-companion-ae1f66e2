@@ -110,7 +110,7 @@ export async function suggestFreeHandle(nameOrEmail: string) {
 
   for (let i = 0; i < 25; i += 1) {
     const candidate = `${base}${twoDigits()}`;
-    // eslint-disable-next-line no-await-in-loop
+
     const res = await isHandleFree(candidate);
     if (res.ok) return candidate;
   }
@@ -130,7 +130,7 @@ export async function suggestHandlesFromEmail(email: string, count = 3) {
     for (let i = 0; i < 12 && out.length < count; i += 1) {
       const candidate = `${candidateBase}${twoDigits()}`;
       if (out.includes(candidate)) continue;
-      // eslint-disable-next-line no-await-in-loop
+
       const res = await isHandleFree(candidate);
       if (res.ok) out.push(candidate);
     }

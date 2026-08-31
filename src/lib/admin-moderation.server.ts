@@ -1037,7 +1037,7 @@ export async function exportInboundPayments(
   const { INBOUND_CSV_COLUMNS, inboundCsvRows } = await import("./payments");
   const { toCsv } = await import("./csv");
 
-  let q = dbAdmin
+  const q = dbAdmin
     .from("webhook_events")
     .select("id, source, kind, created_at")
     .eq("kind", "payment_email")

@@ -33,7 +33,6 @@ export function authClientLog(
   cid: string,
   fields: Record<string, unknown> = {},
 ): void {
-  // eslint-disable-next-line no-console
   console.log(
     JSON.stringify({
       scope: "auth-client",

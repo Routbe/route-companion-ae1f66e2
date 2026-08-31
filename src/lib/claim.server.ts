@@ -88,7 +88,7 @@ export async function getVerifiedHandleOptionsFor(userId: string, minAvailable =
     const widened = generateWidenedHandleOptions(profile.display_name ?? "", limit);
     if (widened.length <= candidates.length) break; // generation exhausted
     candidates = widened;
-    // eslint-disable-next-line no-await-in-loop
+
     availability = await checkAvailabilityBatch(candidates);
     availableCount = [...availability.values()].filter((v) => v === "available").length;
   }
